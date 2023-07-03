@@ -1,0 +1,102 @@
+part of skillsage_screens;
+
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
+
+  final TextEditingController _fullname = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+
+  final _key = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
+    return Scaffold(
+        backgroundColor: AppTheme.appTheme(context).bg1,
+        body: SafeArea(
+          child: Form(
+            key: _key,
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Create an account",
+                        style: textTheme.displayMedium,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: Text(
+                        "Help you create an account on Skill Sage",
+                        style: textTheme.bodySmall,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 90,
+                    ),
+                    Text(
+                      'Full name',
+                      style: textTheme.displaySmall,
+                    ),
+                    CustomTextField(
+                      hintText: 'Fullname',
+                      controller: _fullname,
+                    ),
+                    Text('Email', style: textTheme.displaySmall),
+                    CustomTextField(
+                      hintText: 'Email',
+                      controller: _email,
+                      isEmail: true,
+                    ),
+                    Text('Password', style: textTheme.displaySmall),
+                    CustomTextField(
+                      hintText: 'Password',
+                      controller: _password,
+                      isPassword: true,
+                    ),
+                    CustomButton(
+                      color: AppTheme.appTheme(context).secondary,
+                      title: 'SIGN UP',
+                      // icon: Icon(Icons.facebook),
+                    ),
+                    CustomButton(
+                      color: AppTheme.appTheme(context).accent,
+                      title: 'SIGN UP WITH GOOGLE',
+                      icon: SvgPicture.asset("assets/svgs/google.svg"),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: textTheme.bodySmall,
+                        ),
+                        InkWell(
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.userLogin),
+                          child: Text(
+                            'Sign In',
+                            style: textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ));
+  }
+}
