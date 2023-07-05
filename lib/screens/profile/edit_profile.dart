@@ -36,8 +36,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     User user = context.read<UserProvider>().user;
     _fullname.text = user.name;
-    _location.text = user.location ?? '';
-    _phone.text = user.contactInfo ?? '';
+    _location.text = user.profile.location ?? '';
+    // _phone.text = user.profile.contactInfo ?? '';
     _email.text = user.email;
 
     return Scaffold(

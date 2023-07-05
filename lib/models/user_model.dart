@@ -1,23 +1,36 @@
 part of skillsage_models;
 
-enum Role { jobSeeker, employer, admin }
+enum Role { JOB_SEEKER, EMPLOYER, ADMIN }
 
 @freezed
 class User with _$User {
   const factory User({
-    required int id,
     required String name,
     required String email,
+    required int id,
     required Role role,
-    String? about,
-    String? location,
-    String? education,
-    int? resumeId,
-    String? companyName,
-    String? contactInfo,
+    required UserProfile profile,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@freezed
+class UserProfile with _$UserProfile {
+  const factory UserProfile({
+    String? about,
+    String? education,
+    String? portfolio,
+    required DateTime created,
+    DateTime? updated,
+    required int user_id,
+    String? location,
+    int? resume_id,
+    required int id,
+  }) = _UserProfile;
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileFromJson(json);
 }
 
 @freezed

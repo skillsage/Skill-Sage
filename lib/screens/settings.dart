@@ -8,6 +8,7 @@ class SettingsScreen extends StatelessWidget {
     final themeProvider = context.read<ThemeProvider>();
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
+    final navigator = Navigator.of(context);
     return Scaffold(
       backgroundColor: AppTheme.appTheme(context).bg1,
       body: SafeArea(
@@ -71,10 +72,12 @@ class SettingsScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: appTheme.danger,
                 ),
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(AppRoutes.userLogin),
+                onPressed: () async {
+                  context.read<UserProvider>().logout();
+                  navigator.pushNamed(AppRoutes.userLogin);
+                },
                 child: Text(
-                  'Delete Account',
+                  'Logout',
                   style: textTheme.headlineSmall,
                 ),
               ),

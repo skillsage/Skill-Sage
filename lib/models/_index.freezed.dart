@@ -20,16 +20,11 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
-  int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   Role get role => throw _privateConstructorUsedError;
-  String? get about => throw _privateConstructorUsedError;
-  String? get location => throw _privateConstructorUsedError;
-  String? get education => throw _privateConstructorUsedError;
-  int? get resumeId => throw _privateConstructorUsedError;
-  String? get companyName => throw _privateConstructorUsedError;
-  String? get contactInfo => throw _privateConstructorUsedError;
+  UserProfile get profile => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,16 +37,9 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {int id,
-      String name,
-      String email,
-      Role role,
-      String? about,
-      String? location,
-      String? education,
-      int? resumeId,
-      String? companyName,
-      String? contactInfo});
+      {String name, String email, int id, Role role, UserProfile profile});
+
+  $UserProfileCopyWith<$Res> get profile;
 }
 
 /// @nodoc
@@ -67,22 +55,13 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? id = null,
     Object? role = null,
-    Object? about = freezed,
-    Object? location = freezed,
-    Object? education = freezed,
-    Object? resumeId = freezed,
-    Object? companyName = freezed,
-    Object? contactInfo = freezed,
+    Object? profile = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -91,35 +70,27 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as Role,
-      about: freezed == about
-          ? _value.about
-          : about // ignore: cast_nullable_to_non_nullable
-              as String?,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
-      education: freezed == education
-          ? _value.education
-          : education // ignore: cast_nullable_to_non_nullable
-              as String?,
-      resumeId: freezed == resumeId
-          ? _value.resumeId
-          : resumeId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      companyName: freezed == companyName
-          ? _value.companyName
-          : companyName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      contactInfo: freezed == contactInfo
-          ? _value.contactInfo
-          : contactInfo // ignore: cast_nullable_to_non_nullable
-              as String?,
+      profile: null == profile
+          ? _value.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as UserProfile,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserProfileCopyWith<$Res> get profile {
+    return $UserProfileCopyWith<$Res>(_value.profile, (value) {
+      return _then(_value.copyWith(profile: value) as $Val);
+    });
   }
 }
 
@@ -130,16 +101,10 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
-      String name,
-      String email,
-      Role role,
-      String? about,
-      String? location,
-      String? education,
-      int? resumeId,
-      String? companyName,
-      String? contactInfo});
+      {String name, String email, int id, Role role, UserProfile profile});
+
+  @override
+  $UserProfileCopyWith<$Res> get profile;
 }
 
 /// @nodoc
@@ -151,22 +116,13 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? id = null,
     Object? role = null,
-    Object? about = freezed,
-    Object? location = freezed,
-    Object? education = freezed,
-    Object? resumeId = freezed,
-    Object? companyName = freezed,
-    Object? contactInfo = freezed,
+    Object? profile = null,
   }) {
     return _then(_$_User(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -175,34 +131,18 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as Role,
-      about: freezed == about
-          ? _value.about
-          : about // ignore: cast_nullable_to_non_nullable
-              as String?,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
-      education: freezed == education
-          ? _value.education
-          : education // ignore: cast_nullable_to_non_nullable
-              as String?,
-      resumeId: freezed == resumeId
-          ? _value.resumeId
-          : resumeId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      companyName: freezed == companyName
-          ? _value.companyName
-          : companyName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      contactInfo: freezed == contactInfo
-          ? _value.contactInfo
-          : contactInfo // ignore: cast_nullable_to_non_nullable
-              as String?,
+      profile: null == profile
+          ? _value.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as UserProfile,
     ));
   }
 }
@@ -211,43 +151,28 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
 @JsonSerializable()
 class _$_User implements _User {
   const _$_User(
-      {required this.id,
-      required this.name,
+      {required this.name,
       required this.email,
+      required this.id,
       required this.role,
-      this.about,
-      this.location,
-      this.education,
-      this.resumeId,
-      this.companyName,
-      this.contactInfo});
+      required this.profile});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
-  @override
-  final int id;
   @override
   final String name;
   @override
   final String email;
   @override
+  final int id;
+  @override
   final Role role;
   @override
-  final String? about;
-  @override
-  final String? location;
-  @override
-  final String? education;
-  @override
-  final int? resumeId;
-  @override
-  final String? companyName;
-  @override
-  final String? contactInfo;
+  final UserProfile profile;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, role: $role, about: $about, location: $location, education: $education, resumeId: $resumeId, companyName: $companyName, contactInfo: $contactInfo)';
+    return 'User(name: $name, email: $email, id: $id, role: $role, profile: $profile)';
   }
 
   @override
@@ -255,27 +180,16 @@ class _$_User implements _User {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_User &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.role, role) || other.role == role) &&
-            (identical(other.about, about) || other.about == about) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.education, education) ||
-                other.education == education) &&
-            (identical(other.resumeId, resumeId) ||
-                other.resumeId == resumeId) &&
-            (identical(other.companyName, companyName) ||
-                other.companyName == companyName) &&
-            (identical(other.contactInfo, contactInfo) ||
-                other.contactInfo == contactInfo));
+            (identical(other.profile, profile) || other.profile == profile));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, role, about,
-      location, education, resumeId, companyName, contactInfo);
+  int get hashCode => Object.hash(runtimeType, name, email, id, role, profile);
 
   @JsonKey(ignore: true)
   @override
@@ -293,42 +207,332 @@ class _$_User implements _User {
 
 abstract class _User implements User {
   const factory _User(
-      {required final int id,
-      required final String name,
+      {required final String name,
       required final String email,
+      required final int id,
       required final Role role,
-      final String? about,
-      final String? location,
-      final String? education,
-      final int? resumeId,
-      final String? companyName,
-      final String? contactInfo}) = _$_User;
+      required final UserProfile profile}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
-  @override
-  int get id;
   @override
   String get name;
   @override
   String get email;
   @override
+  int get id;
+  @override
   Role get role;
   @override
-  String? get about;
-  @override
-  String? get location;
-  @override
-  String? get education;
-  @override
-  int? get resumeId;
-  @override
-  String? get companyName;
-  @override
-  String? get contactInfo;
+  UserProfile get profile;
   @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+}
+
+UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
+  return _UserProfile.fromJson(json);
+}
+
+/// @nodoc
+mixin _$UserProfile {
+  String? get about => throw _privateConstructorUsedError;
+  String? get education => throw _privateConstructorUsedError;
+  String? get portfolio => throw _privateConstructorUsedError;
+  DateTime get created => throw _privateConstructorUsedError;
+  DateTime? get updated => throw _privateConstructorUsedError;
+  int get user_id => throw _privateConstructorUsedError;
+  String? get location => throw _privateConstructorUsedError;
+  int? get resume_id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UserProfileCopyWith<UserProfile> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserProfileCopyWith<$Res> {
+  factory $UserProfileCopyWith(
+          UserProfile value, $Res Function(UserProfile) then) =
+      _$UserProfileCopyWithImpl<$Res, UserProfile>;
+  @useResult
+  $Res call(
+      {String? about,
+      String? education,
+      String? portfolio,
+      DateTime created,
+      DateTime? updated,
+      int user_id,
+      String? location,
+      int? resume_id,
+      int id});
+}
+
+/// @nodoc
+class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
+    implements $UserProfileCopyWith<$Res> {
+  _$UserProfileCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? about = freezed,
+    Object? education = freezed,
+    Object? portfolio = freezed,
+    Object? created = null,
+    Object? updated = freezed,
+    Object? user_id = null,
+    Object? location = freezed,
+    Object? resume_id = freezed,
+    Object? id = null,
+  }) {
+    return _then(_value.copyWith(
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      education: freezed == education
+          ? _value.education
+          : education // ignore: cast_nullable_to_non_nullable
+              as String?,
+      portfolio: freezed == portfolio
+          ? _value.portfolio
+          : portfolio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      created: null == created
+          ? _value.created
+          : created // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updated: freezed == updated
+          ? _value.updated
+          : updated // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      user_id: null == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as int,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resume_id: freezed == resume_id
+          ? _value.resume_id
+          : resume_id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_UserProfileCopyWith<$Res>
+    implements $UserProfileCopyWith<$Res> {
+  factory _$$_UserProfileCopyWith(
+          _$_UserProfile value, $Res Function(_$_UserProfile) then) =
+      __$$_UserProfileCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? about,
+      String? education,
+      String? portfolio,
+      DateTime created,
+      DateTime? updated,
+      int user_id,
+      String? location,
+      int? resume_id,
+      int id});
+}
+
+/// @nodoc
+class __$$_UserProfileCopyWithImpl<$Res>
+    extends _$UserProfileCopyWithImpl<$Res, _$_UserProfile>
+    implements _$$_UserProfileCopyWith<$Res> {
+  __$$_UserProfileCopyWithImpl(
+      _$_UserProfile _value, $Res Function(_$_UserProfile) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? about = freezed,
+    Object? education = freezed,
+    Object? portfolio = freezed,
+    Object? created = null,
+    Object? updated = freezed,
+    Object? user_id = null,
+    Object? location = freezed,
+    Object? resume_id = freezed,
+    Object? id = null,
+  }) {
+    return _then(_$_UserProfile(
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      education: freezed == education
+          ? _value.education
+          : education // ignore: cast_nullable_to_non_nullable
+              as String?,
+      portfolio: freezed == portfolio
+          ? _value.portfolio
+          : portfolio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      created: null == created
+          ? _value.created
+          : created // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updated: freezed == updated
+          ? _value.updated
+          : updated // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      user_id: null == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as int,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resume_id: freezed == resume_id
+          ? _value.resume_id
+          : resume_id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_UserProfile implements _UserProfile {
+  const _$_UserProfile(
+      {this.about,
+      this.education,
+      this.portfolio,
+      required this.created,
+      this.updated,
+      required this.user_id,
+      this.location,
+      this.resume_id,
+      required this.id});
+
+  factory _$_UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$$_UserProfileFromJson(json);
+
+  @override
+  final String? about;
+  @override
+  final String? education;
+  @override
+  final String? portfolio;
+  @override
+  final DateTime created;
+  @override
+  final DateTime? updated;
+  @override
+  final int user_id;
+  @override
+  final String? location;
+  @override
+  final int? resume_id;
+  @override
+  final int id;
+
+  @override
+  String toString() {
+    return 'UserProfile(about: $about, education: $education, portfolio: $portfolio, created: $created, updated: $updated, user_id: $user_id, location: $location, resume_id: $resume_id, id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_UserProfile &&
+            (identical(other.about, about) || other.about == about) &&
+            (identical(other.education, education) ||
+                other.education == education) &&
+            (identical(other.portfolio, portfolio) ||
+                other.portfolio == portfolio) &&
+            (identical(other.created, created) || other.created == created) &&
+            (identical(other.updated, updated) || other.updated == updated) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.resume_id, resume_id) ||
+                other.resume_id == resume_id) &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, about, education, portfolio,
+      created, updated, user_id, location, resume_id, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_UserProfileCopyWith<_$_UserProfile> get copyWith =>
+      __$$_UserProfileCopyWithImpl<_$_UserProfile>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_UserProfileToJson(
+      this,
+    );
+  }
+}
+
+abstract class _UserProfile implements UserProfile {
+  const factory _UserProfile(
+      {final String? about,
+      final String? education,
+      final String? portfolio,
+      required final DateTime created,
+      final DateTime? updated,
+      required final int user_id,
+      final String? location,
+      final int? resume_id,
+      required final int id}) = _$_UserProfile;
+
+  factory _UserProfile.fromJson(Map<String, dynamic> json) =
+      _$_UserProfile.fromJson;
+
+  @override
+  String? get about;
+  @override
+  String? get education;
+  @override
+  String? get portfolio;
+  @override
+  DateTime get created;
+  @override
+  DateTime? get updated;
+  @override
+  int get user_id;
+  @override
+  String? get location;
+  @override
+  int? get resume_id;
+  @override
+  int get id;
+  @override
+  @JsonKey(ignore: true)
+  _$$_UserProfileCopyWith<_$_UserProfile> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Experience _$ExperienceFromJson(Map<String, dynamic> json) {

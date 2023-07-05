@@ -15,12 +15,16 @@ class _LoaderState extends State<Loader> {
   }
 
   init() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    final navigator = Navigator.of(context);
+    final provider = context.read<UserProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       String route = AppRoutes.userLogin;
-      // if (context.read<AuthProvider>().sb.auth.currentUser != null) {
-      //   route = AppRouter.homeRoute;
-      // }
-      Navigator.of(context).pushReplacementNamed(route);
+      final tokenData = await TokenBox.getTokenData();
+      if (tokenData.token != null && tokenData.token!.isNotEmpty) {
+        provider.user = User.fromJson(jsonDecode(tokenData.user.toString()));
+        route = AppRoutes.userProfile;
+      }
+      navigator.pushReplacementNamed(route);
     });
   }
 

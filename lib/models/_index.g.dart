@@ -7,36 +7,54 @@ part of '_index.dart';
 // **************************************************************************
 
 _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
-      id: json['id'] as int,
       name: json['name'] as String,
       email: json['email'] as String,
+      id: json['id'] as int,
       role: $enumDecode(_$RoleEnumMap, json['role']),
-      about: json['about'] as String?,
-      location: json['location'] as String?,
-      education: json['education'] as String?,
-      resumeId: json['resumeId'] as int?,
-      companyName: json['companyName'] as String?,
-      contactInfo: json['contactInfo'] as String?,
+      profile: UserProfile.fromJson(json['profile'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
       'email': instance.email,
+      'id': instance.id,
       'role': _$RoleEnumMap[instance.role]!,
-      'about': instance.about,
-      'location': instance.location,
-      'education': instance.education,
-      'resumeId': instance.resumeId,
-      'companyName': instance.companyName,
-      'contactInfo': instance.contactInfo,
+      'profile': instance.profile,
     };
 
 const _$RoleEnumMap = {
-  Role.jobSeeker: 'jobSeeker',
-  Role.employer: 'employer',
-  Role.admin: 'admin',
+  Role.JOB_SEEKER: 'JOB_SEEKER',
+  Role.EMPLOYER: 'EMPLOYER',
+  Role.ADMIN: 'ADMIN',
 };
+
+_$_UserProfile _$$_UserProfileFromJson(Map<String, dynamic> json) =>
+    _$_UserProfile(
+      about: json['about'] as String?,
+      education: json['education'] as String?,
+      portfolio: json['portfolio'] as String?,
+      created: DateTime.parse(json['created'] as String),
+      updated: json['updated'] == null
+          ? null
+          : DateTime.parse(json['updated'] as String),
+      user_id: json['user_id'] as int,
+      location: json['location'] as String?,
+      resume_id: json['resume_id'] as int?,
+      id: json['id'] as int,
+    );
+
+Map<String, dynamic> _$$_UserProfileToJson(_$_UserProfile instance) =>
+    <String, dynamic>{
+      'about': instance.about,
+      'education': instance.education,
+      'portfolio': instance.portfolio,
+      'created': instance.created.toIso8601String(),
+      'updated': instance.updated?.toIso8601String(),
+      'user_id': instance.user_id,
+      'location': instance.location,
+      'resume_id': instance.resume_id,
+      'id': instance.id,
+    };
 
 _$_Experience _$$_ExperienceFromJson(Map<String, dynamic> json) =>
     _$_Experience(

@@ -1,38 +1,54 @@
 part of skillsage_utils;
 
 class NetworkUtil {
-  static const String baseUrl = 'https://localhost:3000/';
+  static const String baseUrl = 'http://127.0.0.1:8000';
 
-  static Future<dynamic> getReq(String endpoint) async {
+  Future<dynamic> getReq(String endpoint) async {
     try {
+      final tokenData = await TokenBox.getTokenData();
+      final headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${tokenData.token}'
+      };
       final url = Uri.parse('$baseUrl$endpoint');
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
 
       return _handleResponse(response);
     } catch (e) {
-      throw Exception('Failed to perform GET request: $e');
+      return throw Exception('Failed to perform GET request: $e');
     }
   }
 
-  static Future<dynamic> postReq(String endpoint, dynamic body) async {
+  Future<dynamic> postReq(String endpoint, Map<String, String> body) async {
+    final tokenData = await TokenBox.getTokenData();
     try {
-      final url = Uri.parse('$baseUrl$endpoint');
-      final headers = {'Content-Type': 'application/json'};
-      final encodedBody = jsonEncode(body);
-
-      final response =
-          await http.post(url, headers: headers, body: encodedBody);
-
+      final headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${tokenData.token}'
+      };
+      final response = await http.post(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: headers,
+        body: jsonEncode(body),
+      );
       return _handleResponse(response);
     } catch (e) {
       throw Exception('Failed to perform POST request: $e');
     }
   }
 
-  static Future<dynamic> uploadFile(String endpoint, File file) async {
+  Future<dynamic> uploadFile(String endpoint, File file) async {
     try {
+      final tokenData = await TokenBox.getTokenData();
+
       final url = Uri.parse('$baseUrl$endpoint');
       final request = http.MultipartRequest('POST', url);
+
+      request.headers['Authorization'] = 'Bearer ${tokenData.token}';
+      request.headers['Content-Type'] = 'multipart/form-data';
       request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
       final response = await request.send();
@@ -49,7 +65,7 @@ class NetworkUtil {
     }
   }
 
-  static Future<File> downloadFile(String url, String savePath) async {
+  Future<File> downloadFile(String url, String savePath) async {
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -66,15 +82,15 @@ class NetworkUtil {
     }
   }
 
-  static dynamic _handleResponse(http.Response response) {
-    final statusCode = response.statusCode;
+  dynamic _handleResponse(http.Response response) {
+    // final statusCode = response.statusCode;
     final responseBody = response.body;
 
-    if (statusCode >= 200 && statusCode < 300) {
-      final decodedBody = jsonDecode(responseBody);
-      return decodedBody;
-    } else {
-      throw Exception('Request failed with status code $statusCode');
-    }
+    // if (statusCode >= 200 && statusCode < 300) {
+    final decodedBody = jsonDecode(responseBody);
+    return decodedBody;
+    // } else {
+    //   throw Exception('Request failed with status code $statusCode');
+    // }
   }
 }

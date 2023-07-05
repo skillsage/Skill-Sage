@@ -11,7 +11,7 @@ class EditAboutScreen extends StatelessWidget {
     final appTheme = AppTheme.appTheme(context);
 
     User user = context.read<UserProvider>().user;
-    _about.text = user.about ?? '';
+    _about.text = user.profile.about ?? '';
 
     return Scaffold(
       backgroundColor: appTheme.bg1,

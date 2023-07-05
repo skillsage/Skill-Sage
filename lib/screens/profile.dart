@@ -8,17 +8,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  List<File?> resume = [];
+  final List<File?> _resume = [];
   Future<void> pickResume() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-    if (result != null) {
-      File file = File(result.files.single.path.toString());
-      setState(
-        () => resume.add(file),
+    final resume = context.read<UserProvider>();
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
       );
+      if (result != null) {
+        File file = File(result.files.single.path.toString());
+        await resume.uploadResume(file: file);
+        setState(
+          () => _resume.add(file),
+        );
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 
@@ -47,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             ProfileHeader(
               name: user.name,
-              location: user.location ?? '',
+              location: user.profile.location ?? '',
             ),
             const SizedBox(
               height: 10.0,
@@ -58,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 physics: const BouncingScrollPhysics(),
                 children: [
                   // about
-                  (user.about!.isEmpty)
+                  (user.profile.about == null || user.profile.about!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'About me',
                           leadingIcon: Icon(
@@ -92,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context, AppRoutes.editAbout),
                           ),
                           widget: Text(
-                            user.about.toString(),
+                            user.profile.about.toString(),
                             style: textTheme.labelSmall,
                           ),
                         ),
@@ -280,7 +286,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   // cv
-                  (resume.isEmpty)
+                  (_resume.isEmpty)
                       ? EmptyProfileCard(
                           title: 'Resume',
                           leadingIcon: Icon(
@@ -310,7 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           widget: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: resume
+                            children: _resume
                                 .map(
                                   (e) => ListTile(
                                     contentPadding: EdgeInsets.zero,
@@ -332,7 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: appTheme.danger,
                                       ),
                                       onPressed: () =>
-                                          setState(() => resume.remove(e)),
+                                          setState(() => _resume.remove(e)),
                                     ),
                                   ),
                                 )

@@ -59,8 +59,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         maxLines: widget.maxLine,
         validator: widget.isPassword
             ? (value) {
-                if (value == null || value.trim() == "" || value.length < 6) {
-                  return "${widget.hintText} must be more than 5 characters";
+                if (value == null || value.trim() == "") {
+                  return "Please enter a password";
+                }
+                if (!passwordREgex.hasMatch(value)) {
+                  return """The password must contain at least one alphabetical character.
+                  The password must contain at least one digit.
+                  The password must be at least 8 characters long.""";
                 }
                 return null;
               }

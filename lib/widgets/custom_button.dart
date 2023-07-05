@@ -4,11 +4,13 @@ class CustomButton extends StatelessWidget {
   final Color? color;
   final String? title;
   final Widget? icon;
+  final bool? isLoading;
   const CustomButton({
     super.key,
     this.color,
     this.title,
     this.icon,
+    this.isLoading = false,
   });
 
   @override
@@ -25,11 +27,16 @@ class CustomButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           icon ?? Container(),
-          Text(
-            title.toString(),
-            style:
-                CustomTextTheme.customTextTheme(context).textTheme.labelLarge,
-          ),
+          isLoading!
+              ? CupertinoActivityIndicator(
+                  color: AppTheme.appTheme(context).light,
+                )
+              : Text(
+                  title.toString(),
+                  style: CustomTextTheme.customTextTheme(context)
+                      .textTheme
+                      .labelLarge,
+                ),
         ],
       ),
     );

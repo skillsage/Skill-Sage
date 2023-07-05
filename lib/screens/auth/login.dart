@@ -9,15 +9,30 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
-
   final TextEditingController _password = TextEditingController();
 
   final _key = GlobalKey<FormState>();
 
   bool? rememberMe = false;
 
+  // Snackbar
+  void showCupertinoToast(String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: CustomTextTheme.customTextTheme(context).textTheme.labelSmall,
+        ),
+        backgroundColor: AppTheme.appTheme(context).primary,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>();
+    final navigator = Navigator.of(context);
     return Scaffold(
         backgroundColor: AppTheme.appTheme(context).bg1,
         body: SafeArea(
@@ -109,12 +124,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    InkWell(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.userProfile),
-                      child: CustomButton(
-                        color: AppTheme.appTheme(context).secondary,
-                        title: 'LOGIN',
+                    GestureDetector(
+                      onTap: () async {
+                        if (_key.currentState!.validate()) {
+                          user.isLoading = true;
+                          Map<String, dynamic> response = await user.login(
+                            email: _email.text,
+                            password: _password.text,
+                            rememberMe: rememberMe,
+                          );
+                          if (response["success"]) {
+                            showCupertinoToast("user login successful");
+                            navigator
+                                .pushReplacementNamed(AppRoutes.userProfile);
+                          } else {
+                            showCupertinoToast(response["result"]);
+                          }
+                        }
+                      },
+                      child: Consumer<UserProvider>(
+                        builder: (context, user, _) => CustomButton(
+                          color: AppTheme.appTheme(context).secondary,
+                          title: 'LOGIN',
+                          isLoading: user.isLoading,
+                        ),
                       ),
                     ),
                     CustomButton(
