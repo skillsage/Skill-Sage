@@ -9,7 +9,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:json_serializable/json_serializable.dart';
 
 import 'package:skill_sage_app/utils/_index.dart';
 import 'package:skill_sage_app/providers/_index.dart';
