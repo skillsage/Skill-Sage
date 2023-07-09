@@ -168,8 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               .bodySmall,
                         ),
                         InkWell(
-                          onTap: () => Navigator.pushNamed(
-                              context, AppRoutes.userRegister),
+                          onTap: () => (!user.isLoading)
+                              ? Navigator.pushNamed(
+                                  context, AppRoutes.userRegister)
+                              : null,
                           child: Text(
                             'Sign Up',
                             style: CustomTextTheme.customTextTheme(context)

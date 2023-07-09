@@ -1,16 +1,37 @@
 part of skillsage_screens;
 
-class EditAboutScreen extends StatelessWidget {
-  EditAboutScreen({super.key});
+class EditAboutScreen extends StatefulWidget {
+  const EditAboutScreen({super.key});
 
+  @override
+  State<EditAboutScreen> createState() => _EditAboutScreenState();
+}
+
+class _EditAboutScreenState extends State<EditAboutScreen> {
   final TextEditingController _about = TextEditingController();
+
+  // Snackbar
+  void showCupertinoToast(String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: CustomTextTheme.customTextTheme(context).textTheme.labelSmall,
+        ),
+        backgroundColor: AppTheme.appTheme(context).primary,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
+    final navigator = Navigator.of(context);
 
-    User user = context.read<UserProvider>().user;
+    final provider = context.watch<UserProvider>();
+    User user = provider.user;
     _about.text = user.profile.about ?? '';
 
     return Scaffold(
@@ -55,9 +76,22 @@ class EditAboutScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(40.0),
-              child: CustomButton(
-                title: 'SAVE',
-                color: AppTheme.appTheme(context).secondary,
+              child: GestureDetector(
+                onTap: () async {
+                  final response = await provider.updateProfile({
+                    "about": _about.text,
+                  });
+                  if (response["success"]) {
+                    showCupertinoToast("about updated sucessfully");
+                    navigator.pushReplacementNamed(AppRoutes.userProfile);
+                  } else {
+                    showCupertinoToast(response["result"]);
+                  }
+                },
+                child: CustomButton(
+                  title: 'SAVE',
+                  color: AppTheme.appTheme(context).secondary,
+                ),
               ),
             )
           ],

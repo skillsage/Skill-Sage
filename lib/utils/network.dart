@@ -40,6 +40,24 @@ class NetworkUtil {
     }
   }
 
+  Future<dynamic> putReq(String endpoint, Map<String, dynamic> data) async {
+    final tokenData = await TokenBox.getTokenData();
+    try {
+      final headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${tokenData.token}'
+      };
+      final response = await http.put(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Failed to perform UPDATE request: $e');
+    }
+  }
+
   Future<dynamic> uploadFile(String endpoint, File file) async {
     try {
       final tokenData = await TokenBox.getTokenData();

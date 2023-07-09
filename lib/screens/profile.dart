@@ -97,9 +97,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onPressed: () => Navigator.pushNamed(
                                 context, AppRoutes.editAbout),
                           ),
-                          widget: Text(
-                            user.profile.about.toString(),
-                            style: textTheme.labelSmall,
+                          widget: Consumer<UserProvider>(
+                            builder: (_, prov, child) => Text(
+                              user.profile.about.toString(),
+                              style: textTheme.labelSmall,
+                            ),
                           ),
                         ),
 

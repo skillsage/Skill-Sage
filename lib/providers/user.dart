@@ -65,8 +65,10 @@ class UserProvider extends ChangeNotifier {
         notifyListeners(),
       };
 
+  bool userExists(res) => res["success"] ?? false;
+
   Future<Map<String, dynamic>> _response(res, {remember, usr}) async {
-    if (res["success"] ?? false) {
+    if (userExists(res)) {
       isLoading = false;
       await TokenBox.saveToken(res["result"]["token"], remember, usr);
       user = User.fromJson(res["result"]["user"]);
@@ -100,17 +102,27 @@ class UserProvider extends ChangeNotifier {
       "email": email,
       "password": password,
     });
+    if (userExists(res)) {
+      return _response(
+        res,
+        remember: rememberMe,
+        usr: jsonEncode(res["result"]["user"]),
+      );
+    }
     return _response(
       res,
       remember: rememberMe,
-      usr: jsonEncode(res["result"]["user"]),
     );
   }
 
   void logout() async {
-    final tokenData = await TokenBox.getTokenData();
-    print("Bearer ${tokenData.token}");
     await TokenBox.deleteToken();
+  }
+
+  Future<Map<String, dynamic>> updateProfile(data) async {
+    var res = await _networkUtil.putReq('/user/', data);
+    notifyListeners();
+    return res;
   }
 
   Future<void> experience() async {

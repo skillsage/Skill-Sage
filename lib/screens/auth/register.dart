@@ -125,8 +125,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: textTheme.bodySmall,
                       ),
                       InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, AppRoutes.userLogin),
+                        onTap: () => (!user.isLoading)
+                            ? Navigator.pushNamed(context, AppRoutes.userLogin)
+                            : null,
                         child: Text(
                           'Sign In',
                           style: textTheme.bodySmall,
