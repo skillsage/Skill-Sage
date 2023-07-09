@@ -11,7 +11,8 @@ class EditSkillScreen extends StatelessWidget {
     final appTheme = AppTheme.appTheme(context);
 
     final user = context.read<UserProvider>();
-    List<Skill> skills = user.skills;
+    // List<Skill> skills = []
+    // user.skills;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -47,7 +48,7 @@ class EditSkillScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 20,
-                  children: skills
+                  children: []
                       .map(
                         (e) => Chip(
                           labelPadding: const EdgeInsets.only(

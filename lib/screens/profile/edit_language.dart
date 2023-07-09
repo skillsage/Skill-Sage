@@ -11,7 +11,7 @@ class EditLanguageScreen extends StatelessWidget {
     final appTheme = AppTheme.appTheme(context);
 
     final user = context.read<UserProvider>();
-    List<Language> langs = user.languages;
+    // List<Language> langs = user.languages;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -47,7 +47,7 @@ class EditLanguageScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 20,
-                  children: langs
+                  children: []
                       .map(
                         (e) => Chip(
                           labelPadding: const EdgeInsets.only(

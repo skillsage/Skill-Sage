@@ -42,19 +42,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     User user = context.read<UserProvider>().user;
 
-    List<Experience> exp = context.read<UserProvider>().experiences;
-    List<Skill> skills = context.read<UserProvider>().skills;
-    List<Language> langs = context.read<UserProvider>().languages;
+    // List<Experience> exp = context.read<UserProvider>().experiences;
+    // List<Skill> skills = context.read<UserProvider>().skills;
+    // List<Language> langs = context.read<UserProvider>().languages;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
       body: SafeArea(
         child: Column(
           children: [
-            ProfileHeader(
-              name: user.name,
-              location: user.profile.location ?? '',
-            ),
+            // ProfileHeader(
+            //   name: user.name,
+            //   location: user.profile.location ?? '',
+            // ),
             const SizedBox(
               height: 10.0,
             ),
@@ -64,7 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 physics: const BouncingScrollPhysics(),
                 children: [
                   // about
-                  (user.profile.about == null || user.profile.about!.isEmpty)
+                  // (user.profile.about == null || user.profile.about!.isEmpty)
+
+                  (false)
                       ? EmptyProfileCard(
                           title: 'About me',
                           leadingIcon: Icon(
@@ -99,14 +101,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           widget: Consumer<UserProvider>(
                             builder: (_, prov, child) => Text(
-                              user.profile.about.toString(),
+                              // user.profile.about.toString(),
+                              "",
                               style: textTheme.labelSmall,
                             ),
                           ),
                         ),
 
                   // Work Experience
-                  (exp.isEmpty)
+                  // // (exp.isEmpty)
+
+                  (false)
                       ? EmptyProfileCard(
                           title: 'Work Experience',
                           leadingIcon: Icon(
@@ -142,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           widget: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: exp
+                            children: [] // exp
                                 .map(
                                   (e) => Column(
                                     crossAxisAlignment:
@@ -179,7 +184,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                   // Skills
-                  (skills.isEmpty)
+                  // (skills.isEmpty)
+                  false
                       ? EmptyProfileCard(
                           title: 'Skills',
                           leadingIcon: Icon(
@@ -214,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           widget: Wrap(
                             spacing: 10,
-                            children: skills
+                            children: [] //skills
                                 .map(
                                   (e) => Chip(
                                     shape: RoundedRectangleBorder(
@@ -227,7 +233,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                   // Language
-                  (langs.isEmpty)
+                  // (langs.isEmpty)
+                  (false)
                       ? EmptyProfileCard(
                           title: 'Languages',
                           leadingIcon: Icon(
@@ -260,7 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           widget: Wrap(
                             spacing: 10,
-                            children: langs
+                            children: [] //langs
                                 .map(
                                   (e) => Chip(
                                     shape: RoundedRectangleBorder(

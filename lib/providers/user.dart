@@ -1,55 +1,33 @@
 part of skillsage_providers;
 
 class UserProvider extends ChangeNotifier {
-  final List<Experience> _experiences = const [
-    Experience(
-      id: 1,
-      companyName: "Fintech Inc.",
-      jobTitle: "Software Developer",
-      startDate: "Jan 2015",
-      endDate: "Feb 2022",
-      tasks: "",
-    ),
-    Experience(
-      id: 2,
-      companyName: "Hepeps Solutions.",
-      jobTitle: "Mobile Application Developer",
-      startDate: "Jan 2022",
-      endDate: "Dec 2023",
-      tasks: "",
-    ),
-  ];
+  // profile
+  UserProfile? _profile;
+  get profile => _profile;
+  set profile(data) => {
+        _profile = data,
+        notifyListeners(),
+      };
 
-  List<Skill> _skills = const [
-    Skill(id: 1, name: 'Reactjs'),
-    Skill(id: 2, name: 'Angular'),
-    Skill(id: 3, name: 'MongoDB'),
-    Skill(id: 4, name: 'Nodejs')
-  ];
+  //education
+  Education? _education;
+  get education => _education;
+  set education(data) => {
+        _education = data,
+        notifyListeners(),
+      };
 
-  final List<Language> _languages = const [
-    Language(id: 1, name: 'English'),
-    Language(id: 2, name: 'French'),
-    Language(id: 3, name: 'Spanish'),
-  ];
-
-  // get user => _user;
-  get experiences => _experiences;
-  get skills => _skills;
-  set setSkills(arr) {
-    _skills = arr;
-    notifyListeners();
-  }
-
-  get languages => _languages;
-
-  // Authentication
+  // experience
+  Experience? _experience;
+  get experience => _experience;
+  set experience(data) => {
+        _experience = data,
+        notifyListeners(),
+      };
 
   // user
   User? _user;
-
   get user => _user;
-
   set user(data) => {
         _user = data,
         notifyListeners(),
@@ -57,20 +35,21 @@ class UserProvider extends ChangeNotifier {
 
   // Loading
   bool _isLoading = false;
-
   get isLoading => _isLoading;
-
   set isLoading(value) => {
         _isLoading = value,
         notifyListeners(),
       };
 
+  // user exists
   bool userExists(res) => res["success"] ?? false;
 
+  //response handler
   Future<Map<String, dynamic>> _response(res, {remember, usr}) async {
     if (userExists(res)) {
       isLoading = false;
       await TokenBox.saveToken(res["result"]["token"], remember, usr);
+      print('response: ${res["result"]["user"]}');
       user = User.fromJson(res["result"]["user"]);
       return res;
     } else {
@@ -115,17 +94,19 @@ class UserProvider extends ChangeNotifier {
     );
   }
 
+  // logout
   void logout() async {
     await TokenBox.deleteToken();
   }
 
+  // update profile
   Future<Map<String, dynamic>> updateProfile(data) async {
-    var res = await _networkUtil.putReq('/user/', data);
+    var res = await _networkUtil.putReq('/user/profile', data);
     notifyListeners();
     return res;
   }
 
-  Future<void> experience() async {
+  Future<void> updateExperience() async {
     notifyListeners();
   }
 

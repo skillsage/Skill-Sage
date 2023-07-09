@@ -32,7 +32,7 @@ class _EditAboutScreenState extends State<EditAboutScreen> {
 
     final provider = context.watch<UserProvider>();
     User user = provider.user;
-    _about.text = user.profile.about ?? '';
+    _about.text = "user.profile.about" ?? '';
 
     return Scaffold(
       backgroundColor: appTheme.bg1,

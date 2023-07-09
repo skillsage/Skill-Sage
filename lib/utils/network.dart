@@ -1,19 +1,23 @@
 part of skillsage_utils;
 
 class NetworkUtil {
-  static const String baseUrl = 'http://127.0.0.1:8000';
+  // static const String baseUrl = 'http://127.0.0.1:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000';
+
+  Future<Map<String, String>> getHeaders() async {
+    final tokenData = await TokenBox.getTokenData();
+    return {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ${tokenData.token}'
+    };
+  }
 
   Future<dynamic> getReq(String endpoint) async {
     try {
-      final tokenData = await TokenBox.getTokenData();
-      final headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${tokenData.token}'
-      };
       final url = Uri.parse('$baseUrl$endpoint');
       final response = await http.get(
         url,
-        headers: headers,
+        headers: await getHeaders(),
       );
 
       return _handleResponse(response);
@@ -23,15 +27,10 @@ class NetworkUtil {
   }
 
   Future<dynamic> postReq(String endpoint, Map<String, String> body) async {
-    final tokenData = await TokenBox.getTokenData();
     try {
-      final headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${tokenData.token}'
-      };
       final response = await http.post(
         Uri.parse('$baseUrl$endpoint'),
-        headers: headers,
+        headers: await getHeaders(),
         body: jsonEncode(body),
       );
       return _handleResponse(response);
@@ -41,15 +40,10 @@ class NetworkUtil {
   }
 
   Future<dynamic> putReq(String endpoint, Map<String, dynamic> data) async {
-    final tokenData = await TokenBox.getTokenData();
     try {
-      final headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${tokenData.token}'
-      };
       final response = await http.put(
         Uri.parse('$baseUrl$endpoint'),
-        headers: headers,
+        headers: await getHeaders(),
         body: jsonEncode(data),
       );
       return _handleResponse(response);
@@ -61,7 +55,6 @@ class NetworkUtil {
   Future<dynamic> uploadFile(String endpoint, File file) async {
     try {
       final tokenData = await TokenBox.getTokenData();
-
       final url = Uri.parse('$baseUrl$endpoint');
       final request = http.MultipartRequest('POST', url);
 

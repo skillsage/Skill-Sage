@@ -12,6 +12,17 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       id: json['id'] as int,
       role: $enumDecode(_$RoleEnumMap, json['role']),
       profile: UserProfile.fromJson(json['profile'] as Map<String, dynamic>),
+      profile_image: json['profile_image'] as String?,
+      experience: (json['experience'] as List<dynamic>?)
+          ?.map((e) => Experience.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      resume:
+          (json['resume'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      skills:
+          (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      education: (json['education'] as List<dynamic>?)
+          ?.map((e) => Education.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
@@ -20,6 +31,11 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'id': instance.id,
       'role': _$RoleEnumMap[instance.role]!,
       'profile': instance.profile,
+      'profile_image': instance.profile_image,
+      'experience': instance.experience,
+      'resume': instance.resume,
+      'skills': instance.skills,
+      'education': instance.education,
     };
 
 const _$RoleEnumMap = {
@@ -31,72 +47,62 @@ const _$RoleEnumMap = {
 _$_UserProfile _$$_UserProfileFromJson(Map<String, dynamic> json) =>
     _$_UserProfile(
       about: json['about'] as String?,
-      education: json['education'] as String?,
       portfolio: json['portfolio'] as String?,
       created: DateTime.parse(json['created'] as String),
       updated: json['updated'] == null
           ? null
           : DateTime.parse(json['updated'] as String),
-      user_id: json['user_id'] as int,
+      languages: (json['languages'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       location: json['location'] as String?,
-      resume_id: json['resume_id'] as int?,
-      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$$_UserProfileToJson(_$_UserProfile instance) =>
     <String, dynamic>{
       'about': instance.about,
-      'education': instance.education,
       'portfolio': instance.portfolio,
       'created': instance.created.toIso8601String(),
       'updated': instance.updated?.toIso8601String(),
-      'user_id': instance.user_id,
+      'languages': instance.languages,
       'location': instance.location,
-      'resume_id': instance.resume_id,
-      'id': instance.id,
     };
 
 _$_Experience _$$_ExperienceFromJson(Map<String, dynamic> json) =>
     _$_Experience(
-      id: json['id'] as int,
-      companyName: json['companyName'] as String,
+      company_name: json['company_name'] as String,
       jobTitle: json['jobTitle'] as String,
-      startDate: json['startDate'] as String,
+      start_date: json['start_date'] as String,
       tasks: json['tasks'] as String,
-      endDate: json['endDate'] as String?,
-      isRemote: json['isRemote'] as bool?,
-      isCompleted: json['isCompleted'] as bool?,
+      end_date: json['end_date'] as String?,
+      is_remote: json['is_remote'] as bool?,
+      has_completed: json['has_completed'] as bool?,
     );
 
 Map<String, dynamic> _$$_ExperienceToJson(_$_Experience instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'companyName': instance.companyName,
+      'company_name': instance.company_name,
       'jobTitle': instance.jobTitle,
-      'startDate': instance.startDate,
+      'start_date': instance.start_date,
       'tasks': instance.tasks,
-      'endDate': instance.endDate,
-      'isRemote': instance.isRemote,
-      'isCompleted': instance.isCompleted,
+      'end_date': instance.end_date,
+      'is_remote': instance.is_remote,
+      'has_completed': instance.has_completed,
     };
 
-_$_Skill _$$_SkillFromJson(Map<String, dynamic> json) => _$_Skill(
-      id: json['id'] as int,
-      name: json['name'] as String,
+_$_Education _$$_EducationFromJson(Map<String, dynamic> json) => _$_Education(
+      program: json['program'] as String,
+      institution: json['institution'] as String,
+      startDate: json['startDate'] as String,
+      end_date: json['end_date'] as String?,
+      has_completed: json['has_completed'] as bool?,
     );
 
-Map<String, dynamic> _$$_SkillToJson(_$_Skill instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
-
-_$_Language _$$_LanguageFromJson(Map<String, dynamic> json) => _$_Language(
-      id: json['id'] as int,
-      name: json['name'] as String,
-    );
-
-Map<String, dynamic> _$$_LanguageToJson(_$_Language instance) =>
+Map<String, dynamic> _$$_EducationToJson(_$_Education instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'program': instance.program,
+      'institution': instance.institution,
+      'startDate': instance.startDate,
+      'end_date': instance.end_date,
+      'has_completed': instance.has_completed,
     };

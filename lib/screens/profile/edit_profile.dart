@@ -35,10 +35,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final appTheme = AppTheme.appTheme(context);
 
     User user = context.read<UserProvider>().user;
-    _fullname.text = user.name;
-    _location.text = user.profile.location ?? '';
+    // TODO
+    _fullname.text = "user.name";
+    _location.text = "user.profile.location" ?? '';
     // _phone.text = user.profile.contactInfo ?? '';
-    _email.text = user.email;
+    // _email.text = user.email;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
