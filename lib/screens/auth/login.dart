@@ -14,9 +14,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
 
   bool? rememberMe = false;
+  bool sending = false;
 
   // Snackbar
-  void showCupertinoToast(String message) {
+  void showToast(String message) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
@@ -29,10 +30,29 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  login() {
+    if (!_key.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      sending = true;
+    });
+
+    try {
+      final prov = context.read<UserService>();
+      prov.login(_email.text, _password.text);
+    } catch (e) {
+      print("GOT AN ERROR $e");
+      showToast("unable to login");
+    } finally {
+      setState(() {
+        sending = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>();
-    final navigator = Navigator.of(context);
     return Scaffold(
         backgroundColor: AppTheme.appTheme(context).bg1,
         body: SafeArea(
@@ -124,31 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        if (_key.currentState!.validate()) {
-                          user.isLoading = true;
-                          Map<String, dynamic> response = await user.login(
-                            email: _email.text,
-                            password: _password.text,
-                            rememberMe: rememberMe,
-                          );
-                          if (response["success"]) {
-                            showCupertinoToast("user login successful");
-                            navigator
-                                .pushReplacementNamed(AppRoutes.userProfile);
-                          } else {
-                            showCupertinoToast(response["result"]);
-                          }
-                        }
-                      },
-                      child: Consumer<UserProvider>(
-                        builder: (context, user, _) => CustomButton(
-                          color: AppTheme.appTheme(context).secondary,
-                          title: 'LOGIN',
-                          isLoading: user.isLoading,
-                        ),
-                      ),
+                    CustomButton(
+                      onPressed: login,
+                      color: AppTheme.appTheme(context).secondary,
+                      title: 'LOGIN',
+                      isLoading: sending,
                     ),
                     CustomButton(
                       color: AppTheme.appTheme(context).accent,
@@ -168,10 +168,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               .bodySmall,
                         ),
                         InkWell(
-                          onTap: () => (!user.isLoading)
-                              ? Navigator.pushNamed(
-                                  context, AppRoutes.userRegister)
-                              : null,
+                          onTap: () {
+                            if (!sending) {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.userRegister);
+                            }
+                          },
                           child: Text(
                             'Sign Up',
                             style: CustomTextTheme.customTextTheme(context)

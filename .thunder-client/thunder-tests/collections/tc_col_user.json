@@ -1,0 +1,152 @@
+{
+    "_id": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+    "colName": "user",
+    "created": "2023-07-09T09:23:24.608Z",
+    "sortNum": 10000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "27a9313f-e275-443c-aefe-53d7abd86c26",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Register",
+            "url": "/auth/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-07-09T09:23:46.702Z",
+            "modified": "2023-07-09T13:35:02.795Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test2@email.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "05407ea7-3b43-4807-8ec8-553f8bd026c3",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Login",
+            "url": "/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-09T09:24:30.400Z",
+            "modified": "2023-07-11T11:07:01.313Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test2@email.cm\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a588e533-6720-432c-a125-481c00289e78",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Get User",
+            "url": "/user/",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-09T09:25:08.438Z",
+            "modified": "2023-07-09T13:36:01.535Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a0c89539-45a7-4301-9bab-510dd0a4cf6b",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Update User",
+            "url": "/user/profile",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-07-09T10:04:17.735Z",
+            "modified": "2023-07-09T12:02:04.093Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"about\": \"Hello World\",\n  \"name\": \"James Danquah\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "cbbfe3fd-8e42-4d0b-9bb3-5613741664dd",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Add Experience",
+            "url": "/user/experience",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-07-09T12:12:19.344Z",
+            "modified": "2023-07-09T12:24:54.409Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"company_name\": \"Wookein\",\n  \"job_title\": \"Cleaner\",\n  \"start_date\": \"2023-05-01\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d838c624-79f6-4825-9d9e-11aad3dfe6f2",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Create Skills",
+            "url": "/user/create-skill",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-07-09T12:37:18.917Z",
+            "modified": "2023-07-09T13:34:47.534Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"skills\": [\"golang\", \"gorm\"]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "68017857-0338-4884-af2c-7289b9992373",
+            "colId": "b91fa4a5-e0b0-42af-9791-e977fe155e5b",
+            "containerId": "",
+            "name": "Add Skills",
+            "url": "/user/skill",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-07-09T12:47:59.365Z",
+            "modified": "2023-07-09T12:48:36.115Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"skills\": [1,3,4,5]\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ],
+    "settings": {
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2Vla2VyX2lkIjoxLCJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTY4OTE1NTYwMn0.Tx0P8WufRagXX43qxFO5u1Fvm8Enw1NC0_izd-UE0NU"
+        },
+        "options": {
+            "baseUrl": "http://143.198.235.166:3000"
+        }
+    }
+}
