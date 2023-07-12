@@ -25,13 +25,13 @@ class AppRouter {
       case AppRoutes.userLogin:
         return _route(screen: const LoginScreen());
       case AppRoutes.userRegister:
-        return _route(screen: RegisterScreen());
+        return _route(screen: const RegisterScreen());
       case AppRoutes.onboardingProfile:
         return _route(screen: OnboardingProfileScreen());
       case AppRoutes.settingsRoute:
         return _route(screen: const SettingsScreen());
       case AppRoutes.editAbout:
-        return _route(screen: EditAboutScreen());
+        return _route(screen: const EditAboutScreen());
       case AppRoutes.experienceRoute:
         return _route(screen: const ExperienceScreen());
       case AppRoutes.editSkills:
@@ -41,7 +41,7 @@ class AppRouter {
       case AppRoutes.editLang:
         return _route(screen: EditLanguageScreen());
       case AppRoutes.editProfile:
-        return _route(screen: EditProfileScreen());
+        return _route(screen: const EditProfileScreen());
       default:
         return _route(screen: const Loader());
     }

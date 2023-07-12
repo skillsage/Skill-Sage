@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:skill_sage_app/providers/_index.dart';
+import 'package:skill_sage_app/service/index.dart';
 import 'package:skill_sage_app/utils/_index.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,9 @@ void main() => runApp(
         providers: [
           ChangeNotifierProvider(create: (_) => UserProvider()),
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          Provider(create: (_) => HttpProvider()),
+          ProxyProvider<HttpProvider, UserService>(
+              update: (context, http, __) => UserService(http)),
         ],
         child: const SkillSage(),
       ),

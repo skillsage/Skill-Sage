@@ -12,7 +12,7 @@ class User with _$User {
       required int id,
       required Role role,
       required UserProfile profile,
-      String? profile_image,
+      @JsonKey(name: "profile_image") String? profileImage,
       List<Experience>? experience,
       List<String>? resume,
       List<String>? skills,
@@ -38,13 +38,13 @@ class UserProfile with _$UserProfile {
 @freezed
 class Experience with _$Experience {
   const factory Experience({
-    required String company_name,
-    required String jobTitle,
-    required String start_date,
-    required String tasks,
-    String? end_date,
-    bool? is_remote,
-    bool? has_completed,
+    @JsonKey(name: "company_name") required String companyName,
+    @JsonKey(name: "job_title") required String jobTitle,
+    @JsonKey(name: "start_date") required String startDate,
+    String? tasks,
+    @JsonKey(name: "end_date") String? endDate,
+    @JsonKey(name: "is_remote") bool? isRemote,
+    @JsonKey(name: "has_completed") bool? hasCompleted,
   }) = _Experience;
 
   factory Experience.fromJson(Map<String, dynamic> json) =>
@@ -56,9 +56,9 @@ class Education with _$Education {
   const factory Education({
     required String program,
     required String institution,
-    required String startDate,
-    String? end_date,
-    bool? has_completed,
+    @JsonKey(name: "start_date") required String startDate,
+    @JsonKey(name: "end_date") String? endDate,
+    @JsonKey(name: "has_completed") bool? hasCompleted,
   }) = _Education;
 
   factory Education.fromJson(Map<String, dynamic> json) =>

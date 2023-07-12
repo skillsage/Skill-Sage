@@ -7,9 +7,10 @@ import 'package:dio/dio.dart';
 
 import 'package:skill_sage_app/models/_index.dart';
 import 'package:skill_sage_app/utils/_index.dart';
+import 'package:dio/dio.dart';
 
 part 'user.dart';
 part 'settings.dart';
-part 'http.dart';
+part "http.dart";
 
 NetworkUtil _networkUtil = NetworkUtil();

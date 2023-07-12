@@ -1,27 +1,11 @@
 part of skillsage_providers;
 
 class HttpProvider {
-  late Dio client;
-
+  late Dio http;
   HttpProvider()
-      : client = Dio(BaseOptions(
-          // TODO: base user
-          baseUrl: "",
-        )) {
-    init();
-  }
+      : http = Dio(BaseOptions(baseUrl: "http://143.198.235.166:3000/"));
 
-  init() {
-    client.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (option, handler) {
-          // option.headers['Authorization'] = 'Bearer ${getToken()}'
-        },
-      ),
-    );
-  }
-
-  getToken(String token) {
-    client.options.headers["Authorisation"] = token;
+  setToken(String token) {
+    http.options.headers["Authorization"] = "Bearer $token";
   }
 }
