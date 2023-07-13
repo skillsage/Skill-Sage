@@ -1,11 +1,11 @@
 part of skillsage_screens;
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final themeProvider = context.read<ThemeProvider>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeProv = ref.read(themeProvider.notifier);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
     final navigator = Navigator.of(context);
@@ -46,13 +46,13 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                '${themeProvider.themeMode.toString().split('.')[1]} theme',
+                '${themeProv.themeMode.toString().split('.')[1]} theme',
                 style: textTheme.labelMedium,
               ),
               trailing: CupertinoSwitch(
-                  value: themeProvider.themeMode.index == 1,
+                  value: themeProv.themeMode.index == 1,
                   onChanged: (val) {
-                    themeProvider.toggleThemeMode();
+                    themeProv.toggleThemeMode();
                   }),
             ),
             // Center(
@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                   backgroundColor: appTheme.danger,
                 ),
                 onPressed: () async {
-                  context.read<UserProvider>().logout();
+                  // context.read<UserProvider>().logout();
                   navigator.pushNamed(AppRoutes.userLogin);
                 },
                 child: Text(

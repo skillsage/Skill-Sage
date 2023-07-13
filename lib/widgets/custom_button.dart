@@ -4,7 +4,7 @@ class CustomButton extends StatelessWidget {
   final Color? color;
   final String? title;
   final Widget? icon;
-  final bool? isLoading;
+  final bool isLoading;
   final void Function()? onPressed;
   const CustomButton({
     super.key,
@@ -19,7 +19,9 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onPressed?.call();
+        if (!isLoading) {
+          onPressed?.call();
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15.0),

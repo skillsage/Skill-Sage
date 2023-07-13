@@ -1,33 +1,37 @@
 part of skillsage_screens;
 
-class Loader extends StatefulWidget {
+class Loader extends ConsumerStatefulWidget {
   const Loader({super.key});
 
   @override
-  State<Loader> createState() => _LoaderState();
+  ConsumerState<Loader> createState() => _LoaderState();
 }
 
-class _LoaderState extends State<Loader> {
+class _LoaderState extends ConsumerState<Loader> {
   @override
   void initState() {
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      init();
+    });
     super.initState();
   }
 
-  init() {
-    final nav = Navigator.of(context);
-    final prov = context.read<HttpProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final pref = await SharedPreferences.getInstance();
-      final token = pref.getString(tokenKey);
-      print("token == $token");
-      if (token != null) {
-        await prov.init();
-        nav.pushNamed(AppRoutes.home);
-      } else {
-        nav.pushNamed(AppRoutes.userLogin);
+  init() async {
+    final http = ref.read(httpProvider);
+    final user = ref.read(userProvider.notifier);
+
+    if (await http.checkToken()) {
+      if (await user.reloadUser()) {
+        goto(AppRoutes.home);
+        return;
       }
-    });
+    }
+
+    goto(AppRoutes.userLogin);
+  }
+
+  goto(String route) {
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override

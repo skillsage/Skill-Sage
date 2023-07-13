@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final List<File?> _resume = [];
   Future<void> pickResume() async {
-    final resume = context.read<UserProvider>();
+    // final user = context.read<UserProvider>();
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -18,7 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       if (result != null) {
         File file = File(result.files.single.path.toString());
-        await resume.uploadResume(file: file);
+        // await resume.uploadResume(file: file);
         setState(
           () => _resume.add(file),
         );
@@ -102,12 +102,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onPressed: () => Navigator.pushNamed(
                                 context, AppRoutes.editAbout),
                           ),
-                          widget: Consumer<UserProvider>(
-                            builder: (_, prov, child) => Text(
-                              // user.profile.about.toString(),
-                              "",
-                              style: textTheme.labelSmall,
-                            ),
+                          widget: Text(
+                            // user.profile.about.toString(),
+                            "",
+                            style: textTheme.labelSmall,
                           ),
                         ),
 

@@ -1,57 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_sage_app/providers/_index.dart';
-import 'package:skill_sage_app/service/index.dart';
 import 'package:skill_sage_app/utils/_index.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => UserProvider()),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
-          Provider(create: (_) => HttpProvider()),
-          ProxyProvider<HttpProvider, UserService>(
-              update: (context, http, __) => UserService(http)),
-        ],
-        child: const SkillSage(),
-      ),
+      const ProviderScope(child: SkillSage()),
     );
 
-class SkillSage extends StatelessWidget {
+class SkillSage extends ConsumerWidget {
   const SkillSage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, _) => MaterialApp(
-        title: 'Skill Sage',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          // AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('es', 'ES'),
-          Locale('fr', 'FR')
-        ],
-        locale: const Locale('en', 'US'),
-        theme: ThemeData(
-            brightness: themeProvider.themeMode == ThemeModeOption.light
-                ? Brightness.light
-                : Brightness.dark,
-            primaryColor: AppTheme.appTheme(context).secondary,
-            textTheme: GoogleFonts.urbanistTextTheme(),
-            scaffoldBackgroundColor: AppTheme.appTheme(context).bg1
-            // other config
-            ),
-        onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRoutes.wrapperRoute,
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(
+      title: 'Skill Sage',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        // AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('es', 'ES'),
+        Locale('fr', 'FR')
+      ],
+      locale: const Locale('en', 'US'),
+      theme: ThemeData(
+          brightness: ref.read(themeProvider).themeMode == ThemeModeOption.light
+              ? Brightness.light
+              : Brightness.dark,
+          primaryColor: AppTheme.appTheme(context).secondary,
+          textTheme: GoogleFonts.urbanistTextTheme(),
+          scaffoldBackgroundColor: AppTheme.appTheme(context).bg1
+          // other config
+          ),
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: AppRoutes.wrapperRoute,
     );
   }
 }

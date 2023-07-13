@@ -5,6 +5,8 @@ enum ThemeModeOption {
   dark,
 }
 
+final themeProvider = ChangeNotifierProvider((ref) => ThemeProvider());
+
 class ThemeProvider with ChangeNotifier {
   ThemeModeOption _themeMode = ThemeModeOption.light;
 

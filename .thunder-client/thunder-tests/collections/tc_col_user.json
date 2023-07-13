@@ -33,12 +33,12 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-07-09T09:24:30.400Z",
-            "modified": "2023-07-11T11:07:01.313Z",
+            "modified": "2023-07-13T10:22:02.604Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test2@email.cm\"\n}",
+                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test2@email.com\"\n}",
                 "form": []
             },
             "tests": []
@@ -143,7 +143,7 @@
     "settings": {
         "auth": {
             "type": "bearer",
-            "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2Vla2VyX2lkIjoxLCJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTY4OTE1NTYwMn0.Tx0P8WufRagXX43qxFO5u1Fvm8Enw1NC0_izd-UE0NU"
+            "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2Vla2VyX2lkIjoxLCJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTY4OTMzMDEyMn0.yeX2F6Lve57ImnCBDtgqxLM-IwN3HBMU1f07StnlQhQ"
         },
         "options": {
             "baseUrl": "http://143.198.235.166:3000"

@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    User user = context.read<UserProvider>().user;
+    // User user = context.read<UserProvider>().user;
     // TODO
     _fullname.text = "user.name";
     _location.text = "user.profile.location" ?? '';

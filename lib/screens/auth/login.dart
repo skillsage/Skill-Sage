@@ -1,13 +1,13 @@
 part of skillsage_screens;
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
@@ -16,32 +16,19 @@ class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   bool loading = false;
 
-  // Snackbar
-  void showToast(String message) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: CustomTextTheme.customTextTheme(context).textTheme.labelSmall,
-        ),
-        backgroundColor: AppTheme.appTheme(context).primary,
-      ),
-    );
-  }
-
   login() async {
     if (!_key.currentState!.validate()) {
       return;
     }
-    loading = true;
-    setState(() {});
+    setState(() {
+      loading = true;
+    });
 
     try {
-      final prov = context.read<UserService>();
+      final prov = ref.read(userProvider.notifier);
       final res = await prov.login(_email.text, _password.text);
       if (!res.success) {
-        showToast("unable to login");
+        showToast(context, "unable to login");
       }
 
       setState(() {
@@ -49,8 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       // handle success
     } catch (e) {
-      print("GOT AN ERROR $e");
-      showToast("unable to login");
+      print(e);
+      showToast(context, "Unexpected err");
+    } finally {
       setState(() {
         loading = false;
       });

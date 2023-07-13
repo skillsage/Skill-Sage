@@ -1,38 +1,31 @@
 part of skillsage_screens;
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
   final _key = GlobalKey<FormState>();
 
+  bool loading = false;
+
   // Snackbar
-  void showCupertinoToast(String message) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: CustomTextTheme.customTextTheme(context).textTheme.labelSmall,
-        ),
-        backgroundColor: AppTheme.appTheme(context).primary,
-      ),
-    );
+
+  register() async {
+    final nav = Navigator.of(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final user = context.watch<UserProvider>();
-    final navigator = Navigator.of(context);
+    final user = ref.watch(userProvider);
     return Scaffold(
       backgroundColor: AppTheme.appTheme(context).bg1,
       body: SafeArea(
@@ -83,31 +76,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _password,
                     isPassword: true,
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (_key.currentState!.validate()) {
-                        user.isLoading = true;
-                        Map<String, dynamic> response = await user.register(
-                          name: _fullname.text,
-                          email: _email.text,
-                          password: _password.text,
-                        );
-                        if (response["success"]) {
-                          showCupertinoToast("account created successfully");
-                          navigator.pushNamed(AppRoutes.initRoute);
-                        } else {
-                          showCupertinoToast(response["result"]);
-                        }
-                      }
-                    },
-                    child: Consumer<UserProvider>(
-                      builder: (context, user, _) => CustomButton(
-                        color: AppTheme.appTheme(context).secondary,
-                        title: 'SIGN UP',
-                        isLoading: user.isLoading,
-                        // icon: Icon(Icons.facebook),
-                      ),
-                    ),
+                  CustomButton(
+                    color: AppTheme.appTheme(context).secondary,
+                    onPressed: register,
+                    title: 'SIGN UP',
+                    isLoading: loading,
+                    // icon: Icon(Icons.facebook),
                   ),
                   CustomButton(
                     color: AppTheme.appTheme(context).accent,
@@ -125,9 +99,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: textTheme.bodySmall,
                       ),
                       InkWell(
-                        onTap: () => (!user.isLoading)
-                            ? Navigator.pushNamed(context, AppRoutes.userLogin)
-                            : null,
+                        onTap: () {
+                          if (!loading) {
+                            Navigator.pushNamed(context, AppRoutes.userLogin);
+                          }
+                        },
                         child: Text(
                           'Sign In',
                           style: textTheme.bodySmall,

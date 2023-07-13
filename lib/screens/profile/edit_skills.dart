@@ -1,16 +1,16 @@
 part of skillsage_screens;
 
-class EditSkillScreen extends StatelessWidget {
+class EditSkillScreen extends ConsumerWidget {
   EditSkillScreen({super.key});
 
   final TextEditingController _search = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    final user = context.read<UserProvider>();
+    final user = ref.read(userProvider);
     // List<Skill> skills = []
     // user.skills;
 

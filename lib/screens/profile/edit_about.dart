@@ -30,8 +30,8 @@ class _EditAboutScreenState extends State<EditAboutScreen> {
     final appTheme = AppTheme.appTheme(context);
     final navigator = Navigator.of(context);
 
-    final provider = context.watch<UserProvider>();
-    User user = provider.user;
+    // final provider = context.watch<UserProvider>();
+    // User user = provider.user;
     _about.text = "user.profile.about" ?? '';
 
     return Scaffold(
@@ -78,15 +78,15 @@ class _EditAboutScreenState extends State<EditAboutScreen> {
               padding: const EdgeInsets.all(40.0),
               child: GestureDetector(
                 onTap: () async {
-                  final response = await provider.updateProfile({
-                    "about": _about.text,
-                  });
-                  if (response["success"]) {
-                    showCupertinoToast("about updated sucessfully");
-                    navigator.pushReplacementNamed(AppRoutes.userProfile);
-                  } else {
-                    showCupertinoToast(response["result"]);
-                  }
+                  // final response = await provider.updateProfile({
+                  //   "about": _about.text,
+                  // });
+                  // if (response["success"]) {
+                  //   showCupertinoToast("about updated sucessfully");
+                  //   navigator.pushReplacementNamed(AppRoutes.userProfile);
+                  // } else {
+                  //   showCupertinoToast(response["result"]);
+                  // }
                 },
                 child: CustomButton(
                   title: 'SAVE',
