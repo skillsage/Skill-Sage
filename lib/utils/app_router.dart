@@ -1,6 +1,7 @@
 part of skillsage_utils;
 
 class AppRoutes {
+  static const String wrapperRoute = '/wrapper';
   static const String initRoute = '/';
   static const String home = '/home';
   static const String userLogin = '/login';

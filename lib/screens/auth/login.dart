@@ -13,8 +13,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _key = GlobalKey<FormState>();
 
-  bool? rememberMe = false;
-  bool sending = false;
+  bool rememberMe = false;
+  bool loading = false;
 
   // Snackbar
   void showToast(String message) {
@@ -30,23 +30,29 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  login() {
+  login() async {
     if (!_key.currentState!.validate()) {
       return;
     }
-    setState(() {
-      sending = true;
-    });
+    loading = true;
+    setState(() {});
 
     try {
       final prov = context.read<UserService>();
-      prov.login(_email.text, _password.text);
+      final res = await prov.login(_email.text, _password.text);
+      if (!res.success) {
+        showToast("unable to login");
+      }
+
+      setState(() {
+        loading = false;
+      });
+      // handle success
     } catch (e) {
       print("GOT AN ERROR $e");
       showToast("unable to login");
-    } finally {
       setState(() {
-        sending = false;
+        loading = false;
       });
     }
   }
@@ -115,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               value: rememberMe,
                               onChanged: (value) => {
                                 setState(() {
-                                  rememberMe = value;
+                                  rememberMe = value ?? false;
+                                  loading = value ?? false;
                                 })
                               },
                               shape: RoundedRectangleBorder(
@@ -148,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: login,
                       color: AppTheme.appTheme(context).secondary,
                       title: 'LOGIN',
-                      isLoading: sending,
+                      isLoading: loading,
                     ),
                     CustomButton(
                       color: AppTheme.appTheme(context).accent,
@@ -169,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            if (!sending) {
+                            if (!loading) {
                               Navigator.pushNamed(
                                   context, AppRoutes.userRegister);
                             }

@@ -18,7 +18,7 @@ class User with _$User {
       List<String>? skills,
       List<Education>? education}) = _User;
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(dynamic json) => _$UserFromJson(json);
 }
 
 @freezed

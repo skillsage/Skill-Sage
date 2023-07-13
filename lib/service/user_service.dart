@@ -1,17 +1,17 @@
 part of skillsage_services;
 
 class UserService {
-  HttpProvider prov;
+  HttpProvider httpProv;
 
-  UserService(HttpProvider client) : prov = client {
+  UserService(HttpProvider client) : httpProv = client {
     init();
   }
 
-  Dio get http => prov.http;
+  Dio get http => httpProv.http;
 
   init() {
     // TODO: GET TOKEN SET THE TOKEN
-    prov.setToken("token");
+    httpProv.setToken("token");
 
     http.interceptors.add(InterceptorsWrapper(
       onResponse: (res, handler) {
@@ -25,21 +25,7 @@ class UserService {
     ));
   }
 
-  FutureOr<T> cather<T>(FutureOr Function() func) async {
-    try {
-      return await func.call();
-    } catch (e) {
-      if (e is DioException) {
-        if (e.response != null) {
-          print(e.response);
-          throw RespException("Error");
-        }
-      }
-      rethrow;
-    }
-  }
-
-  Future<Resp<User>?> login(String email, String password) async {
+  Future<Resp<User?>> login(String email, String password) async {
     final res = await cather(
       () => http.post("/auth/login", data: {
         "email": email,
@@ -47,8 +33,13 @@ class UserService {
       }),
     );
 
-    if (res.data != null) {}
+    if (res.success) {
+      final token = res.result["token"];
+      await httpProv.setToken(token);
+      final resp = res.parse((data) => User.fromJson(data["user"]));
+      return resp;
+    }
 
-    return null;
+    return res.toNull();
   }
 }

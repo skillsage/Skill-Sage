@@ -8,21 +8,40 @@ import 'package:skill_sage_app/providers/_index.dart';
 
 part 'user_service.dart';
 
+FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
+  try {
+    final res = await func.call();
+    return Resp(success: res.data["success"], result: res.data["result"]);
+  } catch (e) {
+    if (e is DioException) {
+      if (e.response != null) {
+        final res = e.response!;
+        final success = res.data["detail"]["success"] as bool;
+        final result = res.data["detail"]["result"] as String;
+        return Resp(success: success, error: result);
+      }
+    }
+    rethrow;
+  }
+}
+
 class Resp<T> {
   bool success;
-  T result;
-  Resp(this.success, this.result);
+  T? result;
+  String? error;
+  Resp({required this.success, this.result, this.error});
 
-  factory Resp.parseSuccess(Response res, T Function(dynamic json) func) {
-    final success = res.data["success"] as bool;
-    final result = res.data["result"];
-    return Resp(success, func(result));
+  Resp<U?> parse<U>(U Function(dynamic) parser) {
+    if (result != null) {
+      final parsed = parser(result);
+      return Resp(success: success, error: error, result: parsed);
+    }
+
+    return Resp(success: success, error: error, result: null);
   }
 
-  static Resp<String> parseError(Response res) {
-    final success = res.data["detail"]["success"] as bool;
-    final result = res.data["detail"]["result"] as String;
-    return Resp(success, result);
+  toNull() {
+    return Resp(success: success, error: error, result: null);
   }
 }
 

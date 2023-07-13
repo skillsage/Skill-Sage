@@ -15,16 +15,18 @@ class _LoaderState extends State<Loader> {
   }
 
   init() {
-    final navigator = Navigator.of(context);
-    final provider = context.read<UserProvider>();
+    final nav = Navigator.of(context);
+    final prov = context.read<HttpProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      String route = AppRoutes.userLogin;
-      final tokenData = await TokenBox.getTokenData();
-      if (tokenData.token != null && tokenData.token!.isNotEmpty) {
-        provider.user = User.fromJson(jsonDecode(tokenData.user.toString()));
-        route = AppRoutes.home;
+      final pref = await SharedPreferences.getInstance();
+      final token = pref.getString(tokenKey);
+      print("token == $token");
+      if (token != null) {
+        await prov.init();
+        nav.pushNamed(AppRoutes.home);
+      } else {
+        nav.pushNamed(AppRoutes.userLogin);
       }
-      navigator.pushReplacementNamed(route);
     });
   }
 

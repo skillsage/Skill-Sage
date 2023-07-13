@@ -50,7 +50,7 @@ class SkillSage extends StatelessWidget {
             // other config
             ),
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRoutes.initRoute,
+        initialRoute: AppRoutes.wrapperRoute,
       ),
     );
   }
