@@ -22,7 +22,7 @@ class _LoaderState extends State<Loader> {
       final tokenData = await TokenBox.getTokenData();
       if (tokenData.token != null && tokenData.token!.isNotEmpty) {
         provider.user = User.fromJson(jsonDecode(tokenData.user.toString()));
-        route = AppRoutes.userProfile;
+        route = AppRoutes.home;
       }
       navigator.pushReplacementNamed(route);
     });

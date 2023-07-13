@@ -14,7 +14,7 @@ class AppTheme {
   late final Color danger;
   late final Color scaffold;
   late final Color light;
-
+  late final Color primary2Light;
   AppTheme({
     required this.bg1,
     required this.primary,
@@ -29,6 +29,7 @@ class AppTheme {
     required this.danger,
     required this.scaffold,
     required this.light,
+    required this.primary2Light,
   });
 
   factory AppTheme.dark() {
@@ -37,6 +38,7 @@ class AppTheme {
       primary: const Color(0xff8C8C8C),
       primary1: const Color(0xff1E2139),
       primary2: const Color(0xffFF9228),
+      primary2Light: const Color(0xffFBA34D),
       secondary: const Color(0xff130160),
       accent: const Color(0xffD6CDFE),
       accentDark: const Color(0xff0E7CC9),
@@ -55,6 +57,7 @@ class AppTheme {
       primary: const Color(0xff8C8C8C),
       primary1: const Color(0xffffffff),
       primary2: const Color(0xffFF9228),
+      primary2Light: const Color(0xffFBA34D),
       secondary: const Color(0xff130160),
       accent: const Color(0xffD6CDFE),
       accentDark: const Color(0xff0E7CC9),

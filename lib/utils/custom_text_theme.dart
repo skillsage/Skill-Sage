@@ -64,6 +64,13 @@ class CustomTextTheme {
         color: AppTheme.appTheme(context).txt,
         // color: AppTheme.appTheme(context).primary1,
       ),
+      headlineLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        fontStyle: FontStyle.normal,
+        letterSpacing: .23,
+        color: AppTheme.appTheme(context).light,
+      ),
       headlineMedium: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w700,
@@ -139,6 +146,13 @@ class CustomTextTheme {
         letterSpacing: .84,
         color: AppTheme.appTheme(context).txt,
         // color: AppTheme.appTheme(context).primary1,
+      ),
+      headlineLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        fontStyle: FontStyle.normal,
+        letterSpacing: .23,
+        color: AppTheme.appTheme(context).light,
       ),
       headlineMedium: TextStyle(
         fontSize: 16,

@@ -24,8 +24,6 @@ class SkillSage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = context.read<ThemeProvider>();
-    // remove consumer
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, _) => MaterialApp(
         title: 'Skill Sage',

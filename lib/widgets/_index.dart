@@ -9,3 +9,5 @@ import 'package:skill_sage_app/utils/_index.dart';
 part 'custom_text_field.dart';
 part 'custom_button.dart';
 part 'profile_card.dart';
+part 'app_header.dart';
+part 'skill_card.dart';

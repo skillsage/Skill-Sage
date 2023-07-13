@@ -40,21 +40,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
-    User user = context.read<UserProvider>().user;
+    // User user = context.read<UserProvider>().user;
 
     // List<Experience> exp = context.read<UserProvider>().experiences;
     // List<Skill> skills = context.read<UserProvider>().skills;
     // List<Language> langs = context.read<UserProvider>().languages;
 
+    // remove the scaffold
     return Scaffold(
       backgroundColor: appTheme.bg1,
       body: SafeArea(
         child: Column(
           children: [
-            // ProfileHeader(
-            //   name: user.name,
-            //   location: user.profile.location ?? '',
-            // ),
+            const ProfileHeader(
+              // name: user.name ??
+              name: "Nathan Nunana",
+              // location: user.profile.location ?? '',
+              location: "Kumasi, Ghana",
+            ),
             const SizedBox(
               height: 10.0,
             ),
