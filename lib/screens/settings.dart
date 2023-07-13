@@ -73,7 +73,7 @@ class SettingsScreen extends ConsumerWidget {
                   backgroundColor: appTheme.danger,
                 ),
                 onPressed: () async {
-                  // context.read<UserProvider>().logout();
+                  await ref.read(userProvider.notifier).logout();
                   navigator.pushNamed(AppRoutes.userLogin);
                 },
                 child: Text(

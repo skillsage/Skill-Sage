@@ -45,6 +45,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  gotoHome() {
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,8 +169,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         InkWell(
                           onTap: () {
                             if (!loading) {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.userRegister);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(AppRoutes.userRegister);
                             }
                           },
                           child: Text(

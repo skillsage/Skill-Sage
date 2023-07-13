@@ -36,6 +36,11 @@ class HttpProvider {
     }
   }
 
+  Future removeToken() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.remove(tokenKey);
+  }
+
   Future setToken(String token) async {
     print("setting token == $token");
     final pref = await SharedPreferences.getInstance();

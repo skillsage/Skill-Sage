@@ -14,12 +14,12 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-07-09T09:23:46.702Z",
-            "modified": "2023-07-09T13:35:02.795Z",
+            "modified": "2023-07-13T12:52:06.085Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test2@email.com\"\n}",
+                "raw": "{\n  \"name\": \"Test Account\",\n  \"password\": \"password\",\n  \"email\": \"test@email.com\"\n}",
                 "form": []
             },
             "tests": []

@@ -36,7 +36,6 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<Resp<User?>> login(String email, String password) async {
-    print("logging in");
     final res = await cather(
       () => http.post("/auth/login", data: {
         "email": email,
@@ -50,6 +49,31 @@ class UserProvider extends ChangeNotifier {
       final resp = res.parse((data) => User.fromJson(data["user"]));
       user = resp.result;
       return resp;
+    }
+    return res.toNull();
+  }
+
+  Future logout() async {
+    await ref.read(httpProvider).removeToken();
+    user = null;
+  }
+
+  Future<Resp<User?>> register(
+      {required String fullname,
+      required String email,
+      required String password}) async {
+    final res = await cather(
+      () => http.post(
+        "/auth/register",
+        data: {
+          "name": fullname,
+          "password": password,
+          "email": email,
+        },
+      ),
+    );
+    if (res.success) {
+      return login(email, password);
     }
     return res.toNull();
   }

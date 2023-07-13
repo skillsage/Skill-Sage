@@ -19,13 +19,42 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   // Snackbar
 
   register() async {
-    final nav = Navigator.of(context);
+    if (!_key.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+    try {
+      final user = ref.watch(userProvider.notifier);
+      final res = await user.register(
+          fullname: _fullname.text,
+          email: _email.text,
+          password: _password.text);
+      if (res.success) {
+        gotoHome();
+        return;
+      }
+      showToast(context, res.error ?? "Error");
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      showToast(context, "Some Error Happens");
+      setState(() {
+        loading = true;
+      });
+    }
+  }
+
+  gotoHome() {
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final user = ref.watch(userProvider);
     return Scaffold(
       backgroundColor: AppTheme.appTheme(context).bg1,
       body: SafeArea(
