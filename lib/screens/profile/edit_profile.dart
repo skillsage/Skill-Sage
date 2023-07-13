@@ -1,13 +1,13 @@
 part of skillsage_screens;
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   File? _imageFile;
 
   final TextEditingController _fullname = TextEditingController();
@@ -16,7 +16,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   final TextEditingController _email = TextEditingController();
 
-  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _portfolio = TextEditingController();
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -34,12 +34,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    // User user = context.read<UserProvider>().user;
-    // TODO
-    _fullname.text = "user.name";
-    _location.text = "user.profile.location" ?? '';
-    // _phone.text = user.profile.contactInfo ?? '';
-    // _email.text = user.email;
+    User? user = ref.watch(userProvider.notifier).user;
+
+    _fullname.text = user!.name;
+    _location.text = user.profile.location ?? '';
+    _portfolio.text = user.profile.portfolio ?? '';
+    _email.text = user.email;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -137,21 +137,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         'Fullname',
                         style: textTheme.displaySmall,
                       ),
+
                       CustomTextField(
                         controller: _fullname,
-                      ),
-                      Text('location', style: textTheme.displaySmall),
-                      CustomTextField(
-                        controller: _location,
-                      ),
-                      Text('phone', style: textTheme.displaySmall),
-                      CustomTextField(
-                        controller: _phone,
                       ),
                       Text('email', style: textTheme.displaySmall),
                       CustomTextField(
                         isEmail: true,
                         controller: _email,
+                      ),
+                      Text('location', style: textTheme.displaySmall),
+                      CustomTextField(
+                        controller: _location,
+                      ),
+                      Text('portfolio', style: textTheme.displaySmall),
+                      CustomTextField(
+                        controller: _portfolio,
                       ),
                     ],
                   ),

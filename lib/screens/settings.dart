@@ -5,7 +5,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeProv = ref.read(themeProvider.notifier);
+    final themeProv = ref.watch(themeProvider.notifier);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
     final navigator = Navigator.of(context);

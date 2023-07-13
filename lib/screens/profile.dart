@@ -1,16 +1,15 @@
 part of skillsage_screens;
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final List<File?> _resume = [];
   Future<void> pickResume() async {
-    // final user = context.read<UserProvider>();
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -40,11 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
-    // User user = context.read<UserProvider>().user;
-
-    // List<Experience> exp = context.read<UserProvider>().experiences;
-    // List<Skill> skills = context.read<UserProvider>().skills;
-    // List<Language> langs = context.read<UserProvider>().languages;
+    User? user = ref.watch(userProvider.notifier).user;
 
     // remove the scaffold
     return Scaffold(
@@ -52,11 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const ProfileHeader(
-              // name: user.name ??
-              name: "Nathan Nunana",
-              // location: user.profile.location ?? '',
-              location: "Kumasi, Ghana",
+            ProfileHeader(
+              name: user!.name,
+              location: user.profile.location ?? '',
             ),
             const SizedBox(
               height: 10.0,
@@ -66,10 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  // about
-                  // (user.profile.about == null || user.profile.about!.isEmpty)
-
-                  (false)
+                  (user.profile.about == null || user.profile.about!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'About me',
                           leadingIcon: Icon(
@@ -108,11 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: textTheme.labelSmall,
                           ),
                         ),
-
-                  // Work Experience
-                  // // (exp.isEmpty)
-
-                  (false)
+                  (user.experience!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'Work Experience',
                           leadingIcon: Icon(
@@ -184,9 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .toList(),
                           ),
                         ),
-                  // Skills
-                  // (skills.isEmpty)
-                  false
+                  (user.skills!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'Skills',
                           leadingIcon: Icon(
@@ -233,9 +217,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .toList(),
                           ),
                         ),
-                  // Language
-                  // (langs.isEmpty)
-                  (false)
+                  (user.profile.languages == null ||
+                          user.profile.languages!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'Languages',
                           leadingIcon: Icon(
@@ -296,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   // cv
-                  (_resume.isEmpty)
+                  (user.resume!.isEmpty)
                       ? EmptyProfileCard(
                           title: 'Resume',
                           leadingIcon: Icon(

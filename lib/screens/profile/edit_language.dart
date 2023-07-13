@@ -10,8 +10,7 @@ class EditLanguageScreen extends ConsumerWidget {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    final user = ref.read(userProvider);
-    // List<Language> langs = user.languages;
+    User? user = ref.watch(userProvider.notifier).user;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -47,7 +46,7 @@ class EditLanguageScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 20,
-                  children: []
+                  children: user!.profile.languages!
                       .map(
                         (e) => Chip(
                           labelPadding: const EdgeInsets.only(
@@ -56,7 +55,7 @@ class EditLanguageScreen extends ConsumerWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9.0),
                           ),
-                          label: Text(e.name),
+                          label: Text(e),
                           deleteIcon: Icon(Icons.close,
                               size: 18, color: appTheme.primary1),
                           onDeleted: () => {

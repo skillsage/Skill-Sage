@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
+import 'package:skill_sage_app/models/_index.dart';
 
 import 'package:skill_sage_app/utils/_index.dart';
 import 'package:skill_sage_app/providers/_index.dart';

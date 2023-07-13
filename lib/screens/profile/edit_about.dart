@@ -1,13 +1,13 @@
 part of skillsage_screens;
 
-class EditAboutScreen extends StatefulWidget {
+class EditAboutScreen extends ConsumerStatefulWidget {
   const EditAboutScreen({super.key});
 
   @override
-  State<EditAboutScreen> createState() => _EditAboutScreenState();
+  ConsumerState<EditAboutScreen> createState() => _EditAboutScreenState();
 }
 
-class _EditAboutScreenState extends State<EditAboutScreen> {
+class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
   final TextEditingController _about = TextEditingController();
 
   // Snackbar
@@ -30,9 +30,9 @@ class _EditAboutScreenState extends State<EditAboutScreen> {
     final appTheme = AppTheme.appTheme(context);
     final navigator = Navigator.of(context);
 
-    // final provider = context.watch<UserProvider>();
-    // User user = provider.user;
-    _about.text = "user.profile.about" ?? '';
+    User? user = ref.watch(userProvider.notifier).user;
+
+    _about.text = user!.profile.about ?? '';
 
     return Scaffold(
       backgroundColor: appTheme.bg1,

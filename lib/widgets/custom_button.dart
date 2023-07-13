@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon ?? Container(),
-            isLoading!
+            isLoading
                 ? CupertinoActivityIndicator(
                     color: AppTheme.appTheme(context).light,
                   )
