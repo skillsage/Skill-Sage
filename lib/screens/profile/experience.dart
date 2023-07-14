@@ -1,13 +1,13 @@
 part of skillsage_screens;
 
-class ExperienceScreen extends StatefulWidget {
+class ExperienceScreen extends ConsumerStatefulWidget {
   const ExperienceScreen({super.key});
 
   @override
-  State<ExperienceScreen> createState() => _ExperienceScreenState();
+  ConsumerState<ExperienceScreen> createState() => _ExperienceScreenState();
 }
 
-class _ExperienceScreenState extends State<ExperienceScreen> {
+class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
   final TextEditingController _title = TextEditingController();
 
   final TextEditingController _company = TextEditingController();
@@ -18,7 +18,37 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
 
   final TextEditingController _endDate = TextEditingController();
 
-  bool? isCurrent = false;
+  bool? hasCompleted = false;
+
+  createExperience() async {
+    try {
+      final prov = ref.read(userProvider.notifier);
+      DateTime date = DateTime.parse(DateTime.now().toString());
+      final res = await prov.addExperience(
+        companyName: _company.text,
+        jobTitle: _title.text,
+        startDate: _startDate.text,
+        endDate: _endDate.text,
+        hasCompleted: hasCompleted,
+        tasks: _description.text,
+      );
+      print('res: $res');
+      if (!res.success) {
+        showToast(context, "unable to update");
+      }
+      if (res.success) {
+        goBack();
+      }
+      // handle success
+    } catch (e) {
+      print(e);
+      showToast(context, "Unexpected err");
+    }
+  }
+
+  goBack() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +133,10 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: isCurrent,
+                            value: hasCompleted,
                             onChanged: (value) => {
                               setState(() {
-                                isCurrent = value;
+                                hasCompleted = value;
                               })
                             },
                             shape: RoundedRectangleBorder(
@@ -122,7 +152,7 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
                           ),
                         ],
                       ),
-                      Text('Description', style: textTheme.displaySmall),
+                      Text('Tasks', style: textTheme.displaySmall),
                       CustomTextField(
                         controller: _description,
                         maxLine: 6,
@@ -138,6 +168,7 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
               child: CustomButton(
                 title: 'SAVE',
                 color: AppTheme.appTheme(context).secondary,
+                onPressed: createExperience,
               ),
             )
           ],

@@ -29,8 +29,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final res = await prov.login(_email.text, _password.text);
       if (!res.success) {
         showToast(context, "unable to login");
+      } else {
+        gotoHome();
       }
-
       setState(() {
         loading = false;
       });

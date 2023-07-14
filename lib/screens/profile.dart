@@ -8,7 +8,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  final List<File?> _resume = [];
+  List<File?> _resume = [];
   Future<void> pickResume() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -40,6 +40,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
     User? user = ref.watch(userProvider.notifier).user;
+    _resume = [...user!.resume!.map((e) => File(e))];
+    print(_resume[0]!.toString());
 
     // remove the scaffold
     return Scaffold(
@@ -93,8 +95,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 context, AppRoutes.editAbout),
                           ),
                           widget: Text(
-                            // user.profile.about.toString(),
-                            "",
+                            user.profile.about.toString(),
                             style: textTheme.labelSmall,
                           ),
                         ),
@@ -134,7 +135,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                           widget: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [] // exp
+                            children: user.experience!
                                 .map(
                                   (e) => Column(
                                     crossAxisAlignment:
@@ -161,7 +162,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         height: 5,
                                       ),
                                       Text(
-                                        '${e.startDate} - ${e.endDate} . ${int.parse(e.endDate!.split(' ')[1]) - int.parse(e.startDate.split(' ')[1])} Years',
+                                        '${e.startDate} - ${e.endDate ?? 'present'} . ${e.endDate != null ? '${(int.parse(e.endDate!.split('-')[0]) - int.parse(e.startDate.split('-')[0])).toString()} Years' : "works here"}',
                                         style: textTheme.labelSmall,
                                       ),
                                     ],
@@ -205,13 +206,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                           widget: Wrap(
                             spacing: 10,
-                            children: [] //skills
+                            children: user.skills!
                                 .map(
                                   (e) => Chip(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(9.0),
                                     ),
-                                    label: Text(e.name),
+                                    label: Text(e),
                                   ),
                                 )
                                 .toList(),
@@ -251,33 +252,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                           widget: Wrap(
                             spacing: 10,
-                            children: [] //langs
+                            children: user.profile.languages!
                                 .map(
                                   (e) => Chip(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(9.0),
                                     ),
-                                    label: Text(e.name),
+                                    label: Text(e),
                                   ),
                                 )
                                 .toList(),
                           ),
                         ),
                   // awards
-                  EmptyProfileCard(
-                    title: 'Awards',
-                    leadingIcon: Icon(
-                      CupertinoIcons.gift,
-                      color: appTheme.primary2,
-                    ),
-                    trailingIcon: IconButton(
-                      icon: Icon(
-                        CupertinoIcons.add_circled_solid,
-                        color: appTheme.primary2,
-                      ),
-                      onPressed: () => {},
-                    ),
-                  ),
+                  // EmptyProfileCard(
+                  //   title: 'Awards',
+                  //   leadingIcon: Icon(
+                  //     CupertinoIcons.gift,
+                  //     color: appTheme.primary2,
+                  //   ),
+                  //   trailingIcon: IconButton(
+                  //     icon: Icon(
+                  //       CupertinoIcons.add_circled_solid,
+                  //       color: appTheme.primary2,
+                  //     ),
+                  //     onPressed: () => {},
+                  //   ),
+                  // ),
                   // cv
                   (user.resume!.isEmpty)
                       ? EmptyProfileCard(
@@ -319,12 +320,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                       e!.path.split('/').last.toString(),
                                       style: textTheme.labelMedium,
                                     ),
-                                    subtitle: Text(
-                                      '${e.lengthSync()} Kb . ${formatDate(
-                                        e.lastAccessedSync().toString(),
-                                      )}',
-                                      style: textTheme.labelSmall,
-                                    ),
+                                    // subtitle: Text(
+                                    //   '${e.lengthSync()} Kb . ${formatDate(
+                                    //     e.lastAccessedSync().toString(),
+                                    //   )}',
+                                    //   style: textTheme.labelSmall,
+                                    // ),
                                     trailing: IconButton(
                                       icon: Icon(
                                         CupertinoIcons.delete_simple,
@@ -348,14 +349,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 }
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends ConsumerWidget {
   final String? name, location;
   const ProfileHeader({super.key, this.name, this.location});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
+    final prov = ref.watch(userProvider.notifier);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -387,7 +389,9 @@ class ProfileHeader extends StatelessWidget {
                     color: appTheme.light,
                     size: 20,
                   ),
-                  onPressed: null,
+                  onPressed: () async {
+                    await prov.reloadUser();
+                  },
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,

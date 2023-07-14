@@ -29,6 +29,29 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     });
   }
 
+  updateProfile() async {
+    try {
+      final prov = ref.read(userProvider.notifier);
+      final res = await prov.updateProfile(
+          location: _location.text, portfolio: _portfolio.text);
+      print('res: $res');
+      if (!res.success) {
+        showToast(context, "unable to update");
+      }
+      if (res.success) {
+        goBack();
+      }
+      // handle success
+    } catch (e) {
+      print(e);
+      showToast(context, "Unexpected err");
+    }
+  }
+
+  goBack() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
@@ -71,25 +94,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // if (_imageFile != null) ...[
-                      //   Image.file(_imageFile!),
-                      //   ElevatedButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         _imageFile = null;
-                      //       });
-                      //     },
-                      //     child: Text('Remove Image'),
-                      //   ),
-                      // ] else ...[
-                      //   Text('No image selected'),
-                      //   ElevatedButton(
-                      //     onPressed: () {
-                      //       _pickImage(ImageSource.gallery);
-                      //     },
-                      //     child: Text('Pick Image'),
-                      //   ),
-                      // ],
                       Center(
                         child: Stack(
                           children: [
@@ -137,7 +141,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         'Fullname',
                         style: textTheme.displaySmall,
                       ),
-
                       CustomTextField(
                         controller: _fullname,
                       ),
@@ -164,6 +167,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               child: CustomButton(
                 title: 'SAVE',
                 color: AppTheme.appTheme(context).secondary,
+                onPressed: updateProfile,
               ),
             )
           ],

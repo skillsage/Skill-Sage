@@ -24,11 +24,34 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
     );
   }
 
+  updateProfile() async {
+    try {
+      final prov = ref.read(userProvider.notifier);
+      final res = await prov.updateProfile(about: _about.text);
+      print('res: $res');
+      if (!res.success) {
+        showToast(context, "unable to update");
+      }
+      if (res.success) {
+        print("back");
+        goBack();
+      }
+      // handle success
+    } catch (e) {
+      print(e);
+      showToast(context, "Unexpected err");
+    }
+  }
+
+  goBack() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
-    final navigator = Navigator.of(context);
+    // final navigator = Navigator.of(context);
 
     User? user = ref.watch(userProvider.notifier).user;
 
@@ -76,22 +99,10 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(40.0),
-              child: GestureDetector(
-                onTap: () async {
-                  // final response = await provider.updateProfile({
-                  //   "about": _about.text,
-                  // });
-                  // if (response["success"]) {
-                  //   showCupertinoToast("about updated sucessfully");
-                  //   navigator.pushReplacementNamed(AppRoutes.userProfile);
-                  // } else {
-                  //   showCupertinoToast(response["result"]);
-                  // }
-                },
-                child: CustomButton(
-                  title: 'SAVE',
-                  color: AppTheme.appTheme(context).secondary,
-                ),
+              child: CustomButton(
+                title: 'SAVE',
+                color: AppTheme.appTheme(context).secondary,
+                onPressed: updateProfile,
               ),
             )
           ],

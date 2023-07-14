@@ -26,11 +26,13 @@ class UserProvider extends ChangeNotifier {
   Future<bool> reloadUser() async {
     try {
       final res = await cather(() => http.get("/user/"));
+      print(res.result["resume"]);
       if (!res.success) return false;
       final data = res.parse(User.fromJson);
       user = data.result;
       return true;
     } catch (e) {
+      print('error: $e');
       return false;
     }
   }
@@ -75,6 +77,52 @@ class UserProvider extends ChangeNotifier {
     if (res.success) {
       return login(email, password);
     }
+    return res.toNull();
+  }
+
+  Future<Resp<User?>> updateProfile({
+    String? location,
+    String? portfolio,
+    String? about,
+    List<String>? language,
+  }) async {
+    final res = await cather(
+      () => http.put(
+        '/user/profile',
+        data: {
+          "about": about,
+          "location": location,
+          "portfolio": portfolio,
+          "languages": language,
+        },
+      ),
+    );
+    reloadUser();
+    return res.toNull();
+  }
+
+  Future<Resp<User?>> addExperience({
+    required String jobTitle,
+    required String companyName,
+    required String? startDate,
+    String? endDate,
+    String? tasks,
+    bool? hasCompleted,
+  }) async {
+    final res = await cather(
+      () => http.post(
+        '/user/experience',
+        data: {
+          "job_title": jobTitle,
+          "company_name": companyName,
+          "start_date": startDate,
+          "end_date": endDate,
+          "tasks": tasks,
+          "has_completed": hasCompleted,
+        },
+      ),
+    );
+    reloadUser();
     return res.toNull();
   }
 }

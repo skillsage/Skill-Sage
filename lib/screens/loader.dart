@@ -21,6 +21,7 @@ class _LoaderState extends ConsumerState<Loader> {
     final user = ref.read(userProvider.notifier);
 
     if (await http.checkToken()) {
+      print(await user.reloadUser());
       if (await user.reloadUser()) {
         goto(AppRoutes.home);
         return;

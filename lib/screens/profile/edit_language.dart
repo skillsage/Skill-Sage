@@ -3,7 +3,7 @@ part of skillsage_screens;
 class EditLanguageScreen extends ConsumerWidget {
   EditLanguageScreen({super.key});
 
-  final TextEditingController _search = TextEditingController();
+  final TextEditingController _lang = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -11,6 +11,21 @@ class EditLanguageScreen extends ConsumerWidget {
     final appTheme = AppTheme.appTheme(context);
 
     User? user = ref.watch(userProvider.notifier).user;
+
+    addLanguage() async {
+      final prov = ref.read(userProvider);
+      try {
+        final resp = await prov.updateProfile(
+          language: [_lang.text],
+        );
+        if (!resp.success) {
+          showToast(context, "unable to add language");
+        }
+      } catch (err) {
+        print(err);
+        showToast(context, "unexpected error");
+      }
+    }
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -38,10 +53,20 @@ class EditLanguageScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTextField(
-                  controller: _search,
-                  leadingIcon: const Icon(CupertinoIcons.search),
-                  hintText: 'Search...',
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: CustomTextField(
+                        controller: _lang,
+                        hintText: 'Enter Language',
+                      ),
+                    ),
+                    TextButton(
+                      child: const Icon(CupertinoIcons.add),
+                      onPressed: addLanguage,
+                    )
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Wrap(
