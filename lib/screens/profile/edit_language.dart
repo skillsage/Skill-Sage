@@ -10,13 +10,13 @@ class EditLanguageScreen extends ConsumerWidget {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    User? user = ref.watch(userProvider.notifier).user;
+    User? user = ref.watch(userProvider).user;
 
     addLanguage() async {
       final prov = ref.read(userProvider);
       try {
         final resp = await prov.updateProfile(
-          language: [_lang.text],
+          language: [...user!.profile.languages!, _lang.text],
         );
         if (!resp.success) {
           showToast(context, "unable to add language");
@@ -63,32 +63,34 @@ class EditLanguageScreen extends ConsumerWidget {
                       ),
                     ),
                     TextButton(
-                      child: const Icon(CupertinoIcons.add),
                       onPressed: addLanguage,
+                      child: const Icon(CupertinoIcons.add),
                     )
                   ],
                 ),
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 20,
-                  children: user!.profile.languages!
-                      .map(
-                        (e) => Chip(
-                          labelPadding: const EdgeInsets.only(
-                            left: 4,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                          ),
-                          label: Text(e),
-                          deleteIcon: Icon(Icons.close,
-                              size: 18, color: appTheme.primary1),
-                          onDeleted: () => {
-                            // user.setSkills = skills.remove(e),
-                          },
-                        ),
-                      )
-                      .toList(),
+                  children: (user!.profile.languages != null)
+                      ? user.profile.languages!
+                          .map(
+                            (e) => Chip(
+                              labelPadding: const EdgeInsets.only(
+                                left: 4,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9.0),
+                              ),
+                              label: Text(e),
+                              deleteIcon: Icon(Icons.close,
+                                  size: 18, color: appTheme.primary1),
+                              onDeleted: () => {
+                                // user.setSkills = skills.remove(e),
+                              },
+                            ),
+                          )
+                          .toList()
+                      : [],
                 )
               ],
             ),

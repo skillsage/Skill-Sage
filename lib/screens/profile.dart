@@ -39,9 +39,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
-    User? user = ref.watch(userProvider.notifier).user;
+    final prov = ref.watch(userProvider);
+    User? user = prov.user;
     _resume = [...user!.resume!.map((e) => File(e))];
-    print(_resume[0]!.toString());
 
     // remove the scaffold
     return Scaffold(
@@ -50,7 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Column(
           children: [
             ProfileHeader(
-              name: user!.name,
+              name: user.name,
               location: user.profile.location ?? '',
             ),
             const SizedBox(
@@ -357,7 +357,7 @@ class ProfileHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final prov = ref.watch(userProvider.notifier);
+    final prov = ref.read(userProvider.notifier);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -389,8 +389,8 @@ class ProfileHeader extends ConsumerWidget {
                     color: appTheme.light,
                     size: 20,
                   ),
-                  onPressed: () async {
-                    await prov.reloadUser();
+                  onPressed: () {
+                    prov.reloadUser();
                   },
                 ),
                 IconButton(
