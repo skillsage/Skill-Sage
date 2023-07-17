@@ -91,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _buildScreens() {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
+    final size = MediaQuery.of(context).size;
     return <Widget>[
       Column(
         children: [
@@ -103,12 +104,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
                   child: Text("Popular Stacks", style: textTheme.bodyMedium),
                 ),
-                const SkillCard(
-                  title: "React",
-                  subtitle: "JavaScript Library",
-                  description:
-                      "The library for web and native user interfaces. Become a React expert. Start today!",
-                  icon: Icon(Icons.javascript, size: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(children: [
+                    SkillCard(
+                      title: "React",
+                      subtitle: "JavaScript Library",
+                      description:
+                          "The library for web and native user interfaces. Become a React expert. Start today!",
+                      icon: const Icon(Icons.javascript, size: 20),
+                      width: size.width * 0.77,
+                    ),
+                    SkillCard(
+                      title: "React",
+                      subtitle: "JavaScript Library",
+                      description:
+                          "The library for web and native user interfaces. Become a React expert. Start today!",
+                      icon: const Icon(Icons.javascript, size: 20),
+                      width: size.width * 0.77,
+                    ),
+                  ]),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0, top: 15.0),

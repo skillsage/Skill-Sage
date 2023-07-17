@@ -1,346 +1,28 @@
 part of skillsage_screens;
 
-class ProfileScreen extends ConsumerStatefulWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    User? user = ref.watch(userProvider.notifier).user;
 
-class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  List<File?> _resume = [];
-  Future<void> pickResume() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
-      if (result != null) {
-        File file = File(result.files.single.path.toString());
-        // await resume.uploadResume(file: file);
-        setState(
-          () => _resume.add(file),
-        );
-      }
-    } catch (err) {
-      throw Exception(err);
-    }
-  }
-
-  String formatDate(String dateString) {
-    DateTime date = DateTime.parse(dateString);
-    String formattedDate = DateFormat('d MMM y').format(date);
-    String formattedTime = DateFormat('h:mm a').format(date);
-    return '$formattedDate at $formattedTime';
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final appTheme = AppTheme.appTheme(context);
-    final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
-    final prov = ref.watch(userProvider);
-    User? user = prov.user;
-    _resume = [...user!.resume!.map((e) => File(e))];
-
-    // remove the scaffold
     return Scaffold(
       backgroundColor: appTheme.bg1,
       body: SafeArea(
         child: Column(
           children: [
             ProfileHeader(
-              name: user.name,
+              name: user!.name,
               location: user.profile.location ?? '',
             ),
             const SizedBox(
               height: 10.0,
             ),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  (user.profile.about == null || user.profile.about!.isEmpty)
-                      ? EmptyProfileCard(
-                          title: 'About me',
-                          leadingIcon: Icon(
-                            CupertinoIcons.profile_circled,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.editAbout,
-                            ),
-                          ),
-                        )
-                      : ProfileCard(
-                          title: 'About me',
-                          leadingIcon: Icon(
-                            CupertinoIcons.profile_circled,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              Icons.edit_sharp,
-                              size: 20,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, AppRoutes.editAbout),
-                          ),
-                          widget: Text(
-                            user.profile.about.toString(),
-                            style: textTheme.labelSmall,
-                          ),
-                        ),
-                  (user.experience!.isEmpty)
-                      ? EmptyProfileCard(
-                          title: 'Work Experience',
-                          leadingIcon: Icon(
-                            CupertinoIcons.briefcase,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.experienceRoute,
-                            ),
-                          ),
-                        )
-                      : ProfileCard(
-                          title: 'Work Experience',
-                          leadingIcon: Icon(
-                            CupertinoIcons.briefcase,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.experienceRoute,
-                            ),
-                          ),
-                          widget: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: user.experience!
-                                .map(
-                                  (e) => Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ListTile(
-                                        contentPadding: EdgeInsets.zero,
-                                        minVerticalPadding: 0,
-                                        title: Text(
-                                          e.jobTitle,
-                                          style: textTheme.labelMedium,
-                                        ),
-                                        trailing: Icon(
-                                          Icons.edit_sharp,
-                                          size: 20,
-                                          color: appTheme.primary2,
-                                        ),
-                                      ),
-                                      Text(
-                                        e.companyName,
-                                        style: textTheme.labelSmall,
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        '${e.startDate} - ${e.endDate ?? 'present'} . ${e.endDate != null ? '${(int.parse(e.endDate!.split('-')[0]) - int.parse(e.startDate.split('-')[0])).toString()} Years' : "works here"}',
-                                        style: textTheme.labelSmall,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                  (user.skills!.isEmpty)
-                      ? EmptyProfileCard(
-                          title: 'Skills',
-                          leadingIcon: Icon(
-                            CupertinoIcons.square_stack_3d_up,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.editSkills,
-                            ),
-                          ),
-                        )
-                      : ProfileCard(
-                          title: 'Skills',
-                          leadingIcon: Icon(
-                            CupertinoIcons.square_stack_3d_up,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              Icons.edit_sharp,
-                              size: 20,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, AppRoutes.editSkills),
-                          ),
-                          widget: Wrap(
-                            spacing: 10,
-                            children: user.skills!
-                                .map(
-                                  (e) => Chip(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(9.0),
-                                    ),
-                                    label: Text(e),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                  (user.profile.languages == null ||
-                          user.profile.languages!.isEmpty)
-                      ? EmptyProfileCard(
-                          title: 'Languages',
-                          leadingIcon: Icon(
-                            CupertinoIcons.globe,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, AppRoutes.editLang),
-                          ),
-                        )
-                      : ProfileCard(
-                          title: 'Languages',
-                          leadingIcon: Icon(
-                            CupertinoIcons.globe,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              Icons.edit_sharp,
-                              size: 20,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, AppRoutes.editLang),
-                          ),
-                          widget: Wrap(
-                            spacing: 10,
-                            children: user.profile.languages!
-                                .map(
-                                  (e) => Chip(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(9.0),
-                                    ),
-                                    label: Text(e),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                  // awards
-                  // EmptyProfileCard(
-                  //   title: 'Awards',
-                  //   leadingIcon: Icon(
-                  //     CupertinoIcons.gift,
-                  //     color: appTheme.primary2,
-                  //   ),
-                  //   trailingIcon: IconButton(
-                  //     icon: Icon(
-                  //       CupertinoIcons.add_circled_solid,
-                  //       color: appTheme.primary2,
-                  //     ),
-                  //     onPressed: () => {},
-                  //   ),
-                  // ),
-                  // cv
-                  (user.resume!.isEmpty)
-                      ? EmptyProfileCard(
-                          title: 'Resume',
-                          leadingIcon: Icon(
-                            CupertinoIcons.doc_person,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: pickResume,
-                          ),
-                        )
-                      : ProfileCard(
-                          title: 'Resume',
-                          leadingIcon: Icon(
-                            CupertinoIcons.doc_person,
-                            color: appTheme.primary2,
-                          ),
-                          trailingIcon: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.add_circled_solid,
-                              color: appTheme.primary2,
-                            ),
-                            onPressed: pickResume,
-                          ),
-                          widget: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: _resume
-                                .map(
-                                  (e) => ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    leading:
-                                        SvgPicture.asset("assets/svgs/PDF.svg"),
-                                    title: Text(
-                                      e!.path.split('/').last.toString(),
-                                      style: textTheme.labelMedium,
-                                    ),
-                                    // subtitle: Text(
-                                    //   '${e.lengthSync()} Kb . ${formatDate(
-                                    //     e.lastAccessedSync().toString(),
-                                    //   )}',
-                                    //   style: textTheme.labelSmall,
-                                    // ),
-                                    trailing: IconButton(
-                                      icon: Icon(
-                                        CupertinoIcons.delete_simple,
-                                        color: appTheme.danger,
-                                      ),
-                                      onPressed: () =>
-                                          setState(() => _resume.remove(e)),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                ],
-              ),
+            const Expanded(
+              child: Profiles(),
             ),
           ],
         ),
@@ -349,6 +31,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 }
 
+// Header
 class ProfileHeader extends ConsumerWidget {
   final String? name, location;
   const ProfileHeader({super.key, this.name, this.location});
@@ -466,6 +149,341 @@ class ProfileHeader extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// Profiles
+class Profiles extends ConsumerStatefulWidget {
+  const Profiles({super.key});
+
+  @override
+  ConsumerState<Profiles> createState() => _ProfilesState();
+}
+
+class _ProfilesState extends ConsumerState<Profiles> {
+  List<File?> _resume = [];
+  Future<void> pickResume() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      if (result != null) {
+        File file = File(result.files.single.path.toString());
+        // await resume.uploadResume(file: file);
+        setState(
+          () => _resume.add(file),
+        );
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  String formatDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    String formattedDate = DateFormat('d MMM y').format(date);
+    String formattedTime = DateFormat('h:mm a').format(date);
+    return '$formattedDate at $formattedTime';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appTheme = AppTheme.appTheme(context);
+    final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
+
+    User? user = ref.watch(userProvider).user;
+    _resume = [...user!.resume!.map((e) => File(e))];
+
+    // remove the scaffold
+    return ListView(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      children: [
+        (user.profile.about == null || user.profile.about!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'About me',
+                leadingIcon: Icon(
+                  CupertinoIcons.profile_circled,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.editAbout,
+                  ),
+                ),
+              )
+            : ProfileCard(
+                title: 'About me',
+                leadingIcon: Icon(
+                  CupertinoIcons.profile_circled,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    Icons.edit_sharp,
+                    size: 20,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.editAbout),
+                ),
+                widget: Text(
+                  user.profile.about.toString(),
+                  style: textTheme.labelSmall,
+                ),
+              ),
+        (user.experience!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'Work Experience',
+                leadingIcon: Icon(
+                  CupertinoIcons.briefcase,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.experienceRoute,
+                  ),
+                ),
+              )
+            : ProfileCard(
+                title: 'Work Experience',
+                leadingIcon: Icon(
+                  CupertinoIcons.briefcase,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.experienceRoute,
+                  ),
+                ),
+                widget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: user.experience!
+                      .map(
+                        (e) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              minVerticalPadding: 0,
+                              title: Text(
+                                e.jobTitle,
+                                style: textTheme.labelMedium,
+                              ),
+                              trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.edit_sharp,
+                                    size: 20,
+                                    color: appTheme.primary2,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.experienceRoute,
+                                      arguments: e,
+                                    );
+                                  }),
+                            ),
+                            Text(
+                              e.companyName,
+                              style: textTheme.labelSmall,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${e.startDate} - ${e.endDate ?? 'present'} . ${e.endDate != null ? '${(int.parse(e.endDate!.split('-')[0]) - int.parse(e.startDate.split('-')[0])).toString()} Years' : "works here"}',
+                              style: textTheme.labelSmall,
+                            ),
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+        (user.skills!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'Skills',
+                leadingIcon: Icon(
+                  CupertinoIcons.square_stack_3d_up,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.editSkills,
+                  ),
+                ),
+              )
+            : ProfileCard(
+                title: 'Skills',
+                leadingIcon: Icon(
+                  CupertinoIcons.square_stack_3d_up,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    Icons.edit_sharp,
+                    size: 20,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.editSkills),
+                ),
+                widget: Wrap(
+                  spacing: 10,
+                  children: user.skills!
+                      .map(
+                        (e) => Chip(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9.0),
+                          ),
+                          label: Text(e),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+        (user.profile.languages == null || user.profile.languages!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'Languages',
+                leadingIcon: Icon(
+                  CupertinoIcons.globe,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.editLang),
+                ),
+              )
+            : ProfileCard(
+                title: 'Languages',
+                leadingIcon: Icon(
+                  CupertinoIcons.globe,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    Icons.edit_sharp,
+                    size: 20,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.editLang),
+                ),
+                widget: Wrap(
+                  spacing: 10,
+                  children: user.profile.languages!
+                      .map(
+                        (e) => Chip(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9.0),
+                          ),
+                          label: Text(e),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+        // awards
+        // EmptyProfileCard(
+        //   title: 'Awards',
+        //   leadingIcon: Icon(
+        //     CupertinoIcons.gift,
+        //     color: appTheme.primary2,
+        //   ),
+        //   trailingIcon: IconButton(
+        //     icon: Icon(
+        //       CupertinoIcons.add_circled_solid,
+        //       color: appTheme.primary2,
+        //     ),
+        //     onPressed: () => {},
+        //   ),
+        // ),
+        // cv
+        (user.resume!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'Resume',
+                leadingIcon: Icon(
+                  CupertinoIcons.doc_person,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: pickResume,
+                ),
+              )
+            : ProfileCard(
+                title: 'Resume',
+                leadingIcon: Icon(
+                  CupertinoIcons.doc_person,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: pickResume,
+                ),
+                widget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _resume
+                      .map(
+                        (e) => ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: SvgPicture.asset("assets/svgs/PDF.svg"),
+                          title: Text(
+                            e!.path.split('/').last.toString(),
+                            style: textTheme.labelMedium,
+                          ),
+                          // subtitle: Text(
+                          //   '${e.lengthSync()} Kb . ${formatDate(
+                          //     e.lastAccessedSync().toString(),
+                          //   )}',
+                          //   style: textTheme.labelSmall,
+                          // ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              CupertinoIcons.delete_simple,
+                              color: appTheme.danger,
+                            ),
+                            onPressed: () => setState(() => _resume.remove(e)),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+      ],
     );
   }
 }

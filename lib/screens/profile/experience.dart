@@ -23,7 +23,6 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
   createExperience() async {
     try {
       final prov = ref.read(userProvider.notifier);
-      DateTime date = DateTime.parse(DateTime.now().toString());
       final res = await prov.addExperience(
         companyName: _company.text,
         jobTitle: _title.text,
@@ -54,6 +53,11 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
+
+    // final exp = ModalRoute.of(context)!.settings.arguments as Experience;
+
+    // print('exp: ${exp}');
+
     return Scaffold(
       backgroundColor: appTheme.bg1,
       body: SafeArea(
