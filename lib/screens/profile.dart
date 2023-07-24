@@ -15,8 +15,8 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           children: [
             ProfileHeader(
-              name: user!.name,
-              location: user.profile.location ?? '',
+              name: (user != null) ? user.name : '',
+              location: (user != null) ? user.profile.location ?? '' : '',
             ),
             const SizedBox(
               height: 10.0,
@@ -40,7 +40,8 @@ class ProfileHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final prov = ref.read(userProvider.notifier);
+    final prov = ref.watch(userProvider);
+    final user = prov.user;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -93,10 +94,18 @@ class ProfileHeader extends ConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage("assets/images/profile.png"),
-                ),
+                (user == null || user.profileImage == null)
+                    ? const CircleAvatar(
+                        radius: 25,
+                        backgroundImage:
+                            AssetImage("assets/images/blank_profile.jpg"),
+                      )
+                    : CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                          user.profileImage.toString(),
+                        ),
+                      ),
                 const SizedBox(
                   height: 5,
                 ),
@@ -162,8 +171,9 @@ class Profiles extends ConsumerStatefulWidget {
 }
 
 class _ProfilesState extends ConsumerState<Profiles> {
-  List<File?> _resume = [];
+  final List<File?> _resume = [];
   Future<void> pickResume() async {
+    final resume = ref.read(userProvider.notifier);
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -171,7 +181,7 @@ class _ProfilesState extends ConsumerState<Profiles> {
       );
       if (result != null) {
         File file = File(result.files.single.path.toString());
-        // await resume.uploadResume(file: file);
+        await resume.uploadResume(resume: file);
         setState(
           () => _resume.add(file),
         );
@@ -194,14 +204,13 @@ class _ProfilesState extends ConsumerState<Profiles> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
     User? user = ref.watch(userProvider).user;
-    _resume = [...user!.resume!.map((e) => File(e))];
 
     // remove the scaffold
     return ListView(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       children: [
-        (user.profile.about == null || user.profile.about!.isEmpty)
+        (user == null || user.profile.about == null)
             ? EmptyProfileCard(
                 title: 'About me',
                 leadingIcon: Icon(
@@ -239,7 +248,7 @@ class _ProfilesState extends ConsumerState<Profiles> {
                   style: textTheme.labelSmall,
                 ),
               ),
-        (user.experience!.isEmpty)
+        (user == null || user.experience!.isEmpty)
             ? EmptyProfileCard(
                 title: 'Work Experience',
                 leadingIcon: Icon(
@@ -318,7 +327,87 @@ class _ProfilesState extends ConsumerState<Profiles> {
                       .toList(),
                 ),
               ),
-        (user.skills!.isEmpty)
+        (user == null || user.education!.isEmpty)
+            ? EmptyProfileCard(
+                title: 'Education',
+                leadingIcon: Icon(
+                  CupertinoIcons.book,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.educationRoute,
+                  ),
+                ),
+              )
+            : ProfileCard(
+                title: 'Education',
+                leadingIcon: Icon(
+                  CupertinoIcons.book,
+                  color: appTheme.primary2,
+                ),
+                trailingIcon: IconButton(
+                  icon: Icon(
+                    CupertinoIcons.add_circled_solid,
+                    color: appTheme.primary2,
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.educationRoute,
+                  ),
+                ),
+                widget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: user.education!
+                      .map(
+                        (e) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              minVerticalPadding: 0,
+                              title: Text(
+                                e.program,
+                                style: textTheme.labelMedium,
+                              ),
+                              trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.edit_sharp,
+                                    size: 20,
+                                    color: appTheme.primary2,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.educationRoute,
+                                      arguments: e,
+                                    );
+                                  }),
+                            ),
+                            Text(
+                              e.institution,
+                              style: textTheme.labelSmall,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${e.startDate} - ${e.endDate ?? 'present'} . ${e.endDate != null ? '${(int.parse(e.endDate!.split('-')[0]) - int.parse(e.startDate.split('-')[0])).toString()} Years' : "works here"}',
+                              style: textTheme.labelSmall,
+                            ),
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+
+        (user == null || user.skills!.isEmpty)
             ? EmptyProfileCard(
                 title: 'Skills',
                 leadingIcon: Icon(
@@ -365,7 +454,7 @@ class _ProfilesState extends ConsumerState<Profiles> {
                       .toList(),
                 ),
               ),
-        (user.profile.languages == null || user.profile.languages!.isEmpty)
+        (user == null || user.profile.languages == null)
             ? EmptyProfileCard(
                 title: 'Languages',
                 leadingIcon: Icon(
@@ -426,7 +515,7 @@ class _ProfilesState extends ConsumerState<Profiles> {
         //   ),
         // ),
         // cv
-        (user.resume!.isEmpty)
+        (user == null || user.resume!.isEmpty)
             ? EmptyProfileCard(
                 title: 'Resume',
                 leadingIcon: Icon(
@@ -456,13 +545,13 @@ class _ProfilesState extends ConsumerState<Profiles> {
                 ),
                 widget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _resume
+                  children: [...user.resume!.map((e) => File(e))]
                       .map(
                         (e) => ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: SvgPicture.asset("assets/svgs/PDF.svg"),
                           title: Text(
-                            e!.path.split('/').last.toString(),
+                            e.path.split('/').last.toString(),
                             style: textTheme.labelMedium,
                           ),
                           // subtitle: Text(

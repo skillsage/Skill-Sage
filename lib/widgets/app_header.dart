@@ -1,11 +1,12 @@
 part of skillsage_widgets;
 
-class CustomAppHeader extends StatelessWidget {
+class CustomAppHeader extends ConsumerWidget {
   const CustomAppHeader({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
+    final user = ref.watch(userProvider).user;
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 18,
@@ -27,9 +28,16 @@ class CustomAppHeader extends StatelessWidget {
               CupertinoIcons.bars,
               color: appTheme.light,
             ),
-            trailing: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.png'),
-            ),
+            trailing: (user == null || user.profileImage == null)
+                ? const CircleAvatar(
+                    backgroundImage:
+                        AssetImage('assets/images/blank_profile.jpg'),
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      user.profileImage.toString(),
+                    ),
+                  ),
           ),
           const SizedBox(
             height: 5,
@@ -69,10 +77,14 @@ class CustomAppHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  icon: Icon(
-                    CupertinoIcons.list_bullet,
+                  icon: SvgPicture.asset(
+                    "assets/svgs/Filter.svg",
                     color: appTheme.light,
                   ),
+                  // icon: Icon(
+                  //   CupertinoIcons.list_bullet,
+                  //   color: appTheme.light,
+                  // ),
                   onPressed: () {},
                 ),
               )

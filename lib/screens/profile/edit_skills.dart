@@ -44,27 +44,29 @@ class EditSkillScreen extends ConsumerWidget {
                   hintText: 'Search...',
                 ),
                 const SizedBox(height: 20),
-                Wrap(
-                  spacing: 20,
-                  children: user!.skills!
-                      .map(
-                        (e) => Chip(
-                          labelPadding: const EdgeInsets.only(
-                            left: 4,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                          ),
-                          label: Text(e),
-                          deleteIcon: Icon(Icons.close,
-                              size: 18, color: appTheme.primary1),
-                          onDeleted: () => {
-                            // user.setSkills = skills.remove(e),
-                          },
-                        ),
+                (user == null || user.skills!.isEmpty)
+                    ? Container()
+                    : Wrap(
+                        spacing: 20,
+                        children: user.skills!
+                            .map(
+                              (e) => Chip(
+                                labelPadding: const EdgeInsets.only(
+                                  left: 4,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9.0),
+                                ),
+                                label: Text(e),
+                                deleteIcon: Icon(Icons.close,
+                                    size: 18, color: appTheme.primary1),
+                                onDeleted: () => {
+                                  // user.setSkills = skills.remove(e),
+                                },
+                              ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                )
               ],
             ),
           ),

@@ -14,10 +14,22 @@ class EditLanguageScreen extends ConsumerWidget {
 
     addLanguage() async {
       final prov = ref.read(userProvider);
+      Set<String> uniqueLanguages;
+
+// Assuming _lang.text contains the new language to add
+      if (user == null || user.profile.languages == null) {
+        uniqueLanguages = {_lang.text};
+      } else {
+        uniqueLanguages = {...?user.profile.languages, _lang.text};
+      }
+
+      List<String> languages = uniqueLanguages.toList();
+
       try {
         final resp = await prov.updateProfile(
-          language: [...user!.profile.languages!, _lang.text],
+          language: languages,
         );
+        print(resp);
         if (!resp.success) {
           showToast(context, "unable to add language");
         }
@@ -69,29 +81,29 @@ class EditLanguageScreen extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Wrap(
-                  spacing: 20,
-                  children: (user!.profile.languages != null)
-                      ? user.profile.languages!
-                          .map(
-                            (e) => Chip(
-                              labelPadding: const EdgeInsets.only(
-                                left: 4,
+                (user == null || user.profile.languages == null)
+                    ? Container()
+                    : Wrap(
+                        spacing: 20,
+                        children: user.profile.languages!
+                            .map(
+                              (e) => Chip(
+                                labelPadding: const EdgeInsets.only(
+                                  left: 4,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9.0),
+                                ),
+                                label: Text(e),
+                                deleteIcon: Icon(Icons.close,
+                                    size: 18, color: appTheme.primary1),
+                                onDeleted: () => {
+                                  // user.setSkills = skills.remove(e),
+                                },
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9.0),
-                              ),
-                              label: Text(e),
-                              deleteIcon: Icon(Icons.close,
-                                  size: 18, color: appTheme.primary1),
-                              onDeleted: () => {
-                                // user.setSkills = skills.remove(e),
-                              },
-                            ),
-                          )
-                          .toList()
-                      : [],
-                )
+                            )
+                            .toList(),
+                      )
               ],
             ),
           ),

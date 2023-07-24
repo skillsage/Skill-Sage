@@ -8,9 +8,8 @@ class HttpProvider {
   late Dio http;
   Ref ref;
   HttpProvider(this.ref)
-      : http = Dio(BaseOptions(baseUrl: 
-      // "http://localhost:8000/"
-            "http://143.198.235.166:3000/"
+      : http = Dio(BaseOptions(baseUrl: "http://localhost:8000/"
+            // "http://143.198.235.166:3000/"
             )) {
     init();
   }

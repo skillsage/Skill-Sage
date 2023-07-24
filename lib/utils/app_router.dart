@@ -14,6 +14,7 @@ class AppRoutes {
   static const String editSkills = '/editskills';
   static const String editLang = '/editlang';
   static const String editProfile = '/editprofile';
+  static const String educationRoute = '/education';
 }
 
 class AppRouter {
@@ -28,7 +29,7 @@ class AppRouter {
       case AppRoutes.userRegister:
         return _route(screen: const RegisterScreen());
       case AppRoutes.onboardingProfile:
-        return _route(screen: OnboardingProfileScreen());
+        return _route(screen: const OnboardingProfileScreen());
       case AppRoutes.settingsRoute:
         return _route(screen: const SettingsScreen());
       case AppRoutes.editAbout:
@@ -43,6 +44,8 @@ class AppRouter {
         return _route(screen: EditLanguageScreen());
       case AppRoutes.editProfile:
         return _route(screen: const EditProfileScreen());
+      case AppRoutes.educationRoute:
+        return _route(screen: const EducationScreen());
       default:
         return _route(screen: const Loader());
     }

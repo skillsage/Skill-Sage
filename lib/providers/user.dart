@@ -26,7 +26,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> reloadUser() async {
     try {
       final res = await cather(() => http.get("/user/"));
-      print(res.result["profile"]);
+      print(res.result["profile_image"]);
       if (!res.success) return false;
       final data = res.parse(User.fromJson);
       user = data.result;
@@ -86,7 +86,18 @@ class UserProvider extends ChangeNotifier {
     String? portfolio,
     String? about,
     List<String>? language,
+    File? image,
   }) async {
+    if (image != null) {
+      FormData formData = FormData.fromMap({
+        "img": await MultipartFile.fromFile(
+          image.path,
+          filename: image.path.split('/').last,
+        ),
+      });
+      final resp = await cather(() => http.post('/user/image', data: formData));
+      print(resp);
+    }
     final res = await cather(
       () => http.put(
         '/user/profile',
@@ -125,5 +136,45 @@ class UserProvider extends ChangeNotifier {
     );
     reloadUser();
     return res.toNull();
+  }
+
+  Future<Resp<User?>> addEducation({
+    required String program,
+    required String institution,
+    required String? startDate,
+    String? endDate,
+    bool? hasCompleted,
+  }) async {
+    final res = await cather(
+      () => http.post(
+        '/user/education',
+        data: {
+          "program": program,
+          "institution": institution,
+          "start_date": startDate,
+          "end_date": endDate,
+          "has_completed": hasCompleted,
+        },
+      ),
+    );
+    reloadUser();
+    return res.toNull();
+  }
+
+  Future<Resp<User?>> uploadResume({
+    required resume,
+  }) async {
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        resume.path,
+        filename: resume.path.split('/').last,
+      ),
+    });
+    final resp =
+        await cather(() => http.post('/user/upload_resume', data: formData));
+    print(resp);
+
+    reloadUser();
+    return resp.toNull();
   }
 }

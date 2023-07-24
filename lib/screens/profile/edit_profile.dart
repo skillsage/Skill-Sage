@@ -33,7 +33,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     try {
       final prov = ref.read(userProvider.notifier);
       final res = await prov.updateProfile(
-          location: _location.text, portfolio: _portfolio.text);
+        location: _location.text,
+        portfolio: _portfolio.text,
+        image: _imageFile,
+      );
       print('res: $res');
       if (!res.success) {
         showToast(context, "unable to update");
@@ -59,10 +62,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
     User? user = ref.watch(userProvider.notifier).user;
 
-    _fullname.text = user!.name;
-    _location.text = user.profile.location ?? '';
-    _portfolio.text = user.profile.portfolio ?? '';
-    _email.text = user.email;
+    if (user != null) {
+      _fullname.text = user.name;
+      _location.text = user.profile.location ?? '';
+      _portfolio.text = user.profile.portfolio ?? '';
+      _email.text = user.email;
+    }
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -98,17 +103,23 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         child: Stack(
                           children: [
                             Positioned(
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: _imageFile == null
-                                    ? const AssetImage(
-                                        "assets/images/blank_profile.jpg",
-                                      )
-                                    : FileImage(_imageFile!)
-                                        as ImageProvider<Object>?,
-                                // child:
-                                //     Text(_imageFile.readAsString().toString()),
-                              ),
+                              child: (user!.profileImage == null ||
+                                      _imageFile != null)
+                                  ? CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: _imageFile == null
+                                          ? const AssetImage(
+                                              "assets/images/blank_profile.jpg",
+                                            )
+                                          : FileImage(_imageFile!)
+                                              as ImageProvider<Object>?,
+                                    )
+                                  : CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(
+                                        user.profileImage.toString(),
+                                      ),
+                                    ),
                             ),
                             Positioned(
                               bottom: 0,

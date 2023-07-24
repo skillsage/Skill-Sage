@@ -26,6 +26,7 @@ part 'profile/experience.dart';
 part 'profile/edit_skills.dart';
 part 'profile/edit_language.dart';
 part 'profile/edit_profile.dart';
+part 'profile/education.dart';
 
 void showToast(BuildContext context, String message) {
   final scaffold = ScaffoldMessenger.of(context);

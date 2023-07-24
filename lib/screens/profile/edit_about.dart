@@ -55,7 +55,7 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
 
     User? user = ref.watch(userProvider.notifier).user;
 
-    _about.text = user!.profile.about ?? '';
+    _about.text = (user != null) ? user.profile.about ?? '' : '';
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
