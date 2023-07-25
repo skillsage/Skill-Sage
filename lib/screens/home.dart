@@ -157,8 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      Container(color: Colors.blue),
-      Container(color: Colors.green),
+      const JobPostScreen(),
+      const BookmarkScreen(),
       const ProfileScreen(),
     ];
   }

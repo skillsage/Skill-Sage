@@ -649,6 +649,7 @@ Experience _$ExperienceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Experience {
+  int get id => throw _privateConstructorUsedError;
   @JsonKey(name: "company_name")
   String get companyName => throw _privateConstructorUsedError;
   @JsonKey(name: "job_title")
@@ -676,7 +677,8 @@ abstract class $ExperienceCopyWith<$Res> {
       _$ExperienceCopyWithImpl<$Res, Experience>;
   @useResult
   $Res call(
-      {@JsonKey(name: "company_name") String companyName,
+      {int id,
+      @JsonKey(name: "company_name") String companyName,
       @JsonKey(name: "job_title") String jobTitle,
       @JsonKey(name: "start_date") String startDate,
       String? tasks,
@@ -698,6 +700,7 @@ class _$ExperienceCopyWithImpl<$Res, $Val extends Experience>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? companyName = null,
     Object? jobTitle = null,
     Object? startDate = null,
@@ -707,6 +710,10 @@ class _$ExperienceCopyWithImpl<$Res, $Val extends Experience>
     Object? hasCompleted = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       companyName: null == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
@@ -748,7 +755,8 @@ abstract class _$$_ExperienceCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "company_name") String companyName,
+      {int id,
+      @JsonKey(name: "company_name") String companyName,
       @JsonKey(name: "job_title") String jobTitle,
       @JsonKey(name: "start_date") String startDate,
       String? tasks,
@@ -768,6 +776,7 @@ class __$$_ExperienceCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? companyName = null,
     Object? jobTitle = null,
     Object? startDate = null,
@@ -777,6 +786,10 @@ class __$$_ExperienceCopyWithImpl<$Res>
     Object? hasCompleted = freezed,
   }) {
     return _then(_$_Experience(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       companyName: null == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
@@ -813,7 +826,8 @@ class __$$_ExperienceCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Experience implements _Experience {
   const _$_Experience(
-      {@JsonKey(name: "company_name") required this.companyName,
+      {required this.id,
+      @JsonKey(name: "company_name") required this.companyName,
       @JsonKey(name: "job_title") required this.jobTitle,
       @JsonKey(name: "start_date") required this.startDate,
       this.tasks,
@@ -824,6 +838,8 @@ class _$_Experience implements _Experience {
   factory _$_Experience.fromJson(Map<String, dynamic> json) =>
       _$$_ExperienceFromJson(json);
 
+  @override
+  final int id;
   @override
   @JsonKey(name: "company_name")
   final String companyName;
@@ -847,7 +863,7 @@ class _$_Experience implements _Experience {
 
   @override
   String toString() {
-    return 'Experience(companyName: $companyName, jobTitle: $jobTitle, startDate: $startDate, tasks: $tasks, endDate: $endDate, isRemote: $isRemote, hasCompleted: $hasCompleted)';
+    return 'Experience(id: $id, companyName: $companyName, jobTitle: $jobTitle, startDate: $startDate, tasks: $tasks, endDate: $endDate, isRemote: $isRemote, hasCompleted: $hasCompleted)';
   }
 
   @override
@@ -855,6 +871,7 @@ class _$_Experience implements _Experience {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Experience &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.companyName, companyName) ||
                 other.companyName == companyName) &&
             (identical(other.jobTitle, jobTitle) ||
@@ -871,8 +888,8 @@ class _$_Experience implements _Experience {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, companyName, jobTitle, startDate,
-      tasks, endDate, isRemote, hasCompleted);
+  int get hashCode => Object.hash(runtimeType, id, companyName, jobTitle,
+      startDate, tasks, endDate, isRemote, hasCompleted);
 
   @JsonKey(ignore: true)
   @override
@@ -890,7 +907,8 @@ class _$_Experience implements _Experience {
 
 abstract class _Experience implements Experience {
   const factory _Experience(
-          {@JsonKey(name: "company_name") required final String companyName,
+          {required final int id,
+          @JsonKey(name: "company_name") required final String companyName,
           @JsonKey(name: "job_title") required final String jobTitle,
           @JsonKey(name: "start_date") required final String startDate,
           final String? tasks,
@@ -902,6 +920,8 @@ abstract class _Experience implements Experience {
   factory _Experience.fromJson(Map<String, dynamic> json) =
       _$_Experience.fromJson;
 
+  @override
+  int get id;
   @override
   @JsonKey(name: "company_name")
   String get companyName;
@@ -934,6 +954,7 @@ Education _$EducationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Education {
+  int get id => throw _privateConstructorUsedError;
   String get program => throw _privateConstructorUsedError;
   String get institution => throw _privateConstructorUsedError;
   @JsonKey(name: "start_date")
@@ -955,7 +976,8 @@ abstract class $EducationCopyWith<$Res> {
       _$EducationCopyWithImpl<$Res, Education>;
   @useResult
   $Res call(
-      {String program,
+      {int id,
+      String program,
       String institution,
       @JsonKey(name: "start_date") String startDate,
       @JsonKey(name: "end_date") String? endDate,
@@ -975,6 +997,7 @@ class _$EducationCopyWithImpl<$Res, $Val extends Education>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? program = null,
     Object? institution = null,
     Object? startDate = null,
@@ -982,6 +1005,10 @@ class _$EducationCopyWithImpl<$Res, $Val extends Education>
     Object? hasCompleted = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
@@ -1014,7 +1041,8 @@ abstract class _$$_EducationCopyWith<$Res> implements $EducationCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String program,
+      {int id,
+      String program,
       String institution,
       @JsonKey(name: "start_date") String startDate,
       @JsonKey(name: "end_date") String? endDate,
@@ -1032,6 +1060,7 @@ class __$$_EducationCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? program = null,
     Object? institution = null,
     Object? startDate = null,
@@ -1039,6 +1068,10 @@ class __$$_EducationCopyWithImpl<$Res>
     Object? hasCompleted = freezed,
   }) {
     return _then(_$_Education(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
@@ -1067,7 +1100,8 @@ class __$$_EducationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Education implements _Education {
   const _$_Education(
-      {required this.program,
+      {required this.id,
+      required this.program,
       required this.institution,
       @JsonKey(name: "start_date") required this.startDate,
       @JsonKey(name: "end_date") this.endDate,
@@ -1076,6 +1110,8 @@ class _$_Education implements _Education {
   factory _$_Education.fromJson(Map<String, dynamic> json) =>
       _$$_EducationFromJson(json);
 
+  @override
+  final int id;
   @override
   final String program;
   @override
@@ -1092,7 +1128,7 @@ class _$_Education implements _Education {
 
   @override
   String toString() {
-    return 'Education(program: $program, institution: $institution, startDate: $startDate, endDate: $endDate, hasCompleted: $hasCompleted)';
+    return 'Education(id: $id, program: $program, institution: $institution, startDate: $startDate, endDate: $endDate, hasCompleted: $hasCompleted)';
   }
 
   @override
@@ -1100,6 +1136,7 @@ class _$_Education implements _Education {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Education &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.program, program) || other.program == program) &&
             (identical(other.institution, institution) ||
                 other.institution == institution) &&
@@ -1113,7 +1150,7 @@ class _$_Education implements _Education {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, program, institution, startDate, endDate, hasCompleted);
+      runtimeType, id, program, institution, startDate, endDate, hasCompleted);
 
   @JsonKey(ignore: true)
   @override
@@ -1131,7 +1168,8 @@ class _$_Education implements _Education {
 
 abstract class _Education implements Education {
   const factory _Education(
-      {required final String program,
+      {required final int id,
+      required final String program,
       required final String institution,
       @JsonKey(name: "start_date") required final String startDate,
       @JsonKey(name: "end_date") final String? endDate,
@@ -1140,6 +1178,8 @@ abstract class _Education implements Education {
   factory _Education.fromJson(Map<String, dynamic> json) =
       _$_Education.fromJson;
 
+  @override
+  int get id;
   @override
   String get program;
   @override

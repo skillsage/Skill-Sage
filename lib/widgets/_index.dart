@@ -14,3 +14,4 @@ part 'custom_button.dart';
 part 'profile_card.dart';
 part 'app_header.dart';
 part 'skill_card.dart';
+part 'bookmarked.dart';

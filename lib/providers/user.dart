@@ -26,7 +26,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> reloadUser() async {
     try {
       final res = await cather(() => http.get("/user/"));
-      print(res.result["profile_image"]);
+      print(res.result["resume"]);
       if (!res.success) return false;
       final data = res.parse(User.fromJson);
       user = data.result;
@@ -138,6 +138,33 @@ class UserProvider extends ChangeNotifier {
     return res.toNull();
   }
 
+  Future<Resp<User?>> updateExperience({
+    required int id,
+    required String jobTitle,
+    required String companyName,
+    required String? startDate,
+    String? endDate,
+    String? tasks,
+    bool? hasCompleted,
+  }) async {
+    final res = await cather(
+      () => http.put(
+        '/user/experience',
+        data: {
+          "id": id,
+          "job_title": jobTitle,
+          "company_name": companyName,
+          "start_date": startDate,
+          "end_date": endDate,
+          "tasks": tasks,
+          "has_completed": hasCompleted,
+        },
+      ),
+    );
+    reloadUser();
+    return res.toNull();
+  }
+
   Future<Resp<User?>> addEducation({
     required String program,
     required String institution,
@@ -149,6 +176,31 @@ class UserProvider extends ChangeNotifier {
       () => http.post(
         '/user/education',
         data: {
+          "program": program,
+          "institution": institution,
+          "start_date": startDate,
+          "end_date": endDate,
+          "has_completed": hasCompleted,
+        },
+      ),
+    );
+    reloadUser();
+    return res.toNull();
+  }
+
+  Future<Resp<User?>> updateEducation({
+    required int id,
+    required String program,
+    required String institution,
+    required String? startDate,
+    String? endDate,
+    bool? hasCompleted,
+  }) async {
+    final res = await cather(
+      () => http.put(
+        '/user/education',
+        data: {
+          "id": id,
           "program": program,
           "institution": institution,
           "start_date": startDate,
@@ -175,6 +227,22 @@ class UserProvider extends ChangeNotifier {
     print(resp);
 
     reloadUser();
+    return resp.toNull();
+  }
+
+  Future<Resp<User?>> removeResume({url}) async {
+    final resp = await cather(() => http.delete('/user/resume', data: {
+          "url": url,
+        }));
+    print('response: $resp');
+
+    reloadUser();
+    return resp.toNull();
+  }
+
+  Future<Resp> loadSkills() async {
+    final resp = await cather(() => http.get('/user/skills'));
+
     return resp.toNull();
   }
 }

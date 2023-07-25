@@ -19,6 +19,8 @@ part 'onboarding_profile.dart';
 part 'loader.dart';
 part 'settings.dart';
 part 'profile.dart';
+part 'bookmark.dart';
+part 'job_posts.dart';
 part 'auth/login.dart';
 part 'auth/register.dart';
 part 'profile/edit_about.dart';

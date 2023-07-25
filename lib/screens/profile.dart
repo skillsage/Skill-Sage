@@ -44,8 +44,8 @@ class ProfileHeader extends ConsumerWidget {
     final user = prov.user;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(
-          left: 15.0, right: 15.0, top: 5.0, bottom: 15.0),
+      padding:
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0, bottom: 0.0),
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/images/Background.png"),
@@ -91,69 +91,72 @@ class ProfileHeader extends ConsumerWidget {
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                (user == null || user.profileImage == null)
-                    ? const CircleAvatar(
-                        radius: 25,
-                        backgroundImage:
-                            AssetImage("assets/images/blank_profile.jpg"),
-                      )
-                    : CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          user.profileImage.toString(),
+            Transform.translate(
+              offset: const Offset(0, -15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (user == null || user.profileImage == null)
+                      ? const CircleAvatar(
+                          radius: 25,
+                          backgroundImage:
+                              AssetImage("assets/images/blank_profile.jpg"),
+                        )
+                      : CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(
+                            user.profileImage.toString(),
+                          ),
+                        ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    name.toString(),
+                    style: textTheme.labelLarge,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    location.toString(),
+                    style: textTheme.labelSmall,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('120k Follower', style: textTheme.headlineSmall),
+                      Text('120k Following', style: textTheme.headlineSmall),
+                      InkWell(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(AppRoutes.editProfile),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 15.0),
+                          decoration: BoxDecoration(
+                              color: appTheme.light.withOpacity(.15),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              Text('Edit Profile',
+                                  style: textTheme.headlineSmall),
+                              const SizedBox(width: 15),
+                              Icon(
+                                Icons.edit_sharp,
+                                size: 20,
+                                color: appTheme.light,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  name.toString(),
-                  style: textTheme.labelLarge,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  location.toString(),
-                  style: textTheme.labelSmall,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('120k Follower', style: textTheme.headlineSmall),
-                    Text('120k Following', style: textTheme.headlineSmall),
-                    InkWell(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(AppRoutes.editProfile),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 15.0),
-                        decoration: BoxDecoration(
-                            color: appTheme.light.withOpacity(.15),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            Text('Edit Profile',
-                                style: textTheme.headlineSmall),
-                            const SizedBox(width: 15),
-                            Icon(
-                              Icons.edit_sharp,
-                              size: 20,
-                              color: appTheme.light,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -203,7 +206,8 @@ class _ProfilesState extends ConsumerState<Profiles> {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
 
-    User? user = ref.watch(userProvider).user;
+    final prov = ref.watch(userProvider);
+    User? user = prov.user;
 
     // remove the scaffold
     return ListView(
@@ -545,31 +549,35 @@ class _ProfilesState extends ConsumerState<Profiles> {
                 ),
                 widget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [...user.resume!.map((e) => File(e))]
-                      .map(
-                        (e) => ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: SvgPicture.asset("assets/svgs/PDF.svg"),
-                          title: Text(
-                            e.path.split('/').last.toString(),
-                            style: textTheme.labelMedium,
-                          ),
-                          // subtitle: Text(
-                          //   '${e.lengthSync()} Kb . ${formatDate(
-                          //     e.lastAccessedSync().toString(),
-                          //   )}',
-                          //   style: textTheme.labelSmall,
-                          // ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.delete_simple,
-                              color: appTheme.danger,
-                            ),
-                            onPressed: () => setState(() => _resume.remove(e)),
-                          ),
+                  children: [...user.resume!.map((e) => File(e))].map(
+                    (e) {
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: SvgPicture.asset("assets/svgs/PDF.svg"),
+                        title: Text(
+                          e.path.split('/').last.toString(),
+                          style: textTheme.labelMedium,
                         ),
-                      )
-                      .toList(),
+                        // subtitle: Text(
+                        //   '${e.lengthSync()} Kb . ${formatDate(
+                        //     e.lastAccessedSync().toString(),
+                        //   )}',
+                        //   style: textTheme.labelSmall,
+                        // ),
+                        trailing: IconButton(
+                          icon: Icon(
+                            CupertinoIcons.delete_simple,
+                            color: appTheme.danger,
+                          ),
+                          onPressed: () => {
+                            prov.removeResume(
+                              url: e.path,
+                            )
+                          },
+                        ),
+                      );
+                    },
+                  ).toList(),
                 ),
               ),
       ],

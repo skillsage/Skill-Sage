@@ -10,21 +10,12 @@ class EditAboutScreen extends ConsumerStatefulWidget {
 class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
   final TextEditingController _about = TextEditingController();
 
-  // Snackbar
-  void showCupertinoToast(String message) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: CustomTextTheme.customTextTheme(context).textTheme.labelSmall,
-        ),
-        backgroundColor: AppTheme.appTheme(context).primary,
-      ),
-    );
-  }
+  bool loading = false;
 
   updateProfile() async {
+    setState(() {
+      loading = true;
+    });
     try {
       final prov = ref.read(userProvider.notifier);
       final res = await prov.updateProfile(about: _about.text);
@@ -33,13 +24,19 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
         showToast(context, "unable to update");
       }
       if (res.success) {
-        print("back");
         goBack();
       }
+      setState(() {
+        loading = false;
+      });
       // handle success
     } catch (e) {
       print(e);
       showToast(context, "Unexpected err");
+    } finally {
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -51,7 +48,6 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
-    // final navigator = Navigator.of(context);
 
     User? user = ref.watch(userProvider.notifier).user;
 
@@ -103,6 +99,7 @@ class _EditAboutScreenState extends ConsumerState<EditAboutScreen> {
                 title: 'SAVE',
                 color: AppTheme.appTheme(context).secondary,
                 onPressed: updateProfile,
+                isLoading: loading,
               ),
             )
           ],

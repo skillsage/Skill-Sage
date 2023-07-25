@@ -1,12 +1,21 @@
 part of skillsage_screens;
 
-class EditSkillScreen extends ConsumerWidget {
-  EditSkillScreen({super.key});
-
-  final TextEditingController _search = TextEditingController();
+class EditSkillScreen extends ConsumerStatefulWidget {
+  const EditSkillScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EditSkillScreen> createState() => _EditSkillScreenState();
+}
+
+class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
+  final TextEditingController _search = TextEditingController();
+  String? search = "";
+  final List<String> _searchResults = ["React", "Python", "JavaScript"];
+
+  List<String>? _filteredList;
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
@@ -42,31 +51,57 @@ class EditSkillScreen extends ConsumerWidget {
                   controller: _search,
                   leadingIcon: const Icon(CupertinoIcons.search),
                   hintText: 'Search...',
+                  onChanged: (value) {
+                    setState(() {
+                      search = value;
+                      _filteredList = _searchResults
+                          .where((e) =>
+                              e.toLowerCase().contains(search!.toLowerCase()))
+                          .toList();
+                    });
+                  },
                 ),
                 const SizedBox(height: 20),
-                (user == null || user.skills!.isEmpty)
-                    ? Container()
-                    : Wrap(
-                        spacing: 20,
-                        children: user.skills!
+                search!.isNotEmpty
+                    ? ListView(
+                        shrinkWrap: true,
+                        children: _filteredList!
                             .map(
-                              (e) => Chip(
-                                labelPadding: const EdgeInsets.only(
-                                  left: 4,
+                              (e) => InkWell(
+                                onTap: () {},
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 20.0,
+                                  ),
+                                  child: Text(e, style: textTheme.bodyMedium),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9.0),
-                                ),
-                                label: Text(e),
-                                deleteIcon: Icon(Icons.close,
-                                    size: 18, color: appTheme.primary1),
-                                onDeleted: () => {
-                                  // user.setSkills = skills.remove(e),
-                                },
                               ),
                             )
                             .toList(),
                       )
+                    : (user == null || user.skills!.isEmpty)
+                        ? Container()
+                        : Wrap(
+                            spacing: 20,
+                            children: user.skills!
+                                .map(
+                                  (e) => Chip(
+                                    labelPadding: const EdgeInsets.only(
+                                      left: 4,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(9.0),
+                                    ),
+                                    label: Text(e),
+                                    deleteIcon: Icon(Icons.close,
+                                        size: 18, color: appTheme.primary1),
+                                    onDeleted: () => {
+                                      // user.setSkills = skills.remove(e),
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          )
               ],
             ),
           ),

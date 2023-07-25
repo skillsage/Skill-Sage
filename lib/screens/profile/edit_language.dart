@@ -12,25 +12,28 @@ class EditLanguageScreen extends ConsumerWidget {
 
     User? user = ref.watch(userProvider).user;
 
-    addLanguage() async {
+    addLanguage({lang}) async {
       final prov = ref.read(userProvider);
-      Set<String> uniqueLanguages;
+      Set<String>? uniqueLanguages;
 
-// Assuming _lang.text contains the new language to add
-      if (user == null || user.profile.languages == null) {
-        uniqueLanguages = {_lang.text};
-      } else {
-        uniqueLanguages = {...?user.profile.languages, _lang.text};
+      if (lang == null) {
+        if (user == null || user.profile.languages == null) {
+          uniqueLanguages = {_lang.text};
+        } else {
+          uniqueLanguages = {...?user.profile.languages, _lang.text};
+        }
       }
 
-      List<String> languages = uniqueLanguages.toList();
+      List<String> languages = lang ?? uniqueLanguages!.toList();
 
       try {
         final resp = await prov.updateProfile(
           language: languages,
         );
-        print(resp);
-        if (!resp.success) {
+        if (resp.success) {
+          _lang.text = "";
+          showToast(context, "upload successful");
+        } else {
           showToast(context, "unable to add language");
         }
       } catch (err) {
@@ -97,8 +100,13 @@ class EditLanguageScreen extends ConsumerWidget {
                                 label: Text(e),
                                 deleteIcon: Icon(Icons.close,
                                     size: 18, color: appTheme.primary1),
-                                onDeleted: () => {
+                                onDeleted: () {
                                   // user.setSkills = skills.remove(e),
+                                  final lang = user.profile.languages;
+                                  final filtered = [
+                                    ...lang!.where((l) => l != e)
+                                  ];
+                                  addLanguage(lang: filtered);
                                 },
                               ),
                             )

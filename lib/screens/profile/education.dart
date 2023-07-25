@@ -1,7 +1,8 @@
 part of skillsage_screens;
 
 class EducationScreen extends ConsumerStatefulWidget {
-  const EducationScreen({super.key});
+  final Education? education;
+  const EducationScreen({super.key, this.education});
 
   @override
   ConsumerState<EducationScreen> createState() => _EducationScreenState();
@@ -17,17 +18,30 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
   final TextEditingController _endDate = TextEditingController();
 
   bool? hasCompleted = false;
+  bool loading = false;
 
-  createExperience() async {
+  handleEducation() async {
+    setState(() {
+      loading = true;
+    });
     try {
       final prov = ref.read(userProvider.notifier);
-      final res = await prov.addEducation(
-        program: _program.text,
-        institution: _institution.text,
-        startDate: _startDate.text,
-        endDate: _endDate.text,
-        hasCompleted: hasCompleted,
-      );
+      final res = (widget.education != null)
+          ? await prov.updateEducation(
+              id: widget.education!.id,
+              program: _program.text,
+              institution: _institution.text,
+              startDate: _startDate.text,
+              endDate: _endDate.text,
+              hasCompleted: hasCompleted,
+            )
+          : await prov.addEducation(
+              program: _program.text,
+              institution: _institution.text,
+              startDate: _startDate.text,
+              endDate: _endDate.text,
+              hasCompleted: hasCompleted,
+            );
       print('res: $res');
       if (!res.success) {
         showToast(context, "unable to update");
@@ -35,10 +49,17 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
       if (res.success) {
         goBack();
       }
+      setState(() {
+        loading = false;
+      });
       // handle success
     } catch (e) {
       print(e);
       showToast(context, "Unexpected err");
+    } finally {
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -51,9 +72,17 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    // final exp = ModalRoute.of(context)!.settings.arguments as Experience;
+    final education = widget.education;
 
-    // print('exp: ${exp}');
+    if (education != null) {
+      _program.text = education.program;
+      _institution.text = education.institution;
+      _startDate.text = education.startDate;
+      _endDate.text = education.endDate.toString();
+      hasCompleted = education.hasCompleted;
+    } else {
+      print("I am null");
+    }
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -166,7 +195,8 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
               child: CustomButton(
                 title: 'SAVE',
                 color: AppTheme.appTheme(context).secondary,
-                onPressed: createExperience,
+                onPressed: handleEducation,
+                isLoading: loading,
               ),
             )
           ],

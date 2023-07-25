@@ -6,30 +6,32 @@ enum Role { JOB_SEEKER, EMPLOYER, ADMIN }
 
 @freezed
 class User with _$User {
-  const factory User(
-      {required String name,
-      required String email,
-      required int id,
-      required Role role,
-      required UserProfile profile,
-      @JsonKey(name: "profile_image") String? profileImage,
-      List<Experience>? experience,
-      List<String>? resume,
-      List<String>? skills,
-      List<Education>? education}) = _User;
+  const factory User({
+    required String name,
+    required String email,
+    required int id,
+    required Role role,
+    required UserProfile profile,
+    @JsonKey(name: "profile_image") String? profileImage,
+    List<Experience>? experience,
+    List<String>? resume,
+    List<String>? skills,
+    List<Education>? education,
+  }) = _User;
 
   factory User.fromJson(dynamic json) => _$UserFromJson(json);
 }
 
 @freezed
 class UserProfile with _$UserProfile {
-  const factory UserProfile(
-      {String? about,
-      String? portfolio,
-      required DateTime created,
-      DateTime? updated,
-      List<String>? languages,
-      String? location}) = _UserProfile;
+  const factory UserProfile({
+    String? about,
+    String? portfolio,
+    required DateTime created,
+    DateTime? updated,
+    List<String>? languages,
+    String? location,
+  }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
@@ -38,6 +40,7 @@ class UserProfile with _$UserProfile {
 @freezed
 class Experience with _$Experience {
   const factory Experience({
+    required int id,
     @JsonKey(name: "company_name") required String companyName,
     @JsonKey(name: "job_title") required String jobTitle,
     @JsonKey(name: "start_date") required String startDate,
@@ -54,6 +57,7 @@ class Experience with _$Experience {
 @freezed
 class Education with _$Education {
   const factory Education({
+    required int id,
     required String program,
     required String institution,
     @JsonKey(name: "start_date") required String startDate,

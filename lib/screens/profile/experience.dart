@@ -1,7 +1,8 @@
 part of skillsage_screens;
 
 class ExperienceScreen extends ConsumerStatefulWidget {
-  const ExperienceScreen({super.key});
+  final Experience? experience;
+  const ExperienceScreen({super.key, this.experience});
 
   @override
   ConsumerState<ExperienceScreen> createState() => _ExperienceScreenState();
@@ -19,18 +20,33 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
   final TextEditingController _endDate = TextEditingController();
 
   bool? hasCompleted = false;
+  bool loading = false;
 
-  createExperience() async {
+  handleExperience() async {
+    setState(() {
+      loading = true;
+    });
+
     try {
       final prov = ref.read(userProvider.notifier);
-      final res = await prov.addExperience(
-        companyName: _company.text,
-        jobTitle: _title.text,
-        startDate: _startDate.text,
-        endDate: _endDate.text,
-        hasCompleted: hasCompleted,
-        tasks: _description.text,
-      );
+      final res = (widget.experience != null)
+          ? await prov.updateExperience(
+              id: widget.experience!.id,
+              companyName: _company.text,
+              jobTitle: _title.text,
+              startDate: _startDate.text,
+              endDate: _endDate.text,
+              hasCompleted: hasCompleted,
+              tasks: _description.text,
+            )
+          : await prov.addExperience(
+              companyName: _company.text,
+              jobTitle: _title.text,
+              startDate: _startDate.text,
+              endDate: _endDate.text,
+              hasCompleted: hasCompleted,
+              tasks: _description.text,
+            );
       print('res: $res');
       if (!res.success) {
         showToast(context, "unable to update");
@@ -38,10 +54,17 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
       if (res.success) {
         goBack();
       }
+      setState(() {
+        loading = false;
+      });
       // handle success
     } catch (e) {
       print(e);
       showToast(context, "Unexpected err");
+    } finally {
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -54,9 +77,19 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
 
-    // final exp = ModalRoute.of(context)!.settings.arguments as Experience;
-
-    // print('exp: ${exp}');
+    print(ModalRoute.of(context));
+    final experience = widget.experience;
+    if (experience != null) {
+      _title.text = experience.jobTitle;
+      _company.text = experience.companyName;
+      _title.text = experience.jobTitle;
+      _startDate.text = experience.startDate;
+      _endDate.text = experience.endDate.toString();
+      _description.text = experience.tasks.toString();
+      hasCompleted = experience.hasCompleted;
+    } else {
+      print("I am null");
+    }
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -172,7 +205,8 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
               child: CustomButton(
                 title: 'SAVE',
                 color: AppTheme.appTheme(context).secondary,
-                onPressed: createExperience,
+                onPressed: handleExperience,
+                isLoading: loading,
               ),
             )
           ],

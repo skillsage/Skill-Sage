@@ -35,7 +35,8 @@ class AppRouter {
       case AppRoutes.editAbout:
         return _route(screen: const EditAboutScreen());
       case AppRoutes.experienceRoute:
-        return _route(screen: const ExperienceScreen());
+        final Experience? experience = settings.arguments as Experience?;
+        return _route(screen: ExperienceScreen(experience: experience));
       case AppRoutes.editSkills:
         return _route(screen: EditSkillScreen());
       case AppRoutes.userProfile:
@@ -45,7 +46,8 @@ class AppRouter {
       case AppRoutes.editProfile:
         return _route(screen: const EditProfileScreen());
       case AppRoutes.educationRoute:
-        return _route(screen: const EducationScreen());
+        final Education? education = settings.arguments as Education?;
+        return _route(screen: EducationScreen(education: education));
       default:
         return _route(screen: const Loader());
     }

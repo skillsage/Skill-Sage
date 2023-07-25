@@ -70,6 +70,7 @@ Map<String, dynamic> _$$_UserProfileToJson(_$_UserProfile instance) =>
 
 _$_Experience _$$_ExperienceFromJson(Map<String, dynamic> json) =>
     _$_Experience(
+      id: json['id'] as int,
       companyName: json['company_name'] as String,
       jobTitle: json['job_title'] as String,
       startDate: json['start_date'] as String,
@@ -81,6 +82,7 @@ _$_Experience _$$_ExperienceFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ExperienceToJson(_$_Experience instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'company_name': instance.companyName,
       'job_title': instance.jobTitle,
       'start_date': instance.startDate,
@@ -91,6 +93,7 @@ Map<String, dynamic> _$$_ExperienceToJson(_$_Experience instance) =>
     };
 
 _$_Education _$$_EducationFromJson(Map<String, dynamic> json) => _$_Education(
+      id: json['id'] as int,
       program: json['program'] as String,
       institution: json['institution'] as String,
       startDate: json['start_date'] as String,
@@ -100,6 +103,7 @@ _$_Education _$$_EducationFromJson(Map<String, dynamic> json) => _$_Education(
 
 Map<String, dynamic> _$$_EducationToJson(_$_Education instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'program': instance.program,
       'institution': instance.institution,
       'start_date': instance.startDate,

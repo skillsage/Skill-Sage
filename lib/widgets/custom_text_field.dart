@@ -6,6 +6,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword, isEmail, isDate;
   final int? maxLine;
   final Icon? leadingIcon;
+  final void Function(String)? onChanged;
   const CustomTextField({
     super.key,
     this.hintText,
@@ -15,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.isDate = false,
     this.maxLine = 1,
     this.leadingIcon,
+    this.onChanged,
   });
 
   @override
@@ -116,6 +118,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : null,
           prefixIcon: widget.leadingIcon,
         ),
+        onChanged: widget.onChanged,
       ),
     );
   }
