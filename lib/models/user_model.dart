@@ -38,6 +38,16 @@ class UserProfile with _$UserProfile {
 }
 
 @freezed
+class Skills with _$Skills {
+  const factory Skills({
+    required int id,
+    required String name,
+  }) = _Skills;
+
+  factory Skills.fromJson(Map<String, dynamic> json) => _$SkillsFromJson(json);
+}
+
+@freezed
 class Experience with _$Experience {
   const factory Experience({
     required int id,

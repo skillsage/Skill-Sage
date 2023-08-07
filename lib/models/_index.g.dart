@@ -68,6 +68,16 @@ Map<String, dynamic> _$$_UserProfileToJson(_$_UserProfile instance) =>
       'location': instance.location,
     };
 
+_$_Skills _$$_SkillsFromJson(Map<String, dynamic> json) => _$_Skills(
+      id: json['id'] as int,
+      name: json['name'] as String,
+    );
+
+Map<String, dynamic> _$$_SkillsToJson(_$_Skills instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+    };
+
 _$_Experience _$$_ExperienceFromJson(Map<String, dynamic> json) =>
     _$_Experience(
       id: json['id'] as int,

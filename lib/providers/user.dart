@@ -3,6 +3,7 @@ part of skillsage_providers;
 final userProvider = ChangeNotifierProvider((ref) => UserProvider(ref));
 
 class UserProvider extends ChangeNotifier {
+  List<Skills?>? skills;
   User? user;
   Ref ref;
 
@@ -240,9 +241,32 @@ class UserProvider extends ChangeNotifier {
     return resp.toNull();
   }
 
-  Future<Resp> loadSkills() async {
-    final resp = await cather(() => http.get('/user/skills'));
+  Future<bool> loadSkills() async {
+    try {
+      final resp = await cather(() => http.get('/user/skills'));
+      // print('res: ${res.data}');
+      if (!resp.success) return throw Exception("failed");
+      final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
+      skills = data.result;
+      notifyListeners();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
 
-    return resp.toNull();
+  Future<Resp<User?>> uploadSkills({
+    required List skills,
+  }) async {
+    final res = await cather(
+      () => http.post(
+        '/user/skill',
+        data: {
+          "skills": skills,
+        },
+      ),
+    );
+    reloadUser();
+    return res.toNull();
   }
 }

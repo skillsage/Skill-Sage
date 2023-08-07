@@ -42,12 +42,31 @@ class Resp<T> {
   Resp({required this.success, this.result, this.error});
 
   Resp<U?> parse<U>(U Function(dynamic) parser) {
+    U? parsed;
     if (result != null) {
-      final parsed = parser(result);
+      if (result is List) {
+        throw Exception("Data is a list, use parseList method instead.");
+      } else {
+        parsed = parser(result);
+      }
       return Resp(success: success, error: error, result: parsed);
     }
 
     return Resp(success: success, error: error, result: null);
+  }
+
+  Resp<List<U?>> parseList<U>(U Function(Map<String, dynamic>) parser) {
+    List<U?> parsedList;
+    if (result != null) {
+      if (result is List) {
+        final mapData = result as List;
+        parsedList = mapData.map((e) => parser(e)).toList();
+      } else {
+        throw Exception("Data is not a list, use parse method instead.");
+      }
+      return Resp(success: success, error: error, result: parsedList);
+    }
+    return Resp(success: false, error: error, result: null);
   }
 
   toNull() {

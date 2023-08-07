@@ -10,7 +10,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     this.hintText,
-    required this.controller,
+    this.controller,
     this.isPassword = false,
     this.isEmail = false,
     this.isDate = false,
@@ -55,7 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               }
             : null,
         style: textTheme.bodySmall,
-        controller: widget.controller,
+        controller: (widget.controller != null) ? widget.controller : null,
         enabled: true,
         obscureText: widget.isPassword && obscurePassword,
         maxLines: widget.maxLine,
