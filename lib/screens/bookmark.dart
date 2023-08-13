@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class BookmarkScreen extends ConsumerWidget {
   const BookmarkScreen({super.key});

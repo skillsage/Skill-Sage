@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class JobPostScreen extends ConsumerWidget {
   const JobPostScreen({super.key});

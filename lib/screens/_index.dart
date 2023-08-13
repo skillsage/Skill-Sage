@@ -1,4 +1,4 @@
-library skillsage_screens;
+library screens;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

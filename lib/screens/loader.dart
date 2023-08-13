@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class Loader extends ConsumerStatefulWidget {
   const Loader({super.key});

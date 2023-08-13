@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class OnboardingProfileScreen extends StatelessWidget {
   const OnboardingProfileScreen({super.key});

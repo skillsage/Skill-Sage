@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class ExperienceScreen extends ConsumerStatefulWidget {
   final Experience? experience;

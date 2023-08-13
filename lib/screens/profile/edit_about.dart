@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class EditAboutScreen extends ConsumerStatefulWidget {
   const EditAboutScreen({super.key});

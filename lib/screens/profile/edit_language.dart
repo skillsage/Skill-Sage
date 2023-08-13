@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class EditLanguageScreen extends ConsumerWidget {
   EditLanguageScreen({super.key});

@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

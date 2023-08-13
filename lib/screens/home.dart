@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

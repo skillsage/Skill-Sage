@@ -1,4 +1,4 @@
-part of skillsage_screens;
+part of screens;
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
