@@ -1,4 +1,4 @@
-part of skillsage_providers;
+part of providers;
 
 final userProvider = ChangeNotifierProvider((ref) => UserProvider(ref));
 
@@ -14,9 +14,10 @@ class UserProvider extends ChangeNotifier {
 
   init() {
     http.interceptors.add(InterceptorsWrapper(
-      onResponse: (res, handler) {
+      onResponse: (res, handler) async {
         if (res.statusCode == 401) {
-          print("Unauthorized");
+          // print("Unauthorized");
+          await logout();
         }
 
         return handler.next(res);
@@ -27,7 +28,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> reloadUser() async {
     try {
       final res = await cather(() => http.get("/user/"));
-      print(res.result["resume"]);
+      // print(res.result["resume"]);
       if (!res.success) return false;
       final data = res.parse(User.fromJson);
       user = data.result;
@@ -96,8 +97,8 @@ class UserProvider extends ChangeNotifier {
           filename: image.path.split('/').last,
         ),
       });
-      final resp = await cather(() => http.post('/user/image', data: formData));
-      print(resp);
+      await cather(() => http.post('/user/image', data: formData));
+      // print(resp);
     }
     final res = await cather(
       () => http.put(
@@ -225,7 +226,7 @@ class UserProvider extends ChangeNotifier {
     });
     final resp =
         await cather(() => http.post('/user/upload_resume', data: formData));
-    print(resp);
+    // print(resp);
 
     reloadUser();
     return resp.toNull();
@@ -235,7 +236,7 @@ class UserProvider extends ChangeNotifier {
     final resp = await cather(() => http.delete('/user/resume', data: {
           "url": url,
         }));
-    print('response: $resp');
+    // print('response: $resp');
 
     reloadUser();
     return resp.toNull();

@@ -1,4 +1,4 @@
-library skillsage_providers;
+library providers;
 
 import 'dart:async';
 import 'dart:io';
@@ -21,7 +21,7 @@ FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
   } catch (e) {
     if (e is DioException) {
       if (e.response != null) {
-        print(e.response);
+        // print(e.response);
         final res = e.response!;
         final data = res.data["detail"];
         if (data is String) {

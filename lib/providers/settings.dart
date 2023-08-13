@@ -1,4 +1,4 @@
-part of skillsage_providers;
+part of providers;
 
 enum ThemeModeOption {
   light,
