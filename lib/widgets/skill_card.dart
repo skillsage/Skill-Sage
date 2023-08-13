@@ -1,4 +1,4 @@
-part of skillsage_widgets;
+part of widgets;
 
 class SkillCard extends StatelessWidget {
   final String? title, subtitle, description;

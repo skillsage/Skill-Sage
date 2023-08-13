@@ -1,4 +1,4 @@
-part of skillsage_widgets;
+part of widgets;
 
 class CustomAppHeader extends ConsumerWidget {
   const CustomAppHeader({super.key});

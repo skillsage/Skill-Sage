@@ -1,4 +1,4 @@
-library skillsage_widgets;
+library widgets;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,3 +15,4 @@ part 'profile_card.dart';
 part 'app_header.dart';
 part 'skill_card.dart';
 part 'bookmarked.dart';
+part 'future_builder.dart';

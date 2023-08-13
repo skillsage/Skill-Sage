@@ -1,4 +1,4 @@
-part of skillsage_widgets;
+part of widgets;
 
 class ProfileCard extends StatelessWidget {
   final Icon? leadingIcon;

@@ -1,4 +1,4 @@
-part of skillsage_widgets;
+part of widgets;
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
