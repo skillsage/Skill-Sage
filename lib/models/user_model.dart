@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names, invalid_annotation_target
 
-part of skillsage_models;
+part of models;
 
 enum Role { JOB_SEEKER, EMPLOYER, ADMIN }
 
