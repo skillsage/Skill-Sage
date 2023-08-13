@@ -1,4 +1,4 @@
-part of skillsage_utils;
+part of utils;
 
 class CustomTextTheme {
   late TextTheme textTheme;

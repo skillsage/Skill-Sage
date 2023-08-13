@@ -1,4 +1,4 @@
-part of skillsage_utils;
+part of utils;
 
 class AppRoutes {
   static const String wrapperRoute = '/wrapper';
