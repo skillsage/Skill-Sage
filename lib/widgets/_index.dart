@@ -16,3 +16,4 @@ part 'app_header.dart';
 part 'skill_card.dart';
 part 'bookmarked.dart';
 part 'future_builder.dart';
+part 'card_info.dart';

@@ -6,7 +6,9 @@ import 'package:skill_sage_app/utils/_index.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(
-      const ProviderScope(child: SkillSage()),
+      const ProviderScope(
+        child: SkillSage(),
+      ),
     );
 
 class SkillSage extends ConsumerWidget {

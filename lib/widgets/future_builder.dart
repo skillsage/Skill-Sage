@@ -1,7 +1,7 @@
 part of widgets;
 
 typedef BuilderFunction<T> = Widget Function(
-    BuildContext context, T data, Future<void> Function() reload);
+    BuildContext context, T result, Future<void> Function() reload);
 typedef ErrorBuilderFunction<T> = Widget Function(
   BuildContext context,
   Object error,
@@ -41,7 +41,7 @@ class _AdvancedFutureBuilderState<T> extends State<AdvancedFutureBuilder<T>> {
 
   bool loading = true;
   Object? error;
-  T? data;
+  T? result;
 
   Future<void> init() async {
     try {
@@ -51,7 +51,7 @@ class _AdvancedFutureBuilderState<T> extends State<AdvancedFutureBuilder<T>> {
           error = null;
         });
       }
-      data = await widget.future();
+      result = await widget.future();
       setState(() {
         loading = false;
       });
@@ -78,16 +78,15 @@ class _AdvancedFutureBuilderState<T> extends State<AdvancedFutureBuilder<T>> {
           if (widget.errorBuilder != null) {
             return widget.errorBuilder!(context, error!, init);
           }
-          return Card();
-          // InfoCard.error(
-          //   btnText: "Reload",
-          //   onBtnPressed: () {
-          //     init();
-          //   },
-          // );
+          return InfoCard.error(
+            btnText: "Reload",
+            onBtnPressed: () {
+              init();
+            },
+          );
         }
-        if (data != null) {
-          return widget.builder(context, data as T, init);
+        if (result != null) {
+          return widget.builder(context, result as T, init);
         }
         return const SizedBox.shrink();
       },

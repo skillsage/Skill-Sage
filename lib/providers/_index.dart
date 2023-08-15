@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 part 'user.dart';
 part 'settings.dart';
 part "http.dart";
+part 'recommendation.dart';
 
 FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
   try {
@@ -21,7 +22,7 @@ FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
   } catch (e) {
     if (e is DioException) {
       if (e.response != null) {
-        // print(e.response);
+        // print('err: ${e.response!.data}');
         final res = e.response!;
         final data = res.data["detail"];
         if (data is String) {

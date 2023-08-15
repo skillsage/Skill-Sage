@@ -48,6 +48,7 @@ class UserProvider extends ChangeNotifier {
       }),
     );
 
+    print('resp: $res');
     if (res.success) {
       final token = res.result["token"];
       await ref.read(httpProvider).setToken(token);
@@ -246,6 +247,22 @@ class UserProvider extends ChangeNotifier {
     try {
       final resp = await cather(() => http.get('/user/skills'));
       // print('res: ${res.data}');
+      if (!resp.success) return throw Exception("failed");
+      final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
+      skills = data.result;
+      notifyListeners();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> searchSkill({skill}) async {
+    try {
+      final resp = await cather(
+        () => http.get('/user/skills', queryParameters: {"q": skill}),
+      );
+      print('res: ${resp.result}');
       if (!resp.success) return throw Exception("failed");
       final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
       skills = data.result;
