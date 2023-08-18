@@ -452,7 +452,7 @@ class _ProfilesState extends ConsumerState<Profiles> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9.0),
                           ),
-                          label: Text(e),
+                          label: Text(e['name'].toString()),
                         ),
                       )
                       .toList(),

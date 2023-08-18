@@ -15,7 +15,7 @@ class User with _$User {
     @JsonKey(name: "profile_image") String? profileImage,
     List<Experience>? experience,
     List<String>? resume,
-    List<String>? skills,
+    List<Map>? skills,
     List<Education>? education,
   }) = _User;
 

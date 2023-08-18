@@ -28,7 +28,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> reloadUser() async {
     try {
       final res = await cather(() => http.get("/user/"));
-      // print(res.result["resume"]);
+      // print(res.result);
       if (!res.success) return false;
       final data = res.parse(User.fromJson);
       user = data.result;

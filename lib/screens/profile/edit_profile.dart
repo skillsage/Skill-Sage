@@ -103,7 +103,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         child: Stack(
                           children: [
                             Positioned(
-                              child: (user!.profileImage == null ||
+                              child: (user == null ||
+                                      user!.profileImage == null ||
                                       _imageFile != null)
                                   ? CircleAvatar(
                                       radius: 50,

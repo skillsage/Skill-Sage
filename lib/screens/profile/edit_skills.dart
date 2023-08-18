@@ -17,32 +17,25 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
   String? search = "";
   bool isLoading = false;
 
-  addSkill({List<Skills?>? skills, userSkills, id, filtered}) async {
+  addSkill({id}) async {
     setState(() {
       isLoading = true;
     });
-
-    print('filter $filtered');
-    print('skills $skills');
-    print('userSkills: $userSkills');
-    final p = [...userSkills];
-    print('p $p');
     try {
-      List<int> ids = (filtered == null)
-          ? [
-              ...skills!
-                  .where((skill) => userSkills.contains(skill!.name))
-                  .map((skill) => skill!.id)
-                  .toList(),
-              id
-            ]
-          : skills!
-              .where((skill) => filtered.contains(skill!.name))
-              .map((skill) => skill!.id)
-              .toList();
+      // List<int> ids = (filtered == null)
+      //     ? [
+      //         ...skills!
+      //             .where((skill) => userSkills.contains(skill!.name))
+      //             .map((skill) => skill!.id)
+      //             .toList(),
+      //         id
+      //       ]
+      //     : skills!
+      //         .where((skill) => filtered.contains(skill!.name))
+      //         .map((skill) => skill!.id)
+      //         .toList();
 
-      print(ids);
-      final res = await ref.read(userProvider).uploadSkills(skills: ids);
+      final res = await ref.read(userProvider).uploadSkills(skills: id);
       if (res.success) {
         setState(() {
           search = "";
@@ -75,7 +68,6 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
 
     final userProv = ref.watch(userProvider);
     User? user = userProv.user;
-    List<Skills?>? skills = userProv.skills;
 
     return Scaffold(
       backgroundColor: appTheme.bg1,
@@ -110,7 +102,7 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
                       Flexible(
                         child: CustomTextField(
                           controller: _search,
-                          leadingIcon: const Icon(CupertinoIcons.search),
+                          // leadingIcon: const Icon(CupertinoIcons.search),
                           hintText: 'Search...',
                           // onChanged: (value) {
                           //   setState(() {
@@ -122,12 +114,23 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
                       const SizedBox(
                         width: 5,
                       ),
-                      ElevatedButton(
-                        onPressed: () => {
-                          userProv.searchSkill(skill: _search.text),
-                        },
-                        child: const Text("Search"),
+                      TextButton(
+                        onPressed: () =>
+                            userProv.searchSkill(skill: _search.text),
+                        child: const Icon(
+                          CupertinoIcons.search,
+                          size: 20,
+                        ),
                       )
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: appTheme.secondary,
+                      //   ),
+                      //   onPressed: () => {
+                      //     userProv.searchSkill(skill: _search.text),
+                      //   },
+                      //   child: const Text("Search"),
+                      // )
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -139,10 +142,15 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
                               children: userProv.skills!
                                   .map(
                                     (e) => InkWell(
-                                      onTap: () => addSkill(
-                                          skills: skills,
-                                          userSkills: user!.skills,
-                                          id: e.id),
+                                      onTap: () {
+                                        List id = [
+                                          ...user!.skills!
+                                              .map((skill) => skill["id"]),
+                                          e.id
+                                        ];
+                                        print(id);
+                                        addSkill(id: id);
+                                      },
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                           bottom: 20.0,
@@ -168,17 +176,16 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
                                         borderRadius:
                                             BorderRadius.circular(9.0),
                                       ),
-                                      label: Text(e),
+                                      label: Text(e['name'].toString()),
                                       deleteIcon: Icon(Icons.close,
                                           size: 18, color: appTheme.primary1),
                                       onDeleted: () {
                                         final skill = user.skills;
-                                        final filtered = [
-                                          ...skill!.where((l) => l != e)
-                                        ];
-                                        print('filtered: $filtered');
-                                        addSkill(
-                                            filtered: filtered, skills: skills);
+                                        final List id = skill!
+                                            .where((l) => l != e)
+                                            .map((k) => k["id"])
+                                            .toList();
+                                        addSkill(id: id);
                                       },
                                     ),
                                   )

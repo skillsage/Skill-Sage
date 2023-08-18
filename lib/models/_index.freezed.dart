@@ -29,7 +29,7 @@ mixin _$User {
   String? get profileImage => throw _privateConstructorUsedError;
   List<Experience>? get experience => throw _privateConstructorUsedError;
   List<String>? get resume => throw _privateConstructorUsedError;
-  List<String>? get skills => throw _privateConstructorUsedError;
+  List<Map>? get skills => throw _privateConstructorUsedError;
   List<Education>? get education => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: "profile_image") String? profileImage,
       List<Experience>? experience,
       List<String>? resume,
-      List<String>? skills,
+      List<Map>? skills,
       List<Education>? education});
 
   $UserProfileCopyWith<$Res> get profile;
@@ -117,7 +117,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       skills: freezed == skills
           ? _value.skills
           : skills // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<Map>?,
       education: freezed == education
           ? _value.education
           : education // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: "profile_image") String? profileImage,
       List<Experience>? experience,
       List<String>? resume,
-      List<String>? skills,
+      List<Map>? skills,
       List<Education>? education});
 
   @override
@@ -212,7 +212,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
       skills: freezed == skills
           ? _value._skills
           : skills // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<Map>?,
       education: freezed == education
           ? _value._education
           : education // ignore: cast_nullable_to_non_nullable
@@ -233,7 +233,7 @@ class _$_User implements _User {
       @JsonKey(name: "profile_image") this.profileImage,
       final List<Experience>? experience,
       final List<String>? resume,
-      final List<String>? skills,
+      final List<Map>? skills,
       final List<Education>? education})
       : _experience = experience,
         _resume = resume,
@@ -275,9 +275,9 @@ class _$_User implements _User {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<String>? _skills;
+  final List<Map>? _skills;
   @override
-  List<String>? get skills {
+  List<Map>? get skills {
     final value = _skills;
     if (value == null) return null;
     if (_skills is EqualUnmodifiableListView) return _skills;
@@ -359,7 +359,7 @@ abstract class _User implements User {
       @JsonKey(name: "profile_image") final String? profileImage,
       final List<Experience>? experience,
       final List<String>? resume,
-      final List<String>? skills,
+      final List<Map>? skills,
       final List<Education>? education}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -382,7 +382,7 @@ abstract class _User implements User {
   @override
   List<String>? get resume;
   @override
-  List<String>? get skills;
+  List<Map>? get skills;
   @override
   List<Education>? get education;
   @override
