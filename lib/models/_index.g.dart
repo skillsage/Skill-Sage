@@ -43,6 +43,7 @@ const _$RoleEnumMap = {
   Role.JOB_SEEKER: 'JOB_SEEKER',
   Role.EMPLOYER: 'EMPLOYER',
   Role.ADMIN: 'ADMIN',
+  Role.CREATOR: 'CREATOR',
 };
 
 _$_UserProfile _$$_UserProfileFromJson(Map<String, dynamic> json) =>

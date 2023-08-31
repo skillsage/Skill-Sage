@@ -2,7 +2,7 @@
 
 part of models;
 
-enum Role { JOB_SEEKER, EMPLOYER, ADMIN }
+enum Role { JOB_SEEKER, EMPLOYER, ADMIN, CREATOR }
 
 @freezed
 class User with _$User {

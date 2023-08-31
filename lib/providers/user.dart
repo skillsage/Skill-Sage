@@ -48,7 +48,7 @@ class UserProvider extends ChangeNotifier {
       }),
     );
 
-    print('resp: $res');
+    print('resp: ${res.success}');
     if (res.success) {
       final token = res.result["token"];
       await ref.read(httpProvider).setToken(token);

@@ -91,7 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<Widget> _buildScreens() {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     final userProv = ref.read(userProvider);
     return <Widget>[
       Column(
