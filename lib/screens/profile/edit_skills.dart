@@ -80,6 +80,7 @@ class _EditSkillScreenState extends ConsumerState<EditSkillScreen> {
               color: appTheme.scaffold,
               child: ListTile(
                 leading: IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     CupertinoIcons.arrow_left,
                     size: 20,

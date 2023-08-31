@@ -15,17 +15,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final appTheme = AppTheme.appTheme(context);
     return Scaffold(
       backgroundColor: appTheme.bg1,
-      body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(), // disables scrolling
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          children: _buildScreens(),
-        ),
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(), // disables scrolling
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: _buildScreens(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: appTheme.primary1,
@@ -51,17 +49,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             label: '',
             tooltip: 'Home page view of recommended skills',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Padding(
-          //     padding: EdgeInsets.only(top: 8.0),
-          //     child: Icon(
-          //       CupertinoIcons.briefcase,
-          //       size: 20,
-          //     ),
-          //   ),
-          //   label: '',
-          //   tooltip: 'Other (Job) recommendations',
-          // ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Icon(
+                CupertinoIcons.briefcase,
+                size: 20,
+              ),
+            ),
+            label: '',
+            tooltip: 'Other (Job) recommendations',
+          ),
           // BottomNavigationBarItem(
           //   icon: Padding(
           //     padding: EdgeInsets.only(top: 8.0),
@@ -94,78 +92,85 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // final size = MediaQuery.of(context).size;
     final userProv = ref.read(userProvider);
     return <Widget>[
-      Column(
-        children: [
-          const CustomAppHeader(),
-          Expanded(
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              children: [
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                //   child: Text("Popular Stacks", style: textTheme.bodyMedium),
-                // ),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   physics: const BouncingScrollPhysics(),
-                //   child: Row(children: [
-                //     SkillCard(
-                //       title: "React",
-                //       subtitle: "JavaScript Library",
-                //       description:
-                //           "The library for web and native user interfaces. Become a React expert. Start today!",
-                //       icon: const Icon(Icons.javascript, size: 20),
-                //       width: size.width * 0.77,
-                //     ),
-                //     SkillCard(
-                //       title: "React",
-                //       subtitle: "JavaScript Library",
-                //       description:
-                //           "The library for web and native user interfaces. Become a React expert. Start today!",
-                //       icon: const Icon(Icons.javascript, size: 20),
-                //       width: size.width * 0.77,
-                //     ),
-                //   ]),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                  child:
-                      Text("Recommended for you", style: textTheme.bodyMedium),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: (userProv.user != null &&
-                          userProv.user!.skills != null &&
-                          userProv.user!.skills!.isNotEmpty)
-                      ? AdvancedFutureBuilder(
-                          future: () => ref
-                              .watch(recommenderProvider)
-                              .loadRecommendations(),
-                          builder: (context, snapshot, _) => ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: snapshot.result.length,
-                            itemBuilder: (_, index) => SkillCard(
-                              // icon: ,
-                              title: snapshot.result[index],
-                              description: "",
-                              subtitle: "",
+      SafeArea(
+        child: Column(
+          children: [
+            const CustomAppHeader(),
+            Expanded(
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+                  //   child: Text("Popular Stacks", style: textTheme.bodyMedium),
+                  // ),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   physics: const BouncingScrollPhysics(),
+                  //   child: Row(children: [
+                  //     SkillCard(
+                  //       title: "React",
+                  //       subtitle: "JavaScript Library",
+                  //       description:
+                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
+                  //       icon: const Icon(Icons.javascript, size: 20),
+                  //       width: size.width * 0.77,
+                  //     ),
+                  //     SkillCard(
+                  //       title: "React",
+                  //       subtitle: "JavaScript Library",
+                  //       description:
+                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
+                  //       icon: const Icon(Icons.javascript, size: 20),
+                  //       width: size.width * 0.77,
+                  //     ),
+                  //   ]),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      top: 15.0,
+                      bottom: 15.0,
+                    ),
+                    child: Text("Recommendations", style: textTheme.bodyMedium),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: (userProv.user != null &&
+                            userProv.user!.skills != null &&
+                            userProv.user!.skills!.isNotEmpty)
+                        ? AdvancedFutureBuilder(
+                            future: () => ref
+                                .watch(recommenderProvider)
+                                .loadRecommendations(),
+                            builder: (context, snapshot, _) => ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: snapshot.result.length,
+                              itemBuilder: (_, index) => SkillCard(
+                                // icon: ,
+                                title: snapshot.result[index],
+                                onPressed: () => Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.courseRoute,
+                                ),
+                              ),
                             ),
+                            errorBuilder: (context, error, reload) =>
+                                Text(error.toString()),
+                          )
+                        : Center(
+                            child: Text("Upload skills to get a recommendation",
+                                style: textTheme.bodyMedium),
                           ),
-                          errorBuilder: (context, error, reload) =>
-                              Text(error.toString()),
-                        )
-                      : Center(
-                          child: Text("Upload skills to get a recommendation",
-                              style: textTheme.bodyMedium),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      // const JobPostScreen(),
+      const JobPostScreen(),
       // const BookmarkScreen(),
       const ProfileScreen(),
     ];

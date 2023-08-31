@@ -24,10 +24,18 @@ class CustomAppHeader extends ConsumerWidget {
         children: [
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: Icon(
-              CupertinoIcons.bars,
-              color: appTheme.light,
+            leading: SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: Text(
+                "Discover Your Favorite Tech Skills.",
+                style: textTheme.headlineLarge,
+                maxLines: 2,
+              ),
             ),
+            // Icon(
+            //   CupertinoIcons.bars,
+            //   color: appTheme.light,
+            // ),
             trailing: (user == null || user.profileImage == null)
                 ? const CircleAvatar(
                     backgroundImage:
@@ -39,17 +47,17 @@ class CustomAppHeader extends ConsumerWidget {
                     ),
                   ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: Text(
-              "Discover Your Favorite Tech Skills.",
-              style: textTheme.headlineLarge,
-              maxLines: 2,
-            ),
-          ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width / 2,
+          //   child: Text(
+          //     "Discover Your Favorite Tech Skills.",
+          //     style: textTheme.headlineLarge,
+          //     maxLines: 2,
+          //   ),
+          // ),
           const SizedBox(
             height: 29,
           ),
@@ -62,10 +70,7 @@ class CustomAppHeader extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: appTheme.light,
                   ),
-
                   style: textTheme.titleSmall,
-
-                  // backgroundColor: appTheme.light,
                 ),
               ),
               const SizedBox(
@@ -73,8 +78,9 @@ class CustomAppHeader extends ConsumerWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: appTheme.primary2Light,
-                    borderRadius: BorderRadius.circular(10)),
+                  color: appTheme.primary2Light,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   icon: SvgPicture.asset(

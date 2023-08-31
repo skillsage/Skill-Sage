@@ -1,16 +1,17 @@
 part of widgets;
 
-class SkillCard extends StatelessWidget {
-  final String? title, subtitle, description;
+class JobCard extends StatelessWidget {
+  final String? title, company, location, datePosted;
   final Icon? icon;
   final double? width;
   final Color? color;
   final void Function()? onPressed;
-  const SkillCard({
+  const JobCard({
     super.key,
     this.title,
-    this.subtitle,
-    this.description,
+    this.company,
+    this.location,
+    this.datePosted,
     this.icon,
     this.width,
     this.color,
@@ -50,32 +51,58 @@ class SkillCard extends StatelessWidget {
                 ),
               ),
             ),
-            title: Text(
-              title.toString(),
-              style: textTheme.headlineMedium,
-            ),
-            // subtitle: Text(
-            //   subtitle.toString(),
-            //   style: textTheme.bodySmall,
-            // ),
             trailing: const Icon(
               CupertinoIcons.bookmark,
               size: 20,
             ),
           ),
-          // Text(
-          //   description.toString(),
-          //   style: textTheme.bodySmall,
-          // ),
-          // const SizedBox(
-          //   height: 18,
-          // ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: TextButton(
-              onPressed: onPressed,
-              child: const Text("Learn Skill"),
-            ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            title.toString(),
+            style: textTheme.headlineMedium,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Text(
+                company.toString(),
+                style: textTheme.bodySmall,
+              ),
+              Text(" . ", style: textTheme.headlineMedium),
+              Text(
+                location.toString(),
+                style: textTheme.bodySmall,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Wrap(
+            spacing: 10,
+            children: ['JavaScript', 'TypeScript', 'Python']
+                .map(
+                  (e) => Chip(
+                    label: Text(
+                      e.toString(),
+                      style: textTheme.bodySmall,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(datePosted.toString(), style: textTheme.bodySmall),
+          const SizedBox(
+            height: 10,
           )
         ],
       ),

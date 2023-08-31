@@ -95,6 +95,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
               color: appTheme.scaffold,
               child: ListTile(
                 leading: IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     CupertinoIcons.arrow_left,
                     size: 20,

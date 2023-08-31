@@ -102,6 +102,7 @@ class _ExperienceScreenState extends ConsumerState<ExperienceScreen> {
               color: appTheme.scaffold,
               child: ListTile(
                 leading: IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     CupertinoIcons.arrow_left,
                     size: 20,

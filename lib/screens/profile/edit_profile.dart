@@ -80,6 +80,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               color: appTheme.scaffold,
               child: ListTile(
                 leading: IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     CupertinoIcons.arrow_left,
                     size: 20,
