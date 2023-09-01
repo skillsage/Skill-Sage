@@ -65,7 +65,8 @@ class AppTheme {
       accentTxt: const Color(0xff8C8C8C),
       negativeTxt: const Color(0xffFFFFFF),
       danger: const Color(0xffFC4646),
-      scaffold: const Color(0xffF8F8FB),
+      scaffold: const Color(0xffffffff),
+      // scaffold: const Color(0xffF8F8FB),
       light: const Color(0xffffffff),
     );
   }

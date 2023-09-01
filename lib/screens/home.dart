@@ -152,7 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 title: snapshot.result[index],
                                 onPressed: () => Navigator.pushNamed(
                                   context,
-                                  AppRoutes.courseRoute,
+                                  AppRoutes.coursesRoute,
                                 ),
                               ),
                             ),

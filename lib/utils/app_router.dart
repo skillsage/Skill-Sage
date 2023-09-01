@@ -15,8 +15,9 @@ class AppRoutes {
   static const String editLang = '/editlang';
   static const String editProfile = '/editprofile';
   static const String educationRoute = '/education';
-  static const String courseRoute = '/course';
+  static const String courseDetails = '/coursedetails';
   static const String contentRoute = '/content';
+  static const String coursesRoute = '/courses';
 }
 
 class AppRouter {
@@ -76,13 +77,17 @@ class AppRouter {
         return _route(
           screen: EducationScreen(education: education),
         );
-      case AppRoutes.courseRoute:
+      case AppRoutes.courseDetails:
         return _route(
-          screen: const CourseScreen(),
+          screen: const CourseDetailScreen(),
         );
       case AppRoutes.contentRoute:
         return _route(
           screen: const CourseContentScreen(),
+        );
+      case AppRoutes.coursesRoute:
+        return _route(
+          screen: const CoursesScreen(),
         );
       default:
         return _route(screen: const Loader());

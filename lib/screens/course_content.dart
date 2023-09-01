@@ -12,9 +12,10 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
   late TextEditingController _idController;
   late TextEditingController _seekToController;
 
-  final List<String> _ids = [
-    'mut8eTdoRxU',
-  ];
+  int _selectedCourseIndex = -1;
+  List<bool> _isCourseExpanded = List.generate(2, (index) => false);
+
+  final List<String> _ids = ['xi0vhXFPegw', 'mut8eTdoRxU'];
 
   @override
   void initState() {
@@ -45,6 +46,18 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
     _idController.dispose();
     _seekToController.dispose();
     super.dispose();
+  }
+
+  void playCourse(int index) {
+    setState(() {
+      if (_selectedCourseIndex == index) {
+        _controller.pause();
+        _selectedCourseIndex = -1;
+      } else {
+        _controller.load(_ids[index]);
+        _selectedCourseIndex = index;
+      }
+    });
   }
 
   @override
@@ -83,9 +96,6 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             SizedBox(
               width: double.infinity,
               height: 200,
@@ -93,16 +103,11 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                 player: YoutubePlayer(
                   controller: _controller,
                 ),
-                builder: (context, player) => Scaffold(
-                  appBar: AppBar(
-                    // ... app bar properties ...
-                    actions: [
-                      IconButton(
-                        icon: const Icon(Icons.video_library),
-                        onPressed: () {
-                          // Add your code for the video library action here
-                        },
-                      ),
+                builder: (context, player) {
+                  // Video player at the top
+                  return Column(
+                    children: [
+                      // Play and Pause buttons
                       IconButton(
                         icon: Icon(
                           _controller.value.isPlaying
@@ -110,19 +115,16 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                               : Icons.play_arrow,
                         ),
                         onPressed: () {
-                          setState(() {
-                            if (_controller.value.isPlaying) {
-                              _controller.pause();
-                            } else {
-                              _controller.play();
-                            }
-                          });
+                          if (_selectedCourseIndex != -1) {
+                            playCourse(_selectedCourseIndex);
+                          }
                         },
                       ),
+                      // Video player
+                      player,
                     ],
-                  ),
-                  body: player,
-                ),
+                  );
+                },
               ),
             ),
             Expanded(
@@ -135,117 +137,91 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                     dividerColor: appTheme.primary.withOpacity(.4),
                     elevation: 1,
                     expandedHeaderPadding: EdgeInsets.zero,
+                    expansionCallback: (int index, bool isExpanded) {
+                      // Handle expansion state
+                      setState(() {
+                        _isCourseExpanded[index] = !isExpanded;
+                      });
+                    },
                     children: [
-                      ExpansionPanel(
-                        backgroundColor: appTheme.scaffold,
-                        headerBuilder: (context, isExpanded) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 18),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Section1: Introduction",
-                                style: textTheme.headlineMedium,
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                "0 / 2 | 7min",
-                                style: textTheme.labelSmall,
-                              ),
-                            ],
+                      for (int index = 0; index < _ids.length; index++)
+                        ExpansionPanel(
+                          backgroundColor: appTheme.scaffold,
+                          headerBuilder: (context, isExpanded) => Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Section ${index + 1}: Introduction",
+                                  style: textTheme.headlineMedium,
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  "0 / 2 | 7min",
+                                  style: textTheme.labelSmall,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        body: ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          separatorBuilder: (context, index) => const Divider(),
-                          shrinkWrap: true,
-                          itemCount: 2,
-                          itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.zero,
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    minLeadingWidth: 0,
-                                    contentPadding: EdgeInsets.zero,
-                                    leading: Checkbox(
-                                      value: true,
-                                      onChanged: (val) => {},
+                          body: ListView.separated(
+                            scrollDirection: Axis.vertical,
+                            physics: const BouncingScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (context, itemIndex) =>
+                                GestureDetector(
+                              onTap: () {
+                                // setState(() {
+                                //   // Toggle the expansion state
+                                //   _isCourseExpanded[index] =
+                                //       !_isCourseExpanded[index];
+                                // });
+
+                                print(index);
+                                playCourse(index);
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.zero,
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      minLeadingWidth: 0,
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: Checkbox(
+                                        value: false,
+                                        onChanged: (val) => {},
+                                      ),
+                                      title: Text(
+                                        "${itemIndex + 1}. Introduction to Object Oriented Python",
+                                        style: textTheme.labelMedium,
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          const Icon(
+                                            CupertinoIcons.play_rectangle,
+                                            size: 15,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            '7min',
+                                            style: textTheme.labelMedium,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    title: const Text(
-                                        "1. Introduction to Object Oriented Python"),
-                                    subtitle: const Row(
-                                      children: [
-                                        Icon(CupertinoIcons.play_rectangle,
-                                            size: 15),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text('7min'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        isExpanded: false,
-                      ),
-                      ExpansionPanel(
-                        backgroundColor: appTheme.scaffold,
-                        headerBuilder: (context, isExpanded) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 18),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Section2: Classes and Objects",
-                                style: textTheme.headlineMedium,
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: 5),
-                              Text(
-                                "0 / 2 | 7min",
-                                style: textTheme.labelSmall,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                        body: ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          separatorBuilder: (context, index) => const Divider(),
-                          shrinkWrap: true,
-                          itemCount: 2,
-                          itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.zero,
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    minLeadingWidth: 0,
-                                    contentPadding: EdgeInsets.zero,
-                                    leading: Checkbox(
-                                      value: true,
-                                      onChanged: (val) => {},
-                                    ),
-                                    title: const Text(
-                                        "2. Introduction to Object Oriented Python"),
-                                    subtitle: const Row(
-                                      children: [
-                                        Icon(CupertinoIcons.play_rectangle,
-                                            size: 15),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text('7min'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        isExpanded: false,
-                      )
+                          isExpanded: _isCourseExpanded[index],
+                        )
                     ],
                   ),
                 ),

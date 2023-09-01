@@ -1,7 +1,10 @@
 part of screens;
 
-class CourseScreen extends ConsumerWidget {
-  const CourseScreen({super.key});
+class CourseDetailScreen extends ConsumerWidget {
+  const CourseDetailScreen({super.key});
+
+  final String url =
+      "https://images.unsplash.com/photo-1649180556628-9ba704115795?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2062&q=80";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -13,7 +16,6 @@ class CourseScreen extends ConsumerWidget {
           child: AdvancedFutureBuilder(
         future: () => ref.watch(courseProvider).loadCourses(),
         builder: (context, snapshot, _) {
-          print(snapshot);
           return Column(children: [
             Container(
               width: double.infinity,
@@ -44,8 +46,7 @@ class CourseScreen extends ConsumerWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child:
-                  Image.network(snapshot.result[0]['image'], fit: BoxFit.cover),
+              child: Image.network(url, fit: BoxFit.cover),
             ),
             DefaultTabController(
               length: 4,
@@ -79,7 +80,7 @@ class CourseScreen extends ConsumerWidget {
                               physics: const BouncingScrollPhysics(),
                               padding: const EdgeInsets.all(20.0),
                               child: Text(
-                                snapshot.result[0]["title"],
+                                "snapshot.result[0]",
                                 style: textTheme.bodyMedium,
                               ),
                             ),

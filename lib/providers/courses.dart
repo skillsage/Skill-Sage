@@ -26,10 +26,7 @@ class CourseProvider extends ChangeNotifier {
   Future loadCourses() async {
     try {
       final resp = await cather(() => http.get('/course/2'));
-      // print('res: ${resp.result}');
       if (!resp.success) return throw Exception("failed");
-      // final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
-      // skills = data.result;
       notifyListeners();
       return resp;
     } catch (err) {

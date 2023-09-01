@@ -26,11 +26,12 @@ class JobPostScreen extends ConsumerWidget {
           const SizedBox(
             height: 20.0,
           ),
-          InkWell(
+          GestureDetector(
             onTap: () => showModalBottomSheet(
               backgroundColor: Colors.transparent,
               context: context,
               builder: (context) => Container(
+                height: size.height,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15.0),
