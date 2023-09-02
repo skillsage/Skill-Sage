@@ -60,17 +60,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             label: '',
             tooltip: 'Other (Job) recommendations',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Padding(
-          //     padding: EdgeInsets.only(top: 8.0),
-          //     child: Icon(
-          //       CupertinoIcons.bookmark,
-          //       size: 20,
-          //     ),
-          //   ),
-          //   label: '',
-          //   tooltip: 'Bookmarked skills',
-          // ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Icon(
+                CupertinoIcons.bookmark,
+                size: 20,
+              ),
+            ),
+            label: '',
+            tooltip: 'Bookmarked skills',
+          ),
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.only(top: 8.0),
@@ -89,7 +89,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<Widget> _buildScreens() {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    // final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     final userProv = ref.read(userProvider);
     return <Widget>[
       SafeArea(
@@ -100,32 +100,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                  //   child: Text("Popular Stacks", style: textTheme.bodyMedium),
-                  // ),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   physics: const BouncingScrollPhysics(),
-                  //   child: Row(children: [
-                  //     SkillCard(
-                  //       title: "React",
-                  //       subtitle: "JavaScript Library",
-                  //       description:
-                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
-                  //       icon: const Icon(Icons.javascript, size: 20),
-                  //       width: size.width * 0.77,
-                  //     ),
-                  //     SkillCard(
-                  //       title: "React",
-                  //       subtitle: "JavaScript Library",
-                  //       description:
-                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
-                  //       icon: const Icon(Icons.javascript, size: 20),
-                  //       width: size.width * 0.77,
-                  //     ),
-                  //   ]),
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+                    child: Text("Popular Stacks", style: textTheme.bodyMedium),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Row(children: [
+                      SkillCard(
+                        title: "React",
+                        subtitle: "JavaScript Library",
+                        description:
+                            "The library for web and native user interfaces. Become a React expert. Start today!",
+                        icon: const Icon(Icons.javascript, size: 20),
+                        width: size.width * 0.77,
+                      ),
+                      SkillCard(
+                        title: "React",
+                        subtitle: "JavaScript Library",
+                        description:
+                            "The library for web and native user interfaces. Become a React expert. Start today!",
+                        icon: const Icon(Icons.javascript, size: 20),
+                        width: size.width * 0.77,
+                      ),
+                    ]),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 15.0,
@@ -171,7 +171,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       const JobPostScreen(),
-      // const BookmarkScreen(),
+      const BookmarkScreen(),
       const ProfileScreen(),
     ];
   }

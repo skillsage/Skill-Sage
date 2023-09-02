@@ -18,6 +18,7 @@ class AppRoutes {
   static const String courseDetails = '/coursedetails';
   static const String contentRoute = '/content';
   static const String coursesRoute = '/courses';
+  static const String filterRoute = '/filter';
 }
 
 class AppRouter {
@@ -88,6 +89,10 @@ class AppRouter {
       case AppRoutes.coursesRoute:
         return _route(
           screen: const CoursesScreen(),
+        );
+      case AppRoutes.filterRoute:
+        return _route(
+          screen: const FilterScreen(),
         );
       default:
         return _route(screen: const Loader());

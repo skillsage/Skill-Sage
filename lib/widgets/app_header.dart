@@ -65,7 +65,7 @@ class CustomAppHeader extends ConsumerWidget {
             children: [
               Flexible(
                 child: CupertinoSearchTextField(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: appTheme.light,
@@ -76,22 +76,19 @@ class CustomAppHeader extends ConsumerWidget {
               const SizedBox(
                 width: 8,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: appTheme.primary2Light,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: SvgPicture.asset(
+              GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.filterRoute),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: appTheme.primary2Light,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: SvgPicture.asset(
                     "assets/svgs/Filter.svg",
                     color: appTheme.light,
                   ),
-                  // icon: Icon(
-                  //   CupertinoIcons.list_bullet,
-                  //   color: appTheme.light,
-                  // ),
-                  onPressed: () {},
                 ),
               )
             ],

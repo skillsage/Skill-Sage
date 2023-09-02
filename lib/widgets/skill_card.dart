@@ -23,7 +23,7 @@ class SkillCard extends StatelessWidget {
     final appTheme = AppTheme.appTheme(context);
     return Container(
       width: width ?? double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 9),
       padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: color ?? appTheme.primary1,

@@ -71,7 +71,7 @@ class CoursesScreen extends ConsumerWidget {
                         style: textTheme.headlineMedium,
                       ),
                       subtitle: Text(
-                        'No prior knowledge rewuired',
+                        'No prior knowledge required',
                         style: textTheme.bodySmall,
                       )),
                 ),
