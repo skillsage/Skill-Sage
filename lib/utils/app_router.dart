@@ -19,6 +19,7 @@ class AppRoutes {
   static const String contentRoute = '/content';
   static const String coursesRoute = '/courses';
   static const String filterRoute = '/filter';
+  static const String notificationRoute = '/notification';
 }
 
 class AppRouter {
@@ -93,6 +94,10 @@ class AppRouter {
       case AppRoutes.filterRoute:
         return _route(
           screen: const FilterScreen(),
+        );
+      case AppRoutes.notificationRoute:
+        return _route(
+          screen: const NotificationScreen(),
         );
       default:
         return _route(screen: const Loader());

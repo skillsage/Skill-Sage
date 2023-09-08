@@ -5,6 +5,8 @@ class JobCard extends StatelessWidget {
   final Icon? icon;
   final double? width;
   final Color? color;
+  final List? skills;
+  final String? img;
   final void Function()? onPressed;
   const JobCard({
     super.key,
@@ -16,6 +18,8 @@ class JobCard extends StatelessWidget {
     this.width,
     this.color,
     this.onPressed,
+    this.skills,
+    this.img,
   });
 
   @override
@@ -41,15 +45,24 @@ class JobCard extends StatelessWidget {
               width: 35,
               height: 35,
               decoration: BoxDecoration(
-                color: appTheme.primary.withOpacity(.2),
+                // color: appTheme.primary.withOpacity(.2),
                 borderRadius: BorderRadius.circular(10.0),
+                image: (img == null)
+                    ? const DecorationImage(
+                        image: AssetImage('assets/images/default.jpg'),
+                        fit: BoxFit.cover,
+                      )
+                    : DecorationImage(
+                        image: NetworkImage(img.toString()),
+                        fit: BoxFit.cover,
+                      ),
               ),
-              child: Center(
-                child: Text(
-                  title.toString()[0],
-                  style: textTheme.labelMedium,
-                ),
-              ),
+              // child: Center(
+              //   child: Text(
+              //     title.toString()[0],
+              //     style: textTheme.labelMedium,
+              //   ),
+              // ),
             ),
             trailing: const Icon(
               CupertinoIcons.bookmark,
@@ -82,21 +95,23 @@ class JobCard extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          Wrap(
-            spacing: 10,
-            children: ['JavaScript', 'TypeScript', 'Python']
-                .map(
-                  (e) => Chip(
-                    label: Text(
-                      e.toString(),
-                      style: textTheme.bodySmall,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
+          (skills != null)
+              ? Wrap(
+                  spacing: 10,
+                  children: skills!
+                      .map(
+                        (e) => Chip(
+                          label: Text(
+                            e.toString(),
+                            style: textTheme.bodySmall,
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      )
+                      .toList(),
                 )
-                .toList(),
-          ),
+              : Container(),
           const SizedBox(
             height: 5,
           ),

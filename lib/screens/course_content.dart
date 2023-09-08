@@ -13,7 +13,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
   late TextEditingController _seekToController;
 
   int _selectedCourseIndex = -1;
-  List<bool> _isCourseExpanded = List.generate(2, (index) => false);
+  final List<bool> _isCourseExpanded = List.generate(2, (index) => false);
 
   final List<String> _ids = ['xi0vhXFPegw', 'mut8eTdoRxU'];
 

@@ -32,15 +32,14 @@ class SkillSage extends ConsumerWidget {
       ],
       locale: const Locale('en', 'US'),
       theme: ThemeData(
-          brightness:
-              ref.watch(themeProvider).themeMode == ThemeModeOption.light
-                  ? Brightness.light
-                  : Brightness.dark,
-          primaryColor: AppTheme.appTheme(context).secondary,
-          textTheme: GoogleFonts.urbanistTextTheme(),
-          scaffoldBackgroundColor: AppTheme.appTheme(context).bg1
-          // other config
-          ),
+        brightness: ref.watch(themeProvider).themeMode == ThemeModeOption.light
+            ? Brightness.light
+            : Brightness.dark,
+        primaryColor: AppTheme.appTheme(context).secondary,
+        textTheme: GoogleFonts.urbanistTextTheme(),
+        scaffoldBackgroundColor: AppTheme.appTheme(context).bg1,
+        // other config
+      ),
       onGenerateRoute: AppRouter.generateRoute,
       initialRoute: AppRoutes.wrapperRoute,
     );

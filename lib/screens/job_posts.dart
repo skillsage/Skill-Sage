@@ -3,6 +3,20 @@ part of screens;
 class JobPostScreen extends ConsumerWidget {
   const JobPostScreen({super.key});
 
+  add(WidgetRef ref, int id, BuildContext context) async {
+    final resp = await ref.watch(jobProvider).addBookmark(id: id);
+    if (resp) {
+      showToast(context, 'added');
+    }
+  }
+
+  apply(WidgetRef ref, int id, BuildContext context) async {
+    final resp = await ref.watch(jobProvider).addApplication(id: id);
+    if (resp) {
+      showToast(context, 'added');
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
@@ -11,150 +25,189 @@ class JobPostScreen extends ConsumerWidget {
     return SafeArea(
       child: Column(
         children: [
+          // Container(
+          //   width: double.infinity,
+          //   color: appTheme.scaffold,
+          //   child: ListTile(
+          //     title: Center(
+          //       child: Text(
+          //         "Job Posts",
+          //         style: textTheme.headlineMedium,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          const SizedBox(
+            height: 20.0,
+          ),
           Container(
-            width: double.infinity,
-            color: appTheme.scaffold,
-            child: ListTile(
-              title: Center(
-                child: Text(
-                  "Job Posts",
-                  style: textTheme.headlineMedium,
-                ),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            child: CupertinoSearchTextField(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: appTheme.light,
               ),
+              style: textTheme.titleSmall,
             ),
           ),
           const SizedBox(
             height: 20.0,
           ),
-          GestureDetector(
-            onTap: () => showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => Container(
-                height: size.height,
+          AdvancedFutureBuilder(
+              future: () => ref.watch(jobProvider).loadJobs(),
+              builder: (context, snapshot, _) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.result.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => _buildModal(size, appTheme,
+                              textTheme, snapshot.result[index], ref, context),
+                        ),
+                        child: JobCard(
+                          title: snapshot.result[index]['title'],
+                          company:
+                              snapshot.result[index]['company'] ?? 'Company',
+                          location: snapshot.result[index]['location'],
+                          datePosted: "Due ${snapshot.result[index]['expiry']}",
+                          skills: snapshot.result[index]['skills'],
+                          img: snapshot.result[index]['image'],
+                        ),
+                      );
+                    });
+              }),
+        ],
+      ),
+    );
+  }
+
+  _buildModal(size, appTheme, textTheme, data, ref, context) {
+    return Container(
+      height: size.height,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
+        ),
+        color: appTheme.scaffold,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Text(data['title'], style: textTheme.headlineMedium),
+            const SizedBox(height: 10),
+            ListTile(
+              minLeadingWidth: 0,
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                height: 60,
+                width: 60,
+                // padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15.0),
-                    topRight: Radius.circular(15.0),
+                  border: Border.all(
+                    color: appTheme.primary,
                   ),
-                  color: appTheme.scaffold,
+                  image: (data['image'] == null)
+                      ? const DecorationImage(
+                          image: AssetImage('assets/images/default.jpg'),
+                          fit: BoxFit.cover,
+                        )
+                      : DecorationImage(
+                          image: NetworkImage(data['image']),
+                          fit: BoxFit.cover,
+                        ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text("Full Stack Engineer",
-                          style: textTheme.headlineMedium),
-                      const SizedBox(height: 10),
-                      ListTile(
-                        minLeadingWidth: 0,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: appTheme.primary,
+              ),
+              title: Text("Posted by", style: textTheme.labelMedium),
+              subtitle: Text("Fintech", style: textTheme.bodySmall),
+              trailing:
+                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Text("Expiry Date", style: textTheme.labelMedium),
+                Text(data['expiry'], style: textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("Ghc${data['salary']}/year",
+                    style: textTheme.headlineMedium)
+              ]),
+            ),
+            const SizedBox(height: 10),
+            Text(data['location'], style: textTheme.headlineMedium),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: size.height * .25,
+              child: ListView(shrinkWrap: true, children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text("Job Description", style: textTheme.headlineMedium),
+                  const SizedBox(height: 10),
+                  Text(
+                    data['description'],
+                    style: textTheme.bodySmall,
+                  )
+                ]),
+                const SizedBox(height: 10),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text("Requirements", style: textTheme.headlineMedium),
+                  const SizedBox(height: 10),
+                  for (int i = 0; i < data['requirements'].length; i++)
+                    Text(
+                      data['requirements'][i],
+                      style: textTheme.bodySmall,
+                    )
+                ]),
+              ]),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                height: 20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: size.width * .4,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            apply(ref, data['id'], context);
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Apply")),
+                    ),
+                    SizedBox(
+                      width: size.width * .4,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            side: BorderSide(
+                              color: appTheme.txt,
                             ),
-                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        title: Text("Posted by", style: textTheme.labelMedium),
-                        subtitle: Text("Fintech", style: textTheme.bodySmall),
-                        trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text("Expiry Date", style: textTheme.labelMedium),
-                              Text("Jul 21, 2023", style: textTheme.bodySmall),
-                              const SizedBox(height: 10),
-                              Text("Ghc3000/year",
-                                  style: textTheme.headlineMedium)
-                            ]),
-                      ),
-                      const SizedBox(height: 10),
-                      Text("Accra, Ghana", style: textTheme.headlineMedium),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: size.height * .25,
-                        child: ListView(shrinkWrap: true, children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Job Description",
-                                    style: textTheme.headlineMedium),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "We are looking for a professional who possesses a broad set of skills and expertise in both front-end and back-end development. Must be capable of working on all aspects of a software project, from designing and implementing user interfaces to developing server-side logic and managing databases.",
-                                  style: textTheme.bodySmall,
-                                )
-                              ]),
-                          const SizedBox(height: 10),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Requirements",
-                                    style: textTheme.headlineMedium),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Educational Qualifications:',
-                                  style: textTheme.bodySmall,
-                                )
-                              ]),
-                        ]),
-                      ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 20,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: size.width * .4,
-                                child: ElevatedButton(
-                                    onPressed: () => {},
-                                    child: const Text("Apply")),
-                              ),
-                              SizedBox(
-                                width: size.width * .4,
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      side: BorderSide(
-                                        color: appTheme.txt,
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () => {},
-                                  child: Text(
-                                    "Save",
-                                    style: textTheme.bodySmall,
-                                  ),
-                                ),
-                              ),
-                              // CustomButton(title: 'Save'),
-                            ],
-                          ),
+                        onPressed: () {
+                          add(ref, data['id'], context);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Save",
+                          style: textTheme.bodySmall,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    // CustomButton(title: 'Save'),
+                  ],
                 ),
               ),
             ),
-            child: const JobCard(
-              title: "Full Stack Engineer",
-              company: "Amalitech",
-              location: "Accra, Ghana",
-              datePosted: "June 23, 2023",
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

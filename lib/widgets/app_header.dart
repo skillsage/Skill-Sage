@@ -6,7 +6,6 @@ class CustomAppHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme.appTheme(context);
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final user = ref.watch(userProvider).user;
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 18,
@@ -23,30 +22,56 @@ class CustomAppHeader extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: Text(
-                "Discover Your Favorite Tech Skills.",
-                style: textTheme.headlineLarge,
-                maxLines: 2,
+              contentPadding: EdgeInsets.zero,
+              leading: SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(
+                  "Discover Your Favorite Tech Skills.",
+                  style: textTheme.headlineLarge,
+                  maxLines: 2,
+                ),
               ),
-            ),
-            // Icon(
-            //   CupertinoIcons.bars,
-            //   color: appTheme.light,
-            // ),
-            trailing: (user == null || user.profileImage == null)
-                ? const CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/blank_profile.jpg'),
-                  )
-                : CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      user.profileImage.toString(),
+              // Icon(
+              //   CupertinoIcons.bars,
+              //   color: appTheme.light,
+              // ),
+              trailing: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.notificationRoute);
+                },
+                icon: Stack(
+                  children: [
+                    Icon(
+                      CupertinoIcons.bell,
+                      color: appTheme.light,
                     ),
-                  ),
-          ),
+                    if (true)
+                      Positioned(
+                        right: 3,
+                        top: 2,
+                        child: Container(
+                          width: 8, // Adjust the size of the red dot as needed
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: appTheme.danger,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+              // (user == null || user.profileImage == null)
+              //     ? const CircleAvatar(
+              //         backgroundImage:
+              //             AssetImage('assets/images/blank_profile.jpg'),
+              //       )
+              //     : CircleAvatar(
+              //         backgroundImage: NetworkImage(
+              //           user.profileImage.toString(),
+              //         ),
+              //       ),
+              ),
           // const SizedBox(
           //   height: 5,
           // ),

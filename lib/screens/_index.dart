@@ -26,6 +26,7 @@ part 'course_detail.dart';
 part 'course_content.dart';
 part 'courses.dart';
 part 'filter.dart';
+part 'notification.dart';
 part 'auth/login.dart';
 part 'auth/register.dart';
 part 'profile/edit_about.dart';

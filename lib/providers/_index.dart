@@ -15,6 +15,7 @@ part 'settings.dart';
 part "http.dart";
 part 'recommendation.dart';
 part 'courses.dart';
+part 'job.dart';
 
 FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
   try {
