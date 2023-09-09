@@ -1,7 +1,8 @@
 part of screens;
 
 class CourseContentScreen extends StatefulWidget {
-  const CourseContentScreen({super.key});
+  final Map? content;
+  const CourseContentScreen({super.key, this.content});
 
   @override
   State<CourseContentScreen> createState() => _CourseContentScreenState();
@@ -12,16 +13,18 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
   late TextEditingController _idController;
   late TextEditingController _seekToController;
 
-  int _selectedCourseIndex = -1;
+  String _selectedCourseVideo = '';
   final List<bool> _isCourseExpanded = List.generate(2, (index) => false);
 
-  final List<String> _ids = ['xi0vhXFPegw', 'mut8eTdoRxU'];
+  late List courses;
 
   @override
   void initState() {
     super.initState();
+    courses = widget.content!['items'];
+    print(courses);
     _controller = YoutubePlayerController(
-      initialVideoId: _ids.first,
+      initialVideoId: courses[0]['sessions'][0]['video'],
       flags: const YoutubePlayerFlags(
         mute: false,
         autoPlay: true,
@@ -48,17 +51,18 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
     super.dispose();
   }
 
-  void playCourse(int index) {
-    setState(() {
-      if (_selectedCourseIndex == index) {
-        _controller.pause();
-        _selectedCourseIndex = -1;
-      } else {
-        _controller.load(_ids[index]);
-        _selectedCourseIndex = index;
-      }
-    });
-  }
+  void playCourse(String video) {
+  setState(() {
+    if (_selectedCourseVideo == video) {
+      _controller.pause();
+      _selectedCourseVideo = "";
+    } else {
+      _controller.load(video);
+      _selectedCourseVideo = video;
+    }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +119,8 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                               : Icons.play_arrow,
                         ),
                         onPressed: () {
-                          if (_selectedCourseIndex != -1) {
-                            playCourse(_selectedCourseIndex);
+                          if (_selectedCourseVideo.isNotEmpty) {
+                            playCourse(_selectedCourseVideo);
                           }
                         },
                       ),
@@ -144,7 +148,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                       });
                     },
                     children: [
-                      for (int index = 0; index < _ids.length; index++)
+                      for (int index = 0; index < courses.length; index++)
                         ExpansionPanel(
                           backgroundColor: appTheme.scaffold,
                           headerBuilder: (context, isExpanded) => Container(
@@ -154,7 +158,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Section ${index + 1}: Introduction",
+                                  "Section ${index + 1}: ${courses[index]['name']}",
                                   style: textTheme.headlineMedium,
                                 ),
                                 const SizedBox(height: 5),
@@ -171,7 +175,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                             separatorBuilder: (context, index) =>
                                 const Divider(),
                             shrinkWrap: true,
-                            itemCount: 1,
+                            itemCount: courses[index]['sessions'].length,
                             itemBuilder: (context, itemIndex) =>
                                 GestureDetector(
                               onTap: () {
@@ -182,7 +186,8 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                                 // });
 
                                 print(index);
-                                playCourse(index);
+                                playCourse(courses[index]['sessions'][itemIndex]
+                                    ['video']);
                               },
                               child: Padding(
                                 padding: EdgeInsets.zero,
@@ -196,7 +201,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                                         onChanged: (val) => {},
                                       ),
                                       title: Text(
-                                        "${itemIndex + 1}. Introduction to Object Oriented Python",
+                                        "${itemIndex + 1}. ${courses[index]['sessions'][itemIndex]['name']}",
                                         style: textTheme.labelMedium,
                                       ),
                                       subtitle: Row(

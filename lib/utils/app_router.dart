@@ -80,16 +80,19 @@ class AppRouter {
           screen: EducationScreen(education: education),
         );
       case AppRoutes.courseDetails:
+        final Map course = settings.arguments as Map;
         return _route(
-          screen: const CourseDetailScreen(),
+          screen: CourseDetailScreen(course: course),
         );
       case AppRoutes.contentRoute:
+        final Map content = settings.arguments as Map;
         return _route(
-          screen: const CourseContentScreen(),
+          screen: CourseContentScreen(content: content),
         );
       case AppRoutes.coursesRoute:
+        final Map course = settings.arguments as Map;
         return _route(
-          screen: const CoursesScreen(),
+          screen: CoursesScreen(skill: course),
         );
       case AppRoutes.filterRoute:
         return _route(

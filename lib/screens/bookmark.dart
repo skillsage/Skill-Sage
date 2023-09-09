@@ -74,6 +74,17 @@ class BookmarkScreen extends ConsumerWidget {
               },
             );
           },
+          errorBuilder: (context, error, reload) => Column(
+            children: [
+              const Text('An Error Occured!'),
+              const SizedBox(height: 10),
+              Text(error.toString()),
+              TextButton(
+                onPressed: reload,
+                child: const Text("reload"),
+              )
+            ],
+          ),
           emptyBuilder: (context, reload) => Center(
             child: Center(
               child: Image.asset("assets/images/not_found.png"),

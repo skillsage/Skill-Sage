@@ -57,26 +57,43 @@ class NotificationScreen extends ConsumerWidget {
             height: 20.0,
           ),
           AdvancedFutureBuilder(
-              future: () => ref.watch(jobProvider).loadApplications(),
-              builder: (context, snapshot, _) {
-                return ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.result.length,
-                  itemBuilder: (context, index) {
-                    return BookmarkCard(
-                      status: 'pending',
-                      title: snapshot.result[index]['title'],
-                      subtitle: snapshot.result[index]['company'],
-                      img: snapshot.result[index]['image'],
-                      onRemove: () =>
-                          remove(ref, snapshot.result[index]['id'], context),
-                      onApply: () =>
-                          add(ref, snapshot.result[index]['id'], context),
-                    );
-                  },
-                );
-              }),
+            future: () => ref.watch(jobProvider).loadApplications(),
+            builder: (context, snapshot, _) {
+              return ListView.separated(
+                separatorBuilder: (context, index) => const Divider(),
+                shrinkWrap: true,
+                itemCount: snapshot.result.length,
+                itemBuilder: (context, index) {
+                  return BookmarkCard(
+                    status: snapshot.result[index]['status'],
+                    title: snapshot.result[index]['title'],
+                    subtitle: snapshot.result[index]['company'],
+                    img: snapshot.result[index]['image'],
+                    onRemove: () =>
+                        remove(ref, snapshot.result[index]['id'], context),
+                    onApply: () =>
+                        add(ref, snapshot.result[index]['id'], context),
+                  );
+                },
+              );
+            },
+            errorBuilder: (context, error, reload) => Column(
+              children: [
+                const Text('An Error Occured!'),
+                const SizedBox(height: 10),
+                Text(error.toString()),
+                TextButton(
+                  onPressed: reload,
+                  child: const Text("reload"),
+                )
+              ],
+            ),
+            emptyBuilder: (context, reload) => Center(
+              child: Center(
+                child: Image.asset("assets/images/not_found.png"),
+              ),
+            ),
+          ),
         ]),
       ),
     );

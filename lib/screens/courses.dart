@@ -1,10 +1,8 @@
 part of screens;
 
 class CoursesScreen extends ConsumerWidget {
-  const CoursesScreen({super.key});
-
-  final String url =
-      "https://images.unsplash.com/photo-1649180556628-9ba704115795?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2062&q=80";
+  final Map? skill;
+  const CoursesScreen({super.key, this.skill});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -14,7 +12,7 @@ class CoursesScreen extends ConsumerWidget {
       backgroundColor: appTheme.bg1,
       body: SafeArea(
           child: AdvancedFutureBuilder(
-        future: () => ref.watch(courseProvider).loadCourses(),
+        future: () => ref.watch(courseProvider).searchCourse(skill!['skill']),
         builder: (context, snapshot, _) {
           return Column(children: [
             Container(
@@ -48,35 +46,44 @@ class CoursesScreen extends ConsumerWidget {
               separatorBuilder: (context, index) => const Divider(),
               shrinkWrap: true,
               itemBuilder: (_, index) => GestureDetector(
-                onTap: () =>
-                    Navigator.pushNamed(context, AppRoutes.courseDetails),
+                onTap: () => Navigator.pushNamed(
+                    context, AppRoutes.courseDetails,
+                    arguments: {"data": snapshot.result[index]}),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                       minLeadingWidth: 0,
                       contentPadding: EdgeInsets.zero,
                       leading: Container(
-                        height: 45,
-                        width: 45,
+                        margin: const EdgeInsets.only(top: 5),
+                        width: 35,
+                        height: 35,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                              color: appTheme.primary,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                                image: NetworkImage(url), fit: BoxFit.cover)),
+                          borderRadius: BorderRadius.circular(10.0),
+                          image: (snapshot.result[index]['image'] == null)
+                              ? const DecorationImage(
+                                  image:
+                                      AssetImage('assets/images/default.jpg'),
+                                  fit: BoxFit.cover,
+                                )
+                              : DecorationImage(
+                                  image: NetworkImage(
+                                      snapshot.result[index]['image']),
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
                       title: Text(
-                        'Python For Beginners',
+                        snapshot.result[index]['title'],
                         style: textTheme.headlineMedium,
                       ),
                       subtitle: Text(
-                        'No prior knowledge required',
+                        snapshot.result[index]['sub_title'],
                         style: textTheme.bodySmall,
                       )),
                 ),
               ),
-              itemCount: 1,
+              itemCount: snapshot.result.length,
             )
           ]);
         },

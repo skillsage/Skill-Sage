@@ -100,32 +100,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                    child: Text("Popular Stacks", style: textTheme.bodyMedium),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: Row(children: [
-                      SkillCard(
-                        title: "React",
-                        subtitle: "JavaScript Library",
-                        description:
-                            "The library for web and native user interfaces. Become a React expert. Start today!",
-                        icon: const Icon(Icons.javascript, size: 20),
-                        width: size.width * 0.77,
-                      ),
-                      SkillCard(
-                        title: "React",
-                        subtitle: "JavaScript Library",
-                        description:
-                            "The library for web and native user interfaces. Become a React expert. Start today!",
-                        icon: const Icon(Icons.javascript, size: 20),
-                        width: size.width * 0.77,
-                      ),
-                    ]),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+                  //   child: Text("Popular Stacks", style: textTheme.bodyMedium),
+                  // ),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   physics: const BouncingScrollPhysics(),
+                  //   child: Row(children: [
+                  //     SkillCard(
+                  //       title: "React",
+                  //       subtitle: "JavaScript Library",
+                  //       description:
+                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
+                  //       icon: const Icon(Icons.javascript, size: 20),
+                  //       width: size.width * 0.77,
+                  //     ),
+                  //     SkillCard(
+                  //       title: "React",
+                  //       subtitle: "JavaScript Library",
+                  //       description:
+                  //           "The library for web and native user interfaces. Become a React expert. Start today!",
+                  //       icon: const Icon(Icons.javascript, size: 20),
+                  //       width: size.width * 0.77,
+                  //     ),
+                  //   ]),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 15.0,
@@ -151,9 +151,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 // icon: ,
                                 title: snapshot.result[index],
                                 onPressed: () => Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.coursesRoute,
-                                ),
+                                    context, AppRoutes.coursesRoute,
+                                    arguments: {
+                                      "skill": snapshot.result[index]
+                                    }),
                               ),
                             ),
                             errorBuilder: (context, error, reload) =>
