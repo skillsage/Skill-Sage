@@ -25,16 +25,16 @@ class RecommenderProvider extends ChangeNotifier {
   }
 
   Future loadRecommendations() async {
-    try {
-      final resp = await cather(() => http.get('/user/recommend_skills'));
-      // print('res: ${resp.result}');
-      if (!resp.success) return throw Exception("failed");
-      // final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
-      // skills = data.result;
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    // try {
+    final resp = await cather(() => http.get('/user/recommend_skills'));
+    // print('res: ${resp.result}');
+    if (!resp.success) return throw Exception("failed");
+    // final Resp<List<Skills?>> data = resp.parseList(Skills.fromJson);
+    // skills = data.result;
+    notifyListeners();
+    return resp;
+    // } catch (err) {
+    //   return false;
+    // }
   }
 }

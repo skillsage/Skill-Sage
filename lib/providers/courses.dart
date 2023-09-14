@@ -24,25 +24,16 @@ class CourseProvider extends ChangeNotifier {
   }
 
   Future loadCourses() async {
-    try {
-      final resp = await cather(() => http.get('/course/2'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.get('/course/2'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return resp;
   }
 
   Future searchCourse(skill) async {
-    print(skill);
-    try {
-      final resp = await cather(() => http.get('/course/search/$skill'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.get('/course/search/$skill'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return resp;
   }
 }

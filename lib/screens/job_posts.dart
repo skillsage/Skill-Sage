@@ -54,46 +54,52 @@ class JobPostScreen extends ConsumerWidget {
           const SizedBox(
             height: 20.0,
           ),
-          AdvancedFutureBuilder(
-            future: () => ref.watch(jobProvider).loadJobs(),
-            builder: (context, snapshot, _) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.result.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) => _buildModal(size, appTheme,
-                          textTheme, snapshot.result[index], ref, context),
-                    ),
-                    child: JobCard(
-                      title: snapshot.result[index]['title'],
-                      company: snapshot.result[index]['company'] ?? 'Company',
-                      location: snapshot.result[index]['location'],
-                      datePosted: "Due ${snapshot.result[index]['expiry']}",
-                      skills: snapshot.result[index]['skills'],
-                      img: snapshot.result[index]['image'],
-                    ),
-                  );
-                },
-              );
-            },
-            errorBuilder: (context, error, reload) => Column(
-              children: [
-                const Text('An Error Occured!'),
-                const SizedBox(height: 10),
-                Text(error.toString()),
-                TextButton(
-                  onPressed: reload,
-                  child: const Text("reload"),
-                )
-              ],
-            ),
-            emptyBuilder: (context, reload) => Center(
-              child: Center(
-                child: Image.asset("assets/images/not_found.png"),
+          Expanded(
+            child: AdvancedFutureBuilder(
+              future: () => ref.watch(jobProvider).loadJobs(),
+              builder: (context, snapshot, _) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.result.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) => _buildModal(size, appTheme,
+                            textTheme, snapshot.result[index], ref, context),
+                      ),
+                      child: JobCard(
+                        title: snapshot.result[index]['title'],
+                        company: snapshot.result[index]['company'] ?? 'Company',
+                        location: snapshot.result[index]['location'],
+                        datePosted: "Due ${snapshot.result[index]['expiry']}",
+                        skills: snapshot.result[index]['skills'],
+                        img: snapshot.result[index]['image'],
+                      ),
+                    );
+                  },
+                );
+              },
+              errorBuilder: (context, error, reload) => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    error.toString(),
+                    style: textTheme.labelSmall,
+                  ),
+                  TextButton(
+                    onPressed: reload,
+                    child: const Text("reload"),
+                  )
+                ],
+              ),
+              emptyBuilder: (context, reload) => Center(
+                child: SizedBox(
+                  child: Image.asset("assets/images/not_found.png"),
+                ),
               ),
             ),
           ),

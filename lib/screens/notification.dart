@@ -42,21 +42,8 @@ class NotificationScreen extends ConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: Column(children: [
-          // Container(
-          //   width: double.infinity,
-          //   color: appTheme.scaffold,
-          //   child: ListTile(
-          //     title: Text(
-          //       "Nofitications",
-          //       style: textTheme.headlineMedium,
-          //     ),
-          //   ),
-          // ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          AdvancedFutureBuilder(
+        child: Expanded(
+          child: AdvancedFutureBuilder(
             future: () => ref.watch(jobProvider).loadApplications(),
             builder: (context, snapshot, _) {
               return ListView.separated(
@@ -78,8 +65,8 @@ class NotificationScreen extends ConsumerWidget {
               );
             },
             errorBuilder: (context, error, reload) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('An Error Occured!'),
                 const SizedBox(height: 10),
                 Text(error.toString()),
                 TextButton(
@@ -88,13 +75,11 @@ class NotificationScreen extends ConsumerWidget {
                 )
               ],
             ),
-            emptyBuilder: (context, reload) => Center(
-              child: Center(
-                child: Image.asset("assets/images/not_found.png"),
-              ),
+            emptyBuilder: (context, reload) => SizedBox(
+              child: Image.asset("assets/images/not_found.png"),
             ),
           ),
-        ]),
+        ),
       ),
     );
   }

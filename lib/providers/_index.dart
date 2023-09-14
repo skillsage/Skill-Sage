@@ -24,13 +24,13 @@ FutureOr<Resp<dynamic>> cather(Future<Response> Function() func) async {
   } catch (e) {
     if (e is DioException) {
       if (e.response != null) {
-        // print('err: ${e.response!.data}');
+        print('err: ${e.response!.data}');
         final res = e.response!;
         final data = res.data["detail"];
         if (data is String) {
           return Resp(success: false, error: data);
         }
-        final result = data["result"] as String;
+        final result = data["result"][1]["result"];
         return Resp(success: data["success"], error: result);
       }
     }

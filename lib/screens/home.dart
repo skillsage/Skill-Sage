@@ -89,16 +89,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<Widget> _buildScreens() {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
-    final size = MediaQuery.of(context).size;
-    final userProv = ref.read(userProvider);
+    // final size = MediaQuery.of(context).size;
+    // final userProv = ref.read(userProvider);
     return <Widget>[
       SafeArea(
         child: Column(
           children: [
             const CustomAppHeader(),
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Padding(
                   //   padding: const EdgeInsets.only(left: 15.0, top: 15.0),
@@ -134,37 +134,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     child: Text("Recommendations", style: textTheme.bodyMedium),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: (userProv.user != null &&
-                            userProv.user!.skills != null &&
-                            userProv.user!.skills!.isNotEmpty)
-                        ? AdvancedFutureBuilder(
-                            future: () => ref
-                                .watch(recommenderProvider)
-                                .loadRecommendations(),
-                            builder: (context, snapshot, _) => ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.result.length,
-                              itemBuilder: (_, index) => SkillCard(
-                                // icon: ,
-                                title: snapshot.result[index],
-                                onPressed: () => Navigator.pushNamed(
-                                    context, AppRoutes.coursesRoute,
-                                    arguments: {
-                                      "skill": snapshot.result[index]
-                                    }),
-                              ),
-                            ),
-                            errorBuilder: (context, error, reload) =>
-                                Text(error.toString()),
-                          )
-                        : Center(
-                            child: Text("Upload skills to get a recommendation",
-                                style: textTheme.bodyMedium),
+                  Expanded(
+                    child: AdvancedFutureBuilder(
+                      future: () =>
+                          ref.watch(recommenderProvider).loadRecommendations(),
+                      builder: (context, snapshot, _) => ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: snapshot.result.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, index) => SkillCard(
+                          // icon: ,
+                          title: snapshot.result[index],
+                          onPressed: () => Navigator.pushNamed(
+                              context, AppRoutes.coursesRoute,
+                              arguments: {"skill": snapshot.result[index]}),
+                        ),
+                      ),
+                      errorBuilder: (context, error, reload) => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            error.toString(),
+                            style: textTheme.labelSmall,
                           ),
-                  ),
+                          TextButton(
+                            onPressed: reload,
+                            child: const Text("reload"),
+                          )
+                        ],
+                      ),
+                      emptyBuilder: (context, reload) => Center(
+                        child: SizedBox(
+                          child: Image.asset("assets/images/not_found.png"),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
