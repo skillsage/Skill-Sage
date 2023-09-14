@@ -24,83 +24,55 @@ class JobProvider extends ChangeNotifier {
   }
 
   Future loadJobs() async {
-    try {
-      final resp = await cather(() => http.get('/job'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.get('/job'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return resp;
   }
 
   Future<bool> addBookmark({id}) async {
-    try {
-      final resp = await cather(() => http.post('/job/bookmark/$id'));
-      print(resp.success);
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return true;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.post('/job/bookmark/$id'));
+    print(resp.success);
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return true;
   }
 
   Future loadBookmark() async {
-    try {
-      final resp = await cather(() => http.get('/job/bookmarks'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.get('/job/bookmarks'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return resp;
   }
 
   Future<bool> removeBookmark({id}) async {
     print(id);
-    try {
-      final resp = await cather(() => http.delete('/job/bookmarks/$id'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return true;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.delete('/job/bookmarks/$id'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return true;
   }
 
   Future<bool> addApplication({id}) async {
-    try {
-      final resp = await cather(() => http.post('/job/application/$id'));
-      print(resp.success);
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return true;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.post('/job/application/$id'));
+    print(resp.success);
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return true;
   }
 
   Future loadApplications() async {
-    try {
-      final resp = await cather(() => http.get('/job/applications'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return resp;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.get('/job/applications'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return resp;
   }
 
   Future<bool> removeApplication({id}) async {
     print(id);
-    try {
-      final resp = await cather(() => http.delete('/job/application/$id'));
-      if (!resp.success) return throw Exception("failed");
-      notifyListeners();
-      return true;
-    } catch (err) {
-      return false;
-    }
+    final resp = await cather(() => http.delete('/job/application/$id'));
+    if (!resp.success) return throw Exception("failed");
+    notifyListeners();
+    return true;
   }
 }
