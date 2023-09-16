@@ -13,16 +13,17 @@ class CoursesScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: IconButton(
           padding: EdgeInsets.zero,
-          icon: const Icon(
+          icon: Icon(
             CupertinoIcons.arrow_left,
             size: 20,
+            color: appTheme.txt,
           ),
           onPressed: Navigator.of(context).pop,
         ),
         title: Center(
           child: Text(
             "Available Courses",
-            style: textTheme.headlineMedium,
+            style: textTheme.labelMedium,
           ),
         ),
         elevation: 0,
@@ -30,9 +31,10 @@ class CoursesScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
+            icon: Icon(
               CupertinoIcons.bookmark,
               size: 20,
+              color: appTheme.txt,
             ),
           ),
         ],

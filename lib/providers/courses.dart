@@ -23,8 +23,9 @@ class CourseProvider extends ChangeNotifier {
     ));
   }
 
-  Future loadCourses() async {
-    final resp = await cather(() => http.get('/course/2'));
+  Future loadCourses(id) async {
+    print(id);
+    final resp = await cather(() => http.get('/course/$id'));
     if (!resp.success) return throw Exception("failed");
     notifyListeners();
     return resp;
