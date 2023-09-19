@@ -8,14 +8,14 @@ class BookmarkScreen extends ConsumerStatefulWidget {
 
 class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
   remove(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).removeBookmark(id: id);
+    final resp = await ref.read(jobProvider).removeBookmark(id: id);
     if (resp) {
       showToast(context, 'removed');
     }
   }
 
   add(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).addApplication(id: id);
+    final resp = await ref.read(jobProvider).addApplication(id: id);
     if (resp) {
       showToast(context, 'applied');
     }
@@ -47,38 +47,28 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
         ),
         Expanded(
           child: AdvancedFutureBuilder(
-            future: () => ref.watch(jobProvider).loadBookmark(),
+            future: () => ref.read(jobProvider).loadBookmark(),
             builder: (context, snapshot, _) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                shrinkWrap: true,
-                itemCount: snapshot.result.length,
-                itemBuilder: (context, index) {
-                  print(snapshot.result.length);
-                  return BookmarkCard(
+              return Consumer(builder: (context, ref, child) {
+                var jobs = ref.watch(jobProvider);
+                return ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  shrinkWrap: true,
+                  itemCount: jobs.bookmarks.length,
+                  itemBuilder: (context, index) {
+                    return BookmarkCard(
                       status: 'bookmarked',
-                      title: snapshot.result[index]['title'],
-                      subtitle: snapshot.result[index]['company'],
-                      img: snapshot.result[index]['image'],
-                      onRemove: () async {
-                        final resp = await prov.removeBookmark(
-                            id: snapshot.result[index]['id']);
-                        if (resp) {
-                          showToast(context, 'removed');
-                        }
-                      },
-                      // remove(ref, snapshot.result[index]['id'], context),
-                      onApply: () async {
-                        var resp = await prov.addApplication(
-                            id: snapshot.result[index]['id']);
-                        if (resp) {
-                          showToast(context, 'applied');
-                        }
-                      }
-                      // add(ref, snapshot.result[index]['id'], context),
-                      );
-                },
-              );
+                      title: jobs.bookmarks[index]['title'],
+                      subtitle: jobs.bookmarks[index]['company'],
+                      img: jobs.bookmarks[index]['image'],
+                      onRemove: () =>
+                          remove(ref, jobs.bookmarks[index]['id'], context),
+                      onApply: () =>
+                          add(ref, jobs.bookmarks[index]['id'], context),
+                    );
+                  },
+                );
+              });
             },
             errorBuilder: (context, error, reload) => Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -4,6 +4,8 @@ final jobProvider = ChangeNotifierProvider((ref) => JobProvider(ref));
 
 class JobProvider extends ChangeNotifier {
   Ref ref;
+  List<dynamic> bookmarks = [];
+  List<dynamic> applications = [];
 
   Dio get http => ref.read(httpProvider).http;
   JobProvider(this.ref) {
@@ -41,6 +43,7 @@ class JobProvider extends ChangeNotifier {
   Future loadBookmark() async {
     final resp = await cather(() => http.get('/job/bookmarks'));
     if (!resp.success) return throw Exception("failed");
+    bookmarks = resp.result;
     notifyListeners();
     return resp;
   }
@@ -49,6 +52,7 @@ class JobProvider extends ChangeNotifier {
     print(id);
     final resp = await cather(() => http.delete('/job/bookmarks/$id'));
     if (!resp.success) return throw Exception("failed");
+    loadBookmark();
     notifyListeners();
     return true;
   }
@@ -64,6 +68,7 @@ class JobProvider extends ChangeNotifier {
   Future loadApplications() async {
     final resp = await cather(() => http.get('/job/applications'));
     if (!resp.success) return throw Exception("failed");
+    applications = resp.result;
     notifyListeners();
     return resp;
   }
@@ -72,7 +77,7 @@ class JobProvider extends ChangeNotifier {
     print(id);
     final resp = await cather(() => http.delete('/job/application/$id'));
     if (!resp.success) return throw Exception("failed");
-    notifyListeners();
+    loadApplications();
     return true;
   }
 }

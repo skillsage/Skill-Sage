@@ -4,14 +4,14 @@ class JobPostScreen extends ConsumerWidget {
   const JobPostScreen({super.key});
 
   add(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).addBookmark(id: id);
+    final resp = await ref.read(jobProvider).addBookmark(id: id);
     if (resp) {
       showToast(context, 'added');
     }
   }
 
   apply(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).addApplication(id: id);
+    final resp = await ref.read(jobProvider).addApplication(id: id);
     if (resp) {
       showToast(context, 'added');
     }
