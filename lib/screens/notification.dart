@@ -4,14 +4,14 @@ class NotificationScreen extends ConsumerWidget {
   const NotificationScreen({super.key});
 
   remove(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).removeApplication(id: id);
+    final resp = await ref.read(jobProvider).removeApplication(id: id);
     if (resp) {
       showToast(context, 'removed');
     }
   }
 
   add(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).addApplication(id: id);
+    final resp = await ref.read(jobProvider).addApplication(id: id);
     if (resp) {
       showToast(context, 'applied');
     }
@@ -44,25 +44,28 @@ class NotificationScreen extends ConsumerWidget {
       body: SafeArea(
         child: Expanded(
           child: AdvancedFutureBuilder(
-            future: () => ref.watch(jobProvider).loadApplications(),
-            builder: (context, snapshot, _) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                shrinkWrap: true,
-                itemCount: snapshot.result.length,
-                itemBuilder: (context, index) {
-                  return BookmarkCard(
-                    status: snapshot.result[index]['status'],
-                    title: snapshot.result[index]['title'],
-                    subtitle: snapshot.result[index]['company'],
-                    img: snapshot.result[index]['image'],
-                    onRemove: () =>
-                        remove(ref, snapshot.result[index]['id'], context),
-                    onApply: () =>
-                        add(ref, snapshot.result[index]['id'], context),
-                  );
-                },
-              );
+            future: () => ref.read(jobProvider).loadApplications(),
+            builder: (context, _, __) {
+              return Consumer(builder: (context, ref, child) {
+                var jobs = ref.watch(jobProvider);
+                return ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  shrinkWrap: true,
+                  itemCount: jobs.applications.length,
+                  itemBuilder: (context, index) {
+                    return BookmarkCard(
+                      status: jobs.applications[index]['status'],
+                      title: jobs.applications[index]['title'],
+                      subtitle: jobs.applications[index]['company'],
+                      img: jobs.applications[index]['image'],
+                      onRemove: () =>
+                          remove(ref, jobs.applications[index]['id'], context),
+                      onApply: () =>
+                          add(ref, jobs.applications[index]['id'], context),
+                    );
+                  },
+                );
+              });
             },
             errorBuilder: (context, error, reload) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -4,14 +4,14 @@ class BookmarkScreen extends ConsumerWidget {
   const BookmarkScreen({super.key});
 
   remove(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).removeBookmark(id: id);
+    final resp = await ref.read(jobProvider).removeBookmark(id: id);
     if (resp) {
       showToast(context, 'removed');
     }
   }
 
   add(WidgetRef ref, int id, BuildContext context) async {
-    final resp = await ref.watch(jobProvider).addApplication(id: id);
+    final resp = await ref.read(jobProvider).addApplication(id: id);
     if (resp) {
       showToast(context, 'applied');
     }
@@ -54,26 +54,28 @@ class BookmarkScreen extends ConsumerWidget {
         ),
         Expanded(
           child: AdvancedFutureBuilder(
-            future: () => ref.watch(jobProvider).loadBookmark(),
+            future: () => ref.read(jobProvider).loadBookmark(),
             builder: (context, snapshot, _) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                shrinkWrap: true,
-                itemCount: snapshot.result.length,
-                itemBuilder: (context, index) {
-                  print(snapshot.result.length);
-                  return BookmarkCard(
-                    status: 'bookmarked',
-                    title: snapshot.result[index]['title'],
-                    subtitle: snapshot.result[index]['company'],
-                    img: snapshot.result[index]['image'],
-                    onRemove: () =>
-                        remove(ref, snapshot.result[index]['id'], context),
-                    onApply: () =>
-                        add(ref, snapshot.result[index]['id'], context),
-                  );
-                },
-              );
+              return Consumer(builder: (context, ref, child) {
+                var jobs = ref.watch(jobProvider);
+                return ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  shrinkWrap: true,
+                  itemCount: jobs.bookmarks.length,
+                  itemBuilder: (context, index) {
+                    return BookmarkCard(
+                      status: 'bookmarked',
+                      title: jobs.bookmarks[index]['title'],
+                      subtitle: jobs.bookmarks[index]['company'],
+                      img: jobs.bookmarks[index]['image'],
+                      onRemove: () =>
+                          remove(ref, jobs.bookmarks[index]['id'], context),
+                      onApply: () =>
+                          add(ref, jobs.bookmarks[index]['id'], context),
+                    );
+                  },
+                );
+              });
             },
             errorBuilder: (context, error, reload) => Column(
               mainAxisAlignment: MainAxisAlignment.center,
