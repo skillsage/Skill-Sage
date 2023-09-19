@@ -25,7 +25,7 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
   Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
-    final prov = ref.watch(jobProvider);
+    // final prov = ref.watch(jobProvider);
     return SafeArea(
       child: Column(children: [
         const SizedBox(
