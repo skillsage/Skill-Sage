@@ -13,7 +13,7 @@ class OnboardingProfileScreen extends StatelessWidget {
         onPressed: () {
           Navigator.pushReplacementNamed(context, AppRoutes.home);
         },
-        child: const Icon(CupertinoIcons.arrow_right),
+        child: Icon(CupertinoIcons.arrow_right, color: appTheme.txt),
       ),
       backgroundColor: appTheme.bg1,
       body: SafeArea(

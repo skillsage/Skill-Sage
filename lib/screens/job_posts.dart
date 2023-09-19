@@ -22,6 +22,7 @@ class JobPostScreen extends ConsumerWidget {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
     final size = MediaQuery.of(context).size;
+    final user = ref.watch(userProvider).user;
     return SafeArea(
       child: Column(
         children: [
@@ -46,7 +47,7 @@ class JobPostScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: appTheme.light,
+                color: appTheme.scaffold,
               ),
               style: textTheme.titleSmall,
             ),
@@ -66,8 +67,14 @@ class JobPostScreen extends ConsumerWidget {
                       onTap: () => showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         context: context,
-                        builder: (context) => _buildModal(size, appTheme,
-                            textTheme, snapshot.result[index], ref, context),
+                        builder: (context) => _buildModal(
+                            size,
+                            appTheme,
+                            textTheme,
+                            snapshot.result[index],
+                            ref,
+                            context,
+                            user),
                       ),
                       child: JobCard(
                         title: snapshot.result[index]['title'],
@@ -108,7 +115,7 @@ class JobPostScreen extends ConsumerWidget {
     );
   }
 
-  _buildModal(size, appTheme, textTheme, data, ref, context) {
+  _buildModal(size, appTheme, textTheme, data, ref, context, user) {
     return Container(
       height: size.height,
       decoration: BoxDecoration(
@@ -198,7 +205,14 @@ class JobPostScreen extends ConsumerWidget {
                       width: size.width * .4,
                       child: ElevatedButton(
                           onPressed: () {
-                            apply(ref, data['id'], context);
+                            if (user.resume.isEmpty &&
+                                user.experience.isEmpty &&
+                                user.education.isEmpty) {
+                              showToast(context,
+                                  "Upload Resume or Update your Profile");
+                            } else {
+                              apply(ref, data['id'], context);
+                            }
                             Navigator.pop(context);
                           },
                           child: const Text("Apply")),

@@ -14,6 +14,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
   late TextEditingController _seekToController;
 
   String _selectedCourseVideo = '';
+  int _selectedVideoIndex = 1;
   final List<bool> _isCourseExpanded = List.generate(2, (index) => false);
 
   late List courses;
@@ -107,33 +108,6 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
               )
             : Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    color: appTheme.scaffold,
-                    child: ListTile(
-                      leading: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: const Icon(
-                          CupertinoIcons.arrow_left,
-                          size: 20,
-                        ),
-                        onPressed: Navigator.of(context).pop,
-                      ),
-                      title: Center(
-                        child: Text(
-                          "Course Content",
-                          style: textTheme.headlineMedium,
-                        ),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          CupertinoIcons.bookmark,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     width: double.infinity,
                     height: 200,
@@ -199,7 +173,7 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        "0 / 2 | 7min",
+                                        "$_selectedVideoIndex / ${courses[index]['sessions'].length}",
                                         style: textTheme.labelSmall,
                                       ),
                                     ],
@@ -224,6 +198,9 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                                       print(index);
                                       playCourse(courses[index]['sessions']
                                           [itemIndex]['video']);
+                                      _selectedVideoIndex = courses[index]
+                                              ['sessions'][itemIndex]
+                                          .indexOf(_selectedCourseVideo);
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.zero,
@@ -250,7 +227,9 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  '7min',
+                                                  courses[index]["sessions"]
+                                                          [itemIndex]["time"] ??
+                                                      "",
                                                   style: textTheme.labelMedium,
                                                 ),
                                               ],

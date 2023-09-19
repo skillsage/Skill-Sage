@@ -1,8 +1,12 @@
 part of screens;
 
-class BookmarkScreen extends ConsumerWidget {
+class BookmarkScreen extends ConsumerStatefulWidget {
   const BookmarkScreen({super.key});
+  @override
+  ConsumerState<BookmarkScreen> createState() => _BookmarkScreenState();
+}
 
+class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
   remove(WidgetRef ref, int id, BuildContext context) async {
     final resp = await ref.watch(jobProvider).removeBookmark(id: id);
     if (resp) {
@@ -18,23 +22,12 @@ class BookmarkScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final textTheme = CustomTextTheme.customTextTheme(context).textTheme;
     final appTheme = AppTheme.appTheme(context);
+    final prov = ref.watch(jobProvider);
     return SafeArea(
       child: Column(children: [
-        // Container(
-        //   width: double.infinity,
-        //   color: appTheme.scaffold,
-        //   child: ListTile(
-        //     title: Center(
-        //       child: Text(
-        //         "Bookmarked",
-        //         style: textTheme.headlineMedium,
-        //       ),
-        //     ),
-        //   ),
-        // ),
         const SizedBox(
           height: 20.0,
         ),
@@ -44,7 +37,7 @@ class BookmarkScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: appTheme.light,
+              color: appTheme.scaffold,
             ),
             style: textTheme.titleSmall,
           ),
@@ -63,15 +56,27 @@ class BookmarkScreen extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   print(snapshot.result.length);
                   return BookmarkCard(
-                    status: 'bookmarked',
-                    title: snapshot.result[index]['title'],
-                    subtitle: snapshot.result[index]['company'],
-                    img: snapshot.result[index]['image'],
-                    onRemove: () =>
-                        remove(ref, snapshot.result[index]['id'], context),
-                    onApply: () =>
-                        add(ref, snapshot.result[index]['id'], context),
-                  );
+                      status: 'bookmarked',
+                      title: snapshot.result[index]['title'],
+                      subtitle: snapshot.result[index]['company'],
+                      img: snapshot.result[index]['image'],
+                      onRemove: () async {
+                        final resp = await prov.removeBookmark(
+                            id: snapshot.result[index]['id']);
+                        if (resp) {
+                          showToast(context, 'removed');
+                        }
+                      },
+                      // remove(ref, snapshot.result[index]['id'], context),
+                      onApply: () async {
+                        var resp = await prov.addApplication(
+                            id: snapshot.result[index]['id']);
+                        if (resp) {
+                          showToast(context, 'applied');
+                        }
+                      }
+                      // add(ref, snapshot.result[index]['id'], context),
+                      );
                 },
               );
             },
@@ -90,10 +95,8 @@ class BookmarkScreen extends ConsumerWidget {
                 )
               ],
             ),
-            emptyBuilder: (context, reload) => Center(
-              child: Center(
-                child: Image.asset("assets/images/not_found.png"),
-              ),
+            emptyBuilder: (context, reload) => SizedBox(
+              child: Image.asset("assets/images/not_found.png"),
             ),
           ),
         ),

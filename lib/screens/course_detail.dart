@@ -101,7 +101,7 @@ class CourseDetailScreen extends ConsumerWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color:
-                                                  Colors.grey.withOpacity(.3),
+                                                  Colors.grey.withOpacity(.15),
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -134,7 +134,7 @@ class CourseDetailScreen extends ConsumerWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color:
-                                                  Colors.grey.withOpacity(.3),
+                                                  Colors.grey.withOpacity(.15),
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -157,7 +157,7 @@ class CourseDetailScreen extends ConsumerWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color:
-                                                  Colors.grey.withOpacity(.3),
+                                                  Colors.grey.withOpacity(.15),
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -189,8 +189,8 @@ class CourseDetailScreen extends ConsumerWidget {
                                                 horizontal: 15),
                                             decoration: BoxDecoration(
                                               border: Border.all(
-                                                color:
-                                                    Colors.grey.withOpacity(.3),
+                                                color: Colors.grey
+                                                    .withOpacity(.15),
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(6),
@@ -213,6 +213,7 @@ class CourseDetailScreen extends ConsumerWidget {
                                                         height: 10,
                                                         decoration:
                                                             BoxDecoration(
+                                                          color: appTheme.txt,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(50),
@@ -249,8 +250,8 @@ class CourseDetailScreen extends ConsumerWidget {
                                                 horizontal: 15),
                                             decoration: BoxDecoration(
                                               border: Border.all(
-                                                color:
-                                                    Colors.grey.withOpacity(.3),
+                                                color: Colors.grey
+                                                    .withOpacity(.15),
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(6),
@@ -268,9 +269,17 @@ class CourseDetailScreen extends ConsumerWidget {
                                                           ListTileTitleAlignment
                                                               .center,
                                                       minVerticalPadding: 0,
-                                                      leading: Text(lessons
-                                                          .indexOf(e)
-                                                          .toString()),
+                                                      leading: Container(
+                                                        width: 10,
+                                                        height: 10,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: appTheme.txt,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                        ),
+                                                      ),
                                                       title: Text(
                                                         e,
                                                         style: textTheme
@@ -283,18 +292,67 @@ class CourseDetailScreen extends ConsumerWidget {
                                           ),
                                         ]),
                                   ),
-                                  Column(children: [
-                                    Column(
-                                      children: skills
-                                          .map(
-                                            (e) => Text(
-                                              e,
-                                              style: textTheme.labelMedium,
+                                  SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Skills",
+                                            style: textTheme.bodyLarge,
+                                          ),
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.grey
+                                                    .withOpacity(.15),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
                                             ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ]),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: skills
+                                                  .map(
+                                                    (e) => ListTile(
+                                                      minLeadingWidth: 0,
+                                                      contentPadding:
+                                                          EdgeInsets.zero,
+                                                      titleAlignment:
+                                                          ListTileTitleAlignment
+                                                              .center,
+                                                      minVerticalPadding: 0,
+                                                      leading: Container(
+                                                        width: 10,
+                                                        height: 10,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: appTheme.txt,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                        ),
+                                                      ),
+                                                      title: Text(
+                                                        e,
+                                                        style: textTheme
+                                                            .labelMedium,
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        ]),
+                                  ),
                                 ],
                               ),
                             ),
