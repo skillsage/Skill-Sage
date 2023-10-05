@@ -52,7 +52,15 @@ class CourseDetailScreen extends ConsumerWidget {
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    child: Image.network(data['image'], fit: BoxFit.cover),
+                    child: data["image"] == null
+                        ? SizedBox(
+                            height: 200,
+                            child: Image.asset(
+                              "assets/images/default.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.network(data['image'], fit: BoxFit.cover),
                   ),
                   DefaultTabController(
                     length: 4,

@@ -15,14 +15,18 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
 
   String _selectedCourseVideo = '';
   int _selectedVideoIndex = 1;
-  final List<bool> _isCourseExpanded = List.generate(2, (index) => false);
 
   late List courses;
+
+  // final List<bool> _isCourseExpanded = List.generate(2, (index) => false);
+
+  late List<bool> _isCourseExpanded;
 
   @override
   void initState() {
     super.initState();
     courses = widget.content!['items'];
+    _isCourseExpanded = List.generate(courses.length, (index) => false);
     print(courses);
     _controller = YoutubePlayerController(
       initialVideoId: courses.isEmpty ? '' : courses[0]['sessions'][0]['video'],
@@ -152,12 +156,14 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                           expansionCallback: (int index, bool isExpanded) {
                             // Handle expansion state
                             setState(() {
-                              _isCourseExpanded[index] = !isExpanded;
+                              _isCourseExpanded[index] =
+                                  !_isCourseExpanded[index];
                             });
                           },
                           children: [
                             for (int index = 0; index < courses.length; index++)
                               ExpansionPanel(
+                                //  key: UniqueKey(),
                                 backgroundColor: appTheme.scaffold,
                                 headerBuilder: (context, isExpanded) =>
                                     Container(

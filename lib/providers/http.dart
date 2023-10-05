@@ -10,11 +10,11 @@ class HttpProvider {
   HttpProvider(this.ref)
       : http = Dio(
           BaseOptions(
-            baseUrl:
-                // "https://skill-sage-backend.onrender.com"
-                // "http://127.0.0.1:8000"
-                "http://13.53.145.132:3000",
-          ),
+              baseUrl:
+                  // "https://skill-sage-backend.onrender.com"
+                  // "http://127.0.0.1:8000"
+              "http://13.53.145.132:3000",
+              ),
         ) {
     init();
   }
